@@ -1,0 +1,6 @@
+http://mail.python.org/pipermail/mailman-users/2007-February/055680.html
+import sha
+mlist.password = sha.new('new_admin_pw').hexdigest()
+mlist.mod_password = sha.new('new_moderator_pw').hexdigest()
+
+#Can also be used as input to config_list
