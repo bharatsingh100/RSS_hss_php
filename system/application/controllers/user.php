@@ -40,6 +40,8 @@ class User extends Controller
 			if(isset($redirect_url))
 				redirect($redirect_url);	
 			else
+			  if($this->input->post('username') == $this->input->post('password'))
+			    redirect('profile/change_password/' . $this->session->userdata('contact_id'));
 				redirect('profile/view/' . $this->session->userdata('contact_id'));
 		}
 		else
@@ -171,7 +173,7 @@ class User extends Controller
 		if($user == '' || $password == '')
 		{
 			//$this->session->set_flashdata('message', 'Your password or email address field was blank.');
-			$this->session->set_userdata('message', 'Your password or email address field was blank.');
+			$this->session->set_userdata('message', 'Your password or email address field was blank. Try again');
 			return false;
 //		$this->->db->where('email', $user); 
 		}
@@ -228,7 +230,7 @@ class User extends Controller
 		}
 		else
 		{
-			$this->session->set_userdata('message', 'Your email address did\'t match our records.');
+			$this->session->set_userdata('message', 'Your email address was not found in our database.');
 			return false;
 		}
 			
