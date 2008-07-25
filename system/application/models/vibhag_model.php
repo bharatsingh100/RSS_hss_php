@@ -117,12 +117,14 @@ class Vibhag_model extends Model
 			$shakha_ids[] = $shakha->shakha_id;
 		return $shakha_ids;
 	}
-	function getShakhaName($id)
+	
+  function getShakhaName($id)
 	{
 		$query = $this->db->select('name')->getwhere('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
 	}
-	function getVibhagInfo($id)
+	
+  function getVibhagInfo($id)
 	{
 		
 		//Get Vibhag's Shakha Information
@@ -198,7 +200,8 @@ class Vibhag_model extends Model
 		//$temp->household_id = $max_hh;
 		return $data;
 	}
-	function reformat_phone_dash($ph) 
+	
+  function reformat_phone_dash($ph) 
 	{
 		$onlynums = preg_replace('/[^0-9]/','',$ph);
 		if (strlen($onlynums)==10) 
@@ -211,26 +214,31 @@ class Vibhag_model extends Model
 	    }
    		return $ph;
 	}
-	function getShortDesc($var1)
+	
+  function getShortDesc($var1)
 	{
 		$this->db->select('short_desc');
 		$query = $this->db->getwhere('Ref_Code', array('REF_CODE' => $var1));
 		
 		return ($query->num_rows()) ? $query->row()->short_desc : '';
 	}
-	function getRefCodes($var1)
+	
+  function getRefCodes($var1)
 	{
 		return $this->db->getwhere('Ref_Code', array('DOM_ID' => $var1));
 	}
-	function getStates()
+	
+  function getStates()
 	{
 		return $this->getRefCodes(6)->result();
 	}
-	function getSSVCompleted()
+	
+  function getSSVCompleted()
 	{
 		return $this->getRefCodes(5)->result();
 	}
-	function getGatanayaks($id)
+	
+  function getGatanayaks($id)
 	{
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name');
 		$this->db->from('swayamsevaks');

@@ -7,7 +7,7 @@ class Email extends Controller
 	function Email()
     {
         parent::Controller();
-		$this->output->enable_profiler(TRUE);
+	//$this->output->enable_profiler(TRUE);
 		$this->load->helper('file');
 		$this->load->model('Vibhag_model');
 		$this->userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
@@ -49,6 +49,40 @@ class Email extends Controller
         if ($swift->send($message, "zzzabhi@gmail.com", "admin@theuniversalwisdom.org")) echo "Sent";
         else echo "Failed";
     }*/
+	function login_log_rss()
+	{
+	//	require_once "Swift.php";
+  //      require_once "Swift/Connection/SMTP.php";
+	//	$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
+
+		$logs = $this->db->getwhere('loginlog', "login >= '".date('o-m-d')." 00:00:00'");
+	//	$subject = 'Login Logs Details';
+	  $message = '<?xml version="1.0" ?>'."\n";
+    $message .= '<rss version="2.0">'."\n";
+    $message .= '<channel>'."\n\n";
+    $message .= '<title>Login Logs for CRM</title>'."\n";
+    $message .= '<description>Time when everyone logs in.</description>'."\n";
+    $message .= '<link>https://crm.hssusa.org</link>'."\n";
+	//	$message = 'Login Logs for '.date("F j, Y").'<br /><br />';
+	//	$message = "Name\t\tIP-Address\t\tTime\t<br />";
+		if($logs->num_rows())
+		{
+			foreach($logs->result() as $log)
+			{
+				$message .= "\n".'<item>'."\n";
+        $message .= '<title>'.anchor(site_url('profile/view/'.$log->contact_id), $log->name).'</title>'."\n";
+				$message .= '<description>' . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr)."\n";
+				$message .= "$log->login".'</description>'."\n";
+				$message .= '</item>'."\n";
+			}
+		
+    $message .= '</channel>'."\n\n";
+    $message .= '</rss>'."\n";
+    echo $message;	
+      //$message =& new Swift_Message($subject, $message, "text/html");	
+			//$swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
+		}
+	}
 	
 	function login_log()
 	{

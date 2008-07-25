@@ -30,7 +30,7 @@ if(isset($row->kk))
                  <option value="0" selected="selected">Select Karyakarta&nbsp;</option>
                  <?php
 				 		foreach($names as $j)
-							echo "<option value=\"$j->contact_id\">$j->name&nbsp;</option>\n";
+							if(strlen(trim($j->name))) echo "<option value=\"$j->contact_id\">$j->name&nbsp;</option>\n";
 							?>
 				</select>
                  </div></td>

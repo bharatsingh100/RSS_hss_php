@@ -6,6 +6,7 @@ $tmpl = array (
 		'row_alt_start'	=> '<tr bgcolor="#E5E5E5">'
 		);
 $this->table->set_template($tmpl);
+
 //Parameters to calculate Gana
 $yr = date('Y');
 $ag['shishu'] = $yr - 6;
@@ -28,8 +29,11 @@ $vars = $results->result_array();
 $total_rows = $results->num_rows();
 for($i = 0; $i < $total_rows; $i++)
 {
-	//Create link to profile
-	$vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], $vars[$i]['name']);
+    //Link each name to their profile, if no name then insert N/A
+		if(strlen(trim($vars[$i]['name'])))
+	     $vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], $vars[$i]['name']);
+		else 
+    	$vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], 'N/A');
 	
 	//Create e-mail link
 	$vars[$i]['email'] = mailto($vars[$i]['email'], $vars[$i]['email']);

@@ -21,7 +21,9 @@ for($i = 0; $i < $total_rows; $i++)
 		$vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], 'N/A');
 	else
 		$vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], $vars[$i]['name']);
+		
 	$vars[$i]['email'] = mailto($vars[$i]['email'], $vars[$i]['email']);
+	
 	if($vars[$i]['ph_mobile'] != '')
 		$vars[$i]['phone'] = $vars[$i]['ph_mobile'];
 	elseif($vars[$i]['ph_home'] != '')
