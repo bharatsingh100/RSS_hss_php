@@ -4,23 +4,23 @@ class Search extends Controller
     function Search()
     {
         parent::Controller();
-		if(!$this->session->userdata('logged_in'))
-		{
-			$this->session->set_userdata('message', 'Please login to access the system.');
-			$this->session->set_userdata('redirect', $this->uri->uri_string());
-			redirect('user');
-		}
+    		if(!$this->session->userdata('logged_in'))
+    		{
+    			$this->session->set_userdata('message', 'Please login to access the system.');
+    			$this->session->set_userdata('redirect', $this->uri->uri_string());
+    			redirect('user');
+    		}
 		
-		//Check Permissions
-		if(!$this->permission->is_shakha_kkh($this->session->userdata('shakha_id')))
-		{
-				$this->session->set_userdata('message', 'Your are not allowed to access the requested URL');
-				redirect('profile/view/'.$this->session->userdata('contact_id'));
-		}
+    		//Check Permissions
+    		if(!$this->permission->is_shakha_kkl($this->session->userdata('shakha_id')))
+    		{
+    				$this->session->set_userdata('message', 'Your are not allowed to access the requested URL');
+    				redirect('profile/view/'.$this->session->userdata('contact_id'));
+    		}
 			
 		//$this->output->enable_profiler(TRUE);
 //		$this->load->model('Profile_model');
-		$this->load->library('layout', 'layout_search');
+		    $this->load->library('layout', 'layout_search');
 		//$this->load->scaffolding('swayamsevaks');
 
 /*		$exception = array('search','del_ss');
@@ -38,8 +38,8 @@ class Search extends Controller
 			$this->session->set_userdata('bc_sambhag_id', $rs->sambhag_id);
 		}
 		*/
-		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-		$this->output->set_header('Pragma: no-cache');
+    		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+    		$this->output->set_header('Pragma: no-cache');
     }
 	
 	function index($term = '') 

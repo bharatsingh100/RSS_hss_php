@@ -17,7 +17,7 @@ class Shakha extends Controller
 
 	  
 	  	//Check Permissions
-		$perml = array('browse', 'gata', 'addss','import_contacts','add_sankhya','responsibilities','edit_shakha','statistics','email_lists','create_list');
+		$perml = array('browse', 'gata', 'addss', 'add_family_member', 'import_contacts' , 'add_sankhya' , 'responsibilities' , 'edit_shakha' , 'statistics' , 'email_lists' , 'create_list');
 		$permh = array('import_contacts','add_sankhya','responsibilities','edit_shakha','email_lists','create_list');
 		
 		if(in_array($this->uri->segment(2), $perml))
@@ -417,6 +417,12 @@ class Shakha extends Controller
 		$this->layout->view('shakha/add-swayamsevak', $data);
 	}
 	
+	function add_family_member($shakha_id, $id)
+	{
+	   $results = $this->db->getwhere('swayamsevaks', array('contact_id' => $id))->row_array();
+	   $this->addss($shakha_id, $results);
+  }
+  
 	function add_family()
 	{
 		$hhid = (isset($_POST['household_id'])) ? $_POST['household_id'] : '';

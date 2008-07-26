@@ -81,6 +81,8 @@
          <?php if($this->permission->allow_profile_edit($this->uri->segment(3))): ?>
          <h3>Navigation</h3>
          <p><?=anchor('profile/edit_profile/' . $this->uri->segment(3), 'Edit Profile')?></p>
+         <?php $b = $this->db->select('shakha_id')->getwhere('swayamsevaks', array('contact_id'=>$this->uri->segment(3)))->row(); ?>
+         <p><?=anchor('shakha/add_family_member/' . $b->shakha_id . '/' . $this->uri->segment(3), 'Add Family Member')?></p>
          <p><?=anchor('profile/add_to_family/' . $this->uri->segment(3), 'Connect to Family')?></p>
          <p><?=anchor('profile/change_password/' . $this->uri->segment(3), 'Change Password')?></p>                  
 		 <?php endif; ?>

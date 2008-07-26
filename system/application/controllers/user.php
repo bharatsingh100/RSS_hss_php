@@ -7,11 +7,11 @@ class User extends Controller
 		$this->load->library('layout', 'layout_user');
 		$this->load->helper('security');
 		//$this->output->enable_profiler(TRUE);
-		//$this->load->scaffolding('swayamsevaks');
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 		$this->output->set_header('Pragma: no-cache');
 
     }
+	
 	function index()
 	{
 			$data['pageTitle'] = 'User Login';
