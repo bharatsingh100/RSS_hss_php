@@ -28,6 +28,7 @@
 		 <!-- End Header -->
 		 <!-- Begin Navigation -->
 		 <div id="navigation">
+			<span class="left"> 
 			 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?>  |  
              <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>  |
              <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>  |
@@ -35,7 +36,10 @@
              <?php echo anchor('national/view', 'National'); ?>
 <!--             <?php //echo anchor('email/view/', 'E-mail'); ?>  |
              <?php //echo anchor('events', 'Events'); ?>  |
-             <?php //echo anchor('organization', 'Organization'); ?>--></div>
+             <?php //echo anchor('organization', 'Organization'); ?>-->
+             </span>
+            <span class="right"><?php echo anchor('help', 'Help ?'); ?></span>
+         </div>
 <!-- End Navigation -->
 		 <!-- Breadcrumb -->
          <!--<div id="breadcrumb">

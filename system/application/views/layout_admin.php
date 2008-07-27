@@ -26,13 +26,16 @@
 		 <!-- End Header -->
 		 <!-- Begin Navigation -->
 		 <div id="navigation">
-         <?php if($this->session->userdata('logged_in')): ?>
+           <span class="left">
+			 <?php if($this->session->userdata('logged_in')): ?>
 			 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?>  |  
              <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>  |
              <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>  |
              <?php echo anchor('sambhag/view/' . $this->session->userdata('sambhag_id'), 'My Sambhag'); ?> |
              <?php echo anchor('national/view', 'National'); ?>
-         <?php endif; ?>
+             <?php endif; ?>
+           </span>
+            <span class="right"><?php echo anchor('help', 'Help ?'); ?></span>
          </div>
 <!-- End Navigation -->
 		 <!-- Begin Left Column -->

@@ -7,7 +7,8 @@ $row = $query->row();
 //print_r($row);
 $sh_add = (!empty($row->street_add1) ?  $row->street_add1 : '');
 $sh_add .= (!empty($row->street_add2) ?  ', '.$row->street_add2 : '');
-$sh_add .= (!empty($row->city) ?  ', '.$row->city: '');
+$sh_add .= strlen(trim($sh_add)) ? '<br />' : '';
+$sh_add .= (!empty($row->city) ?  $row->city: '');
 $sh_add .= (!empty($row->state) ?  ', '.$row->state: '');
 $sh_add .= (!empty($row->zip) ?  ', '.$row->zip : '');
 $sh_add = ltrim($sh_add,',');
@@ -19,12 +20,14 @@ $sh_add = ltrim($sh_add,',');
 		$age = date("Y") -  $row->birth_year;
 		echo ', ' . $age;
 		}?></h2>
-
-<p><?=$sh_add?>&nbsp;(<?php echo (!empty($sh_add) ? anchor_popup('http://maps.google.com/maps?q=' . str_replace(' ', '+', $sh_add.', USA'), 'Map') : ''); ?>)</p>
-
+<span class="leftcol">
 <p><?php echo anchor('shakha/view/' . $shakha->shakha_id, $shakha->name),',&nbsp;';
 		 echo anchor('vibhag/view/' . $vibhag->REF_CODE, $vibhag->short_desc),',&nbsp;';
 		 echo anchor('sambhag/view/' . $sambhag->REF_CODE, $sambhag->short_desc);?></p>
+
+<?php //Characters to replace for Google Map link
+$gmaps = array("<br />", " ", "#",','); ?>
+<p><?=$sh_add?>&nbsp;(<?php echo (!empty($sh_add) ? anchor_popup('http://maps.google.com/maps?q=' . str_replace($gmaps, '+', $sh_add.', USA'), 'Map') : ''); ?>)</p>
 <?php if($this->permission->is_shakha_kkl($shakha->shakha_id)){
 	   if(strlen($row->gatanayak)) {
 		 echo '<br /><p><strong>Gatanayak: </strong>';
@@ -55,6 +58,7 @@ if(!empty($resp))
 	echo '<br />';
 }
 ?>
+</span><span class="rightcol">
 <h3>Contact Information: </h3>
 <?php echo((!empty($row->ph_mobile)) ? "$row->ph_mobile (Mobile)<br />" : '');?>
 <?php echo((!empty($row->ph_home)) ? "$row->ph_home (Home)<br />" : '');?>
@@ -101,5 +105,5 @@ $min  = substr($datefromdb,14,2);
 $sec  = substr($datefromdb,17,2);
 $orgdate = date('F dS, Y h:i A' , mktime($hour,$min,$sec,$mon,$day,$year));
 ?>
-<p>&nbsp;</p>
-<h4>Profile Last Updated On: <? echo $orgdate; ?></h4>
+<p>&nbsp;</p></span><div style="clear:both;"></div>
+<h4>Last Update: <? echo $orgdate; ?></h4>

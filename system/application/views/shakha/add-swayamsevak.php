@@ -3,14 +3,6 @@
 <?=form_open('shakha/add_family/')?>
 <?=form_hidden('shakha_id', $shakha_id);?>
 <?php if($fam) echo form_hidden('household_id', $family['household_id']); ?>
-<style type="text/css">
-<!--
-.style2 {
-	color: #666666;
-	font-size: 12px;
-}
--->
-</style>
 
 			 <h2><?=$shakha_name?> - Add Contact</h2>
 		     <h3>Personal Information</h3>
@@ -87,7 +79,7 @@
                  <span class="style2">(Email Addresses must be unique. Two contacts cannot share same e-mail address)                   </span></label></td>
                </tr>
                <tr>
-                 <td><div align="right">Phone:</div></td>
+                 <td valign="top"><div align="right">Phone:</div></td>
                  <td width="9%">
                    <input name="ph_mobile" type="text" id="ph_mobile" value="Mobile..." onClick="this.value = '';" size="15" maxlength="14"/>
                    <br />

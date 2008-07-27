@@ -345,6 +345,50 @@ class Shakha extends Controller
 		$this->layout->view('shakha/edit_shakha', $data);
 	}
 	
+	function karyakarta_csv_out($id)
+	{
+		$this->output->enable_profiler(FALSE);
+		$this->load->dbutil();
+		
+		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
+		$this->db->from('swayamsevaks');
+		$this->db->orderby('responsibilities.responsibility');
+		$this->db->join('responsibilities', "responsibilities.shakha_id = $id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$q = $this->db->get();
+		$i = $q->num_rows() - 1;
+		
+		$query = $q->result_array();
+    for(; $i > -1 ; $i--)
+				$query[$i]['responsibility'] = $this->Shakha_model->getShortDesc($query[$i]['responsibility']);
+				
+    $delim = ",";
+		$newline = "\r\n";
+		$out = '';
+    //Output CSV File header ...
+    foreach ($q->list_fields() as $name)
+		{
+			$out .= ucwords($name).$delim;
+		}
+		
+		$out = rtrim($out);
+		$out .= $newline;
+		
+		// Next blast through the result array and build out the rows
+		foreach ($query as $row)
+		{
+			foreach ($row as $item)
+			{
+				$out .= $item.$delim;			
+			}
+			$out = rtrim($out);
+			$out .= $newline;
+		}
+		$data['out'] = $out;
+		$this->output->set_header("Content-type: application/vnd.ms-excel");
+		$this->output->set_header("Content-disposition: csv; filename=". url_title($this->Shakha_model->getShakhaName($id)) . '-Karyakartas-' . date("M-d_H-i") .".csv");
+		$this->load->view('shakha/kk_csv', $data);
+	}
+	
 	function csv_out($id)
 	{
 		$this->output->enable_profiler(FALSE);
@@ -352,7 +396,7 @@ class Shakha extends Controller
 		$this->db->select('contact_id, household_id, shakha_id, contact_type, first_name, last_name, gender, birth_year, company, position, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, ssv_completed, notes');
 		$data['query'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id));
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
-		$this->output->set_header("Content-disposition: csv; filename=". date("M-d_H-i") .".csv");
+		$this->output->set_header("Content-disposition: csv; filename=". url_title($this->Shakha_model->getShakhaName($id)) . '-' . date("M-d_H-i") .".csv");
 		$this->load->view('shakha/csv', $data);
 	}
 	
@@ -464,10 +508,10 @@ class Shakha extends Controller
 		$target_path = $target_path . basename($filename); 
 		
 		$t = explode('.',trim($filename));
-		if($t[1] != 'csv') 
+		if($t[1] != 'csv' || $t[1] != 'xls' || $t[1] != 'xlsx') 
 		{
 			$this->session->set_userdata('errs', true);
-			$errors['msg'][] = "Please select a CSV file to upload.";
+			$errors['msg'][] = "Please select a CSV/XLS file to upload.";
 			$this->session->set_userdata('errors', $errors);
 			return false;
 		}
