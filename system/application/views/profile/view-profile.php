@@ -30,7 +30,7 @@ $gmaps = array("<br />", " ", "#",','); ?>
 <p><?=$sh_add?>&nbsp;(<?php echo (!empty($sh_add) ? anchor_popup('http://maps.google.com/maps?q=' . str_replace($gmaps, '+', $sh_add.', USA'), 'Map') : ''); ?>)</p>
 <?php if($this->permission->is_shakha_kkl($shakha->shakha_id)){
 	   if(strlen($row->gatanayak)) {
-		 echo '<br /><p><strong>Gatanayak: </strong>';
+		 echo '<p>&nbsp;</p><p><strong>Gatanayak: </strong>';
 		 echo anchor('profile/view/'.$gatanayak->contact_id, $gatanayak->first_name.' '.$gatanayak->last_name);
 		 echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
@@ -38,7 +38,7 @@ $gmaps = array("<br />", " ", "#",','); ?>
 		foreach($ctype as $t)
 		 {
 		 	if($t->REF_CODE == $row->contact_type)
-				echo '<p><strong>Contact Type: </strong>',$t->short_desc,'</p>';
+				echo '<p>&nbsp;</p><p><strong>Contact Type: </strong>',$t->short_desc,'</p>';
 		 }
 		 }
 		 echo '</p>';
