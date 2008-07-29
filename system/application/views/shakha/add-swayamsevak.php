@@ -48,7 +48,9 @@
                  <td align="right">Contact Type:</td>
                  <td colspan="3" valign="middle"><select name="contact_type" id="contact_type">
                  <?php foreach($ctype as $t){ ?>
-                 		<option value="<?php echo $t->REF_CODE; ?>"><?php echo $t->short_desc,'&nbsp;';?></option>
+                 		<option value="<?php echo $t->REF_CODE; ?> "
+                    <?php echo (($t->REF_CODE == "RA") ? ' selected="selected" ' : ''); ?>
+                     ><?php echo $t->short_desc,'&nbsp;';?></option>
                  <?php } ?>
                  </select>                 </td>
                </tr>
