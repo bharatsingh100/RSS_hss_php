@@ -42,7 +42,7 @@ class User extends Controller
 			else
 			  if($this->input->post('username') == $this->input->post('password'))
 			    redirect('profile/change_password/' . $this->session->userdata('contact_id'));
-				redirect('profile/view/' . $this->session->userdata('contact_id'));
+				redirect('shakha/view/' . $this->session->userdata('shakha_id'));
 		}
 		else
 		{

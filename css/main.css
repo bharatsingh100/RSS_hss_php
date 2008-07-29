@@ -7,6 +7,7 @@ body {
 	font-family: "Trebuchet MS", Helvetica, Arial;
 	font-size: 14px;
 	line-height: 140%;
+	background-color: #EBEBEB;
 	/*background-image: url('http://devcrm.hssusa.org/css/background1.png');
 background-repeat: repeat-x*/
 	/*background-color: #333333;
@@ -21,55 +22,72 @@ a {
 */
 }
 a:hover {
-	color: #FFFFFF;
-	background-color: #FF6600;
+	/*color: #FFFFFF;
+	background-color: #FF6600;*/
+	color:  #9fc253;
 }
 #wrapper {
 	margin: 0 auto;
 	width: 922px;
+	background-color: #EFF0F9;
 }
 #header {
-	color: #333;
+	color: #FFF;
 	width: 920px;
 	float: left;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border: 1px solid #ccc;
-	height: 20px;
-	margin: 10px 0px 5px 0px;
-	background-color: #D4D4D4;
+	/*padding-top: 10px;*/
+	padding-bottom: 15px;
+	/*border: 1px solid #ccc;*/
+	height: 60px;
+	margin: 0px 0px 0px 0px;
+	background-color: #004A7C; /*#D4D4D4;*/
 	/*background-image: url(header.jpg);
 */
 }
+#header #info {
+	text-align: right;
+	color: #e3f1f6;
+	padding-right: 10px;
+}
+#header h1 { font-size: 2.5em;}
 #breadcrumb {
-	float: right;
+	float: left;
 	font-size: 100%;
+	padding-bottom: 5px;
+	padding-left: 10px;
 }
 #navigation {
 	float: left;
 	width: 900px;
-	color: #F5F5F5;
-	padding: 10px;
-	border: 1px solid #ccc;
+	color: #000000;
+	padding: 15px 10px 5px 10px;
+	/*border-top: 1px solid #fff;
+	border-bottom: 2px solid #fff;*/
 	margin: 0px 0px 5px 0px;
-	background-color: #696969;
+	/*background-color: #696969;*/
+	background-color: #EFF0F9;/*#e3f1f6;*/
 	font-size: 110%;
 	font-weight: bold;
 }
 #navigation a {
+	position: relative;
 	color: #FFFFFF;
-	background-color: #858585;
+	background-color: #53648C; /*#858585;*/
 	padding: 5px 10px 5px 10px;
-	margin: 5px;
+	margin: 5px 2px 0px 2px;
 }
-#navigation a:hover {
-	color: #858585;
+#navigation a:hover,
+#navigation .active a{
+	color: #53648C;
 	background-color: #FFFFFF;
+	border-top: 2px solid #FF9900;
 }
+
 #leftcolumn {
+	clear: left;
 	color: #333;
-	border: 1px solid #ccc;
-	margin: 0px 5px 5px 0px;
+	/*border: 1px solid #ccc;*/
+	margin: 0px 5px 5px 10px;
 	padding: 10px;
 	/*height: 350px;
 */
@@ -80,11 +98,11 @@ a:hover {
 #rightcolumn {
 	float: right;
 	color: #333;
-	border: 1px solid #ccc;
-	background: #F2F2E6;
+	/*border-top: 2px solid #FF9900;*/
+	/*background-color: #EFF0F9;*/
 	margin: 0px 0px 5px 0px;
 	padding: 10px;
-	width: 195px;
+	width: 185px;
 	display: inline;
 }
 #rightcolumn p {
@@ -94,8 +112,8 @@ a:hover {
 	width: 900px;
 	clear: both;
 	color: #333;
-	border: 1px solid #ccc;
-	background: #F2F2E6;
+	/*border: 1px solid #ccc;*/
+	background: #EFF0F9;/*#F2F2E6;*/
 	padding: 5px;
 	font-size: 90%;
 }
@@ -114,9 +132,9 @@ h2 {
 h3 {
 	letter-spacing: 1px;
 	margin-bottom: 5px;
-	font-size: 1.3em;
-	background-color: #F2F2E6;
-	padding: 5px;
+	font-size: 1.2em;
+	background-color: #EFF0F9;/*#F2F2E6;*/
+	padding: 3px;
 }
 #rightcolumn h3 {
 	border-bottom-color: #FFFFFF;

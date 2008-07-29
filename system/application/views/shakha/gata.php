@@ -1,8 +1,11 @@
 <h2><?=$row->name?> - Gatas</h2>
 <?php 
 if(isset($row->kk))
-{
-	foreach ($gatas as $gata)
+{ ?>
+  <div align="right"><?=anchor('/shakha/gata_csv/' . $this->uri->segment(3), 'Download Gatanayak Info to Excel');?></div>
+  <p>&nbsp;</p>
+	<?php
+  foreach ($gatas as $gata)
 	{
 		echo '<h3>',anchor('profile/view/'.$gata->contact_id, $gata->first_name.' '.$gata->last_name);
 		echo ' - ',$gata->resp_title,'</h3>',"\n",'<p>';

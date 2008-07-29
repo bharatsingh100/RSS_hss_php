@@ -11,13 +11,15 @@
 
 <body>
 
-   <!-- Begin Wrapper -->
+<!-- Begin Wrapper -->
    <div id="wrapper">
-   		<div align="right"><?=mdate("%l, %F %j%S", time())?> | Your IP Address: <strong><?=$this->session->userdata('session_ip_address')?></strong></div>
-         <!-- Begin Header -->
-         <div id="header">
-           <div align="center">
-             <h1>Hindu Swayamsevak Sangh, USA</h1>
+   		<div id="header">
+        <div id="info">
+		<?=mdate("%l, %F %j%S", time())?> | Your IP Address: <strong><?=$this->session->userdata('session_ip_address')?></strong>
+        </div>
+         <br />
+           <div style="text-align:center;">
+             <h1>Hindu Swayamsevak Sangh</h1>
            </div>
          </div>
 		 <!-- End Header -->

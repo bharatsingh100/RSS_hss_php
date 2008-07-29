@@ -15,16 +15,17 @@
 
    <!-- Begin Wrapper -->
    <div id="wrapper">
-   		<div align="right">
+   		<div id="header">
+        <div id="info">
         <?php if($this->session->userdata('message')): ?>
-        <span style="float:left; background-color:#FFFF84; padding: 2px;"><?=$this->session->ro_userdata('message');?></span>
+        <span style="float:left; color:#FFCC33; font-weight: bolder; padding: 2px 0px 0px 10px;"><?=$this->session->ro_userdata('message');?></span>
         <?php endif;?>
 		<?=mdate("%l, %F %j%S", time())?><?php echo ' | <strong>' . $this->session->userdata('email') . '</strong> | ';?>
 		<?=anchor('user/logout', 'Logout')?>
         </div>
          <!-- Begin Header -->
-         <div id="header">
-           <div align="center">
+         <br />
+           <div style="text-align:center;">
              <h1>Hindu Swayamsevak Sangh</h1>
            </div>
          </div>
@@ -32,10 +33,11 @@
 		 <!-- Begin Navigation -->
 		 <div id="navigation">
 			<span class="left">
-			 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?>  |  
-             <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>  |
-             <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>  |
-             <?php echo anchor('sambhag/view/' . $this->session->userdata('sambhag_id'), 'My Sambhag'); ?> |
+             <?php if($this->session->userdata('contact_id') == $this->uri->segment(3)) {$t = TRUE; echo '<span class="active">';}?>
+			       <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?><?php if(isset($t)) echo '</span>';?>
+             <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>
+             <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>
+             <?php echo anchor('sambhag/view/' . $this->session->userdata('sambhag_id'), 'My Sambhag'); ?>
              <?php echo anchor('national/view', 'National'); ?>
 <!--             <?php //echo anchor('email/view/', 'E-mail'); ?>  |
              <?php //echo anchor('events', 'Events'); ?>  |
@@ -48,7 +50,8 @@
          <div id="breadcrumb">
          <?php echo anchor('shakha/view/'.$this->session->ro_userdata('bc_shakha_id'), $this->session->userdata('bc_shakha')); ?>
          <?php echo ' / ',anchor('vibhag/view/'.$this->session->ro_userdata('bc_vibhag_id'), $this->session->userdata('bc_vibhag')); ?>
-	     <?php echo ' / ',anchor('sambhag/view/'.$this->session->ro_userdata('bc_sambhag_id'), $this->session->userdata('bc_sambhag')); ?>         			         </div>
+	     <?php echo ' / ',anchor('sambhag/view/'.$this->session->ro_userdata('bc_sambhag_id'), $this->session->userdata('bc_sambhag')); ?>         			         
+         </div>
          <!-- End BreadCrumb -->
 		 <!-- Begin Left Column -->
 		 <div id="leftcolumn"> <?=$content_for_layout?> </div>

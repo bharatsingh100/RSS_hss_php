@@ -15,7 +15,8 @@ $sh_add = ltrim($sh_add,',');
 //$sh_add .= $row->city . ', ' . $row->state . ', ' . $row->zip;
 ?>
 <?php $name = $row->first_name.' '.$row->last_name;?>
-<h2><?php if(strlen(trim($name))) echo $name; else echo 'NO NAME';?>
+<h2><?php /*if(!empty($resp)) echo '<img src="/images/aum.gif" height="25" width="24" title="Aum image signifies that swayamsevak has some responsiblity in Sangh"/>&nbsp;'; */
+if(strlen(trim($name))) echo $name; else echo 'NO NAME';?>
 <?php if(!empty($row->birth_year)){
 		$age = date("Y") -  $row->birth_year;
 		echo ', ' . $age;
@@ -58,6 +59,13 @@ if(!empty($resp))
 	echo '<br />';
 }
 ?>
+<?php 
+if(!empty($gata)) {
+	echo '<h3>Gata: </h3>';
+	foreach($gata as $g)
+		echo (anchor('profile/view/'. $g->contact_id, $g->first_name.' '.$g->last_name) . '<br />');
+}
+?>
 </span><span class="rightcol">
 <h3>Contact Information: </h3>
 <?php echo((!empty($row->ph_mobile)) ? "$row->ph_mobile (Mobile)<br />" : '');?>
@@ -88,13 +96,6 @@ if(!empty($resp))
 <?php if(strlen($row->position)) echo $row->position.', ';?><?php if(strlen($row->position)) echo $row->company;?><br /><br />
 <? endif; ?>
 
-<?php 
-if(!empty($gata)) {
-	echo '<h3>Gata: </h3>';
-	foreach($gata as $g)
-		echo (anchor('profile/view/'. $g->contact_id, $g->first_name.' '.$g->last_name) . '<br />');
-}
-?>
 <?php
 $datefromdb = $row->modified;
 $year = substr($datefromdb,0,4);

@@ -17,7 +17,7 @@
     <td>&nbsp;</td>
     <td><label>
       <input type="submit" name="login" id="login" value="Login">
-    </label></td>
+      <a href="http://devcrm.hssusa.org/user/forgot_password">Forgot Password ?</a></label></td>
   </tr>
 </table>
 

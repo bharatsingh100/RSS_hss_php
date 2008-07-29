@@ -447,6 +447,65 @@ class Shakha extends Controller
 		$data['pageTitle'] = $data['row']->name.' Gatas';
 		$this->layout->view('shakha/gata', $data);
 	}
+	
+	function gata_csv($id)
+	{
+		$data['shakha'] = $this->Shakha_model->getShakhaInfo($id);
+		
+    //Get Gatanayak Information to find Swayamsevaks and populate CSV file
+    $gatanayaks = '';
+    $gataIDs = '';
+		foreach($data['shakha']->kk as $k){
+		  $gataIDs[] = $k->contact_id;
+		  $gatanayaks[$k->contact_id] = $k->first_name.' '.$k->last_name;
+		}
+    // Create MySQL compatible format to find Swayamsevaks with specific Gatayanayaks only
+    $g = '('.implode(',',$gataIDs).')';
+    
+		$this->db->select('gatanayak, contact_id, household_id, first_name, last_name, gender, birth_year, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip');
+		$this->db->orderby('gatanayak, household_id');
+		$this->db->where('gatanayak IN '.$g);
+		$data['ss'] = $this->db->get('swayamsevaks');
+		
+		//Replace Gatanayak Contact ID with Full Name in CSV
+		$q = $data['ss']->result_array();
+		if($data['ss']->num_rows()){
+      foreach($q as &$y)
+        $y['gatanayak'] = $gatanayaks[$y['gatanayak']];
+    }
+
+		$delim = ",";
+		$newline = "\r\n";
+		$out = '';
+    //Output CSV File header ...
+    foreach ($data['ss']->list_fields() as $name)
+		{
+			$out .= ucwords($name).$delim;
+		}
+		
+		$out = rtrim($out);
+		$out .= $newline;
+		
+		// Next blast through the result array and build out the rows
+		foreach ($q as $row)
+		{
+			foreach ($row as $item)
+			{
+				$out .= $item.$delim;			
+			}
+			$out = rtrim($out);
+			$out .= $newline;
+		}
+		$data['out'] = $out;
+		
+		$this->output->set_header("Content-type: application/vnd.ms-excel");
+		$this->output->set_header("Content-disposition: csv; filename=". url_title($data['shakha']->name). '-Gatas-' . date("M-d_H-i") .".csv");
+		$this->load->view('shakha/kk_csv', $data);
+		
+		/*$data['pageTitle'] = $data['row']->name.' Gatas';
+		$this->layout->view('shakha/gata', $data); */
+	}
+	
 	function addss($id, $var = '')
 	{
 		$data['shakha_name'] = $this->Shakha_model->getShakhaName($id);
