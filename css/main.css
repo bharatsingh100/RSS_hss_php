@@ -28,11 +28,11 @@ a:hover {
 }
 #wrapper {
 	margin: 0 auto;
-	width: 922px;
+	width: 920px;
 	background-color: #EFF0F9;
 }
 #header {
-	color: #FFF;
+	color: #EFF0F9;
 	width: 920px;
 	float: left;
 	/*padding-top: 10px;*/
@@ -40,13 +40,13 @@ a:hover {
 	/*border: 1px solid #ccc;*/
 	height: 60px;
 	margin: 0px 0px 0px 0px;
-	background-color: #004A7C; /*#D4D4D4;*/
-	/*background-image: url(header.jpg);
+	background-color: #004175; /*#D4D4D4;*/	/*background-image: url(header.jpg);
 */
 }
 #header #info {
 	text-align: right;
-	color: #e3f1f6;
+	/*color: #485779;*/
+	color: #FFF;
 	padding-right: 10px;
 }
 #header h1 { font-size: 2.5em;}
@@ -55,15 +55,16 @@ a:hover {
 	font-size: 100%;
 	padding-bottom: 5px;
 	padding-left: 10px;
+	margin: 5px;
 }
 #navigation {
 	float: left;
 	width: 900px;
 	color: #000000;
 	padding: 15px 10px 5px 10px;
-	/*border-top: 1px solid #fff;
-	border-bottom: 2px solid #fff;*/
-	margin: 0px 0px 5px 0px;
+	/*border-top: 1px solid #fff;*/
+	border-bottom: 1px solid #fff;
+	margin: 5px 0px 5px 0px;
 	/*background-color: #696969;*/
 	background-color: #EFF0F9;/*#e3f1f6;*/
 	font-size: 110%;
@@ -72,7 +73,7 @@ a:hover {
 #navigation a {
 	position: relative;
 	color: #FFFFFF;
-	background-color: #53648C; /*#858585;*/
+	background-color: #004175;/*#53648C; /*#858585;*/
 	padding: 5px 10px 5px 10px;
 	margin: 5px 2px 0px 2px;
 }
@@ -87,21 +88,21 @@ a:hover {
 	clear: left;
 	color: #333;
 	/*border: 1px solid #ccc;*/
-	margin: 0px 5px 5px 10px;
-	padding: 10px;
-	/*height: 350px;
-*/
+	margin: 0px 5px 25px 10px;
+	padding: 15px 10px 10px 10px;
+	/*height: 350px;*/
 	width: 678px;
 	float: left;
 	background-color: #FFFFFF;
 }
+
 #rightcolumn {
 	float: right;
 	color: #333;
 	/*border-top: 2px solid #FF9900;*/
 	/*background-color: #EFF0F9;*/
-	margin: 0px 0px 5px 0px;
-	padding: 10px;
+	margin: 15px 0px 15px 0px;
+	padding: 10px 10px 10px 10px;
 	width: 185px;
 	display: inline;
 }
@@ -186,3 +187,14 @@ select {
 	color: #888888;
 	font-size: 12px;
 }
+/*.prop {
+   float:right;
+   width:1px;
+}
+
+.clear {
+   clear:both;
+   height:1px;
+   overflow:hidden;
+}
+.min400 {height: 400px;}*/

@@ -43,7 +43,7 @@
          </div>
 <!-- End Navigation -->
 		 <!-- Begin Left Column -->
-		 <div id="leftcolumn"> <?=$content_for_layout?> </div>
+		 <div id="leftcolumn"><?=$content_for_layout?></div>  
 		 <!-- End Left Column -->
 		 
 		 <!-- Begin Right Column -->
