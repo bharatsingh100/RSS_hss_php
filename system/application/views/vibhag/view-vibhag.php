@@ -54,10 +54,10 @@ echo "</ol>\n"
 	{
 		echo '<td>';
 		foreach($shakha->kk as $kk)
-			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name);
+			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
 		echo '</td><td>';
 		foreach($shakha->kk as $kk)
-			if($kk->responsibility == '030') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name);
+			if($kk->responsibility == '030') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
 		echo '</td>';
 	}
 	else { ?>

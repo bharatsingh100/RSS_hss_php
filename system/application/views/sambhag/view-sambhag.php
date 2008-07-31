@@ -37,13 +37,13 @@ echo "</ol>\n" */
 	{
 		echo '<td>';
 		foreach($vibhag->kk as $kk)
-			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name);
+			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
 		echo '</td><td>';
 		foreach($vibhag->kk as $kk)
-			if($kk->responsibility == '021') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name);
+			if($kk->responsibility == '021') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
 		echo '</td><td>';
 		foreach($vibhag->kk as $kk)
-			if($kk->responsibility == '010') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name);
+			if($kk->responsibility == '010') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
 		echo '</td>';
 	}
 	else { ?>
