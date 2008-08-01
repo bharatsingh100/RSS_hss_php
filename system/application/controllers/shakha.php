@@ -567,7 +567,7 @@ class Shakha extends Controller
 		$target_path = $target_path . basename($filename); 
 		
 		$t = explode('.',trim($filename));
-		if($t[1] != 'csv' || $t[1] != 'xls' || $t[1] != 'xlsx') 
+		if($t[1] != 'csv' && $t[1] != 'xls' && $t[1] != 'xlsx') 
 		{
 			$this->session->set_userdata('errs', true);
 			$errors['msg'][] = "Please select a CSV/XLS file to upload.";

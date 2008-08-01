@@ -85,16 +85,16 @@
 					if($this->permission->is_shakha_kkh($shakha_id)) $is_kkh = true;?>
          <h3>Navigation </h3>
 	  
-         <?php echo '<p>',anchor('shakha/browse/'.$shakha_id. '/name/', 'List Contacts'),'</p>';?>
+         <?php echo '<p>',anchor('shakha/browse/'.$shakha_id. '/name/', 'List All Contacts'),'</p>';?>
          <?php echo '<p>',anchor('shakha/gata/'.$shakha_id, 'List Gatas'),'</p>';?>
-		 <?php echo '<p>',anchor('shakha/addss/'.$shakha_id, 'Add Contact'),'</p>';?>
+		 <?php echo '<p>',anchor('shakha/addss/'.$shakha_id, 'Add New Contact'),'</p>';?>
 		 <?php if($is_kkh) echo '<p>',anchor('shakha/upload_contacts/'.$shakha_id, 'Import Contacts'),'</p>';?>
          <?php if($is_kkh) echo '<p>',anchor('shakha/add_sankhya/'.$shakha_id, 'Report Sankhya'),'</p>';?>
          <?php if($is_kkh) echo '<p>',anchor('shakha/responsibilities/'.$shakha_id, 'Manage Responsibilities'),'</p>';?>
          <?php if($is_kkh) echo '<p>',anchor('shakha/edit_shakha/'.$shakha_id, 'Change Shakha Details'),'</p>';?>
 	     <?php echo '<p>',anchor('shakha/statistics/'.$shakha_id, 'Shakha Statistics'),'</p>';?>         
 	  <p>&nbsp;</p>
-	  <?php if($is_kkh) echo '<p>',anchor('shakha/email_lists/'.$shakha_id, 'Email Lists'),'</p>';?>
+	  <?php if($is_kkh) echo '<p>',anchor('shakha/email_lists/'.$shakha_id, 'View Email Lists'),'</p>';?>
 	  <?php if($is_kkh) echo '<p>',anchor('shakha/create_list/'.$shakha_id, 'Request E-mail List'),'</p>';?>
 
       <?php endif; ?>

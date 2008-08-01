@@ -74,8 +74,8 @@ if(!empty($gata)) {
 <?php echo(($row->email != '') ? mailto($row->email, $row->email) : '');?>
 <?php echo(($row->email != '' && $row->email_status != 'Active') ? '<span style="color:#FF0000;"> ('.$row->email_status.')</span><br /><br />' :'<br /><br />'); ?>
 <?php 
-	$count = $households->num_rows() - 1;
-	if($count)
+	$count = $households->num_rows();
+	if($count - 1 > 0)
 	{
 		echo '<h3>Family: </h3>';
 		for($i=0; $i < $count; $i++)
@@ -84,8 +84,7 @@ if(!empty($gata)) {
 			if($fams->contact_id != $row->contact_id)
 			{
 		    	echo '<p>' . anchor('profile/view/'. $fams->contact_id, $fams->first_name . ' ' . $fams->last_name);
-				
-				echo (strlen($fams->birth_year)) ? '&nbsp;&mdash;&nbsp;'. (date("Y") -  $fams->birth_year) : '' , '</p>'; 
+					echo (strlen($fams->birth_year)) ? '&nbsp;&mdash;&nbsp;'. (date("Y") -  $fams->birth_year) : '' , '</p>'; 
 			}
 		} 
 	}
@@ -93,7 +92,7 @@ if(!empty($gata)) {
 <br />
 <?php if(strlen(trim($row->position)) || strlen(trim($row->company))): ?>
 <h3>Work: </h3>
-<?php if(strlen($row->position)) echo $row->position.', ';?><?php if(strlen($row->position)) echo $row->company;?><br /><br />
+<?php if(strlen(trim($row->position))) echo $row->position.', ';?><?php if(strlen(trim($row->company))) echo $row->company;?><br /><br />
 <? endif; ?>
 
 <?php
