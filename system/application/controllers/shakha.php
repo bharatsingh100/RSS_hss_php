@@ -358,17 +358,18 @@ class Shakha extends Controller
 		$i = $q->num_rows() - 1;
 		
 		$query = $q->result_array();
-    for(; $i > -1 ; $i--)
-				$query[$i]['responsibility'] = $this->Shakha_model->getShortDesc($query[$i]['responsibility']);
+    	for(; $i > -1 ; $i--)
+			$query[$i]['responsibility'] = $this->Shakha_model->getShortDesc($query[$i]['responsibility']);
 				
-    $delim = ",";
+    	//Set proper parameters for delimineting CSV file
+		$delim = ",";
 		$newline = "\r\n";
+		
 		$out = '';
-    //Output CSV File header ...
-    foreach ($q->list_fields() as $name)
-		{
+    	
+		//Output CSV File headers (i.e. Name, E-mail etc.)
+    	foreach ($q->list_fields() as $name)
 			$out .= ucwords($name).$delim;
-		}
 		
 		$out = rtrim($out);
 		$out .= $newline;
@@ -377,15 +378,19 @@ class Shakha extends Controller
 		foreach ($query as $row)
 		{
 			foreach ($row as $item)
-			{
 				$out .= $item.$delim;			
-			}
+
 			$out = rtrim($out);
 			$out .= $newline;
 		}
+		
 		$data['out'] = $out;
+		
+		//Set headers so that Browser prompots to download CSV file rather than show.
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=". url_title($this->Shakha_model->getShakhaName($id)) . '-Karyakartas-' . date("M-d_H-i") .".csv");
+		
+		//Send data to special View file to print $out contents
 		$this->load->view('shakha/kk_csv', $data);
 	}
 	
