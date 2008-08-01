@@ -21,17 +21,17 @@ if(isset($row->kk))
   </tr>
 <?php $i = 1; foreach($row->sambhags as $sambhag) { ?>
   <tr>
-  	<td><?=$i++?></td>
-    <td><?=anchor('sambhag/view/'.$sambhag->REF_CODE, $sambhag->short_desc)?></td>
+  	<td valign="top"><?=$i++?></td>
+    <td valign="top"><?=anchor('sambhag/view/'.$sambhag->REF_CODE, $sambhag->short_desc)?></td>
     <?php if(isset($sambhag->kk)) 
 	{
-		echo '<td>';
+		echo '<td valign="top">';
 		foreach($sambhag->kk as $kk)
 			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
-		echo '</td><td>';
+		echo '</td><td valign="top">';
 		foreach($sambhag->kk as $kk)
 			if($kk->responsibility == '021') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
-		echo '</td><td>';
+		echo '</td><td valign="top">';
 		foreach($sambhag->kk as $kk)
 			if($kk->responsibility == '010') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
 		echo '</td>';

@@ -48,14 +48,14 @@ echo "</ol>\n"
   </tr>
 <?php $i = 1; foreach($row->shakhas as $shakha) { ?>
   <tr>
-  	<td><?=$i++?></td>
-    <td><?=anchor('shakha/view/'.$shakha->shakha_id, $shakha->name)?><?php echo ($shakha->shakha_status == 0) ? '<font color="red"> (Inactive)</font>': '';?></td>
+  	<td valign="top"><?=$i++?></td>
+    <td valign="top"><?=anchor('shakha/view/'.$shakha->shakha_id, $shakha->name)?><?php echo ($shakha->shakha_status == 0) ? '<font color="red"> (Inactive)</font>': '';?></td>
     <?php 	if(isset($shakha->kk)) 
 	{
-		echo '<td>';
+		echo '<td valign="top">';
 		foreach($shakha->kk as $kk)
 			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
-		echo '</td><td>';
+		echo '</td><td valign="top">';
 		foreach($shakha->kk as $kk)
 			if($kk->responsibility == '030') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
 		echo '</td>';

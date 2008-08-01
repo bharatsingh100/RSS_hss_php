@@ -31,17 +31,17 @@ echo "</ol>\n" */
   </tr>
 <?php $i = 1; foreach($row->vibhags as $vibhag) { ?>
   <tr>
-  	<td><?=$i++?></td>
-    <td><?=anchor('vibhag/view/'.$vibhag->REF_CODE, $vibhag->short_desc)?></td>
+  	<td valign="top"><?=$i++?></td>
+    <td valign="top"><?=anchor('vibhag/view/'.$vibhag->REF_CODE, $vibhag->short_desc)?></td>
     <?php if(isset($vibhag->kk)) 
 	{
-		echo '<td>';
+		echo '<td valign="top">';
 		foreach($vibhag->kk as $kk)
 			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
-		echo '</td><td>';
+		echo '</td><td valign="top">';
 		foreach($vibhag->kk as $kk)
 			if($kk->responsibility == '021') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
-		echo '</td><td>';
+		echo '</td><td valign="top">';
 		foreach($vibhag->kk as $kk)
 			if($kk->responsibility == '010') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
 		echo '</td>';
