@@ -81,7 +81,7 @@
          <p>Sambhag Statistics</p>
 	   	 <p><?php //anchor('sambhag/statistics/'.$this->uri->segment(3), 'Vibhag Statistics');?></p>
 	  <p>&nbsp;</p>
-	  <p><?=anchor('sambhag/email_lists/'.$this->uri->segment(3), 'Email Lists');?></p>
+	  <p><?=anchor('sambhag/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
 	  <p><?=anchor('sambhag/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
 
       <?php endif; ?>

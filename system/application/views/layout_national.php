@@ -84,8 +84,8 @@
          <p><?=anchor('national/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
          <p>National Statistics</p>
 	  <p>&nbsp;</p>
-	  <p><?=anchor('national/email_lists/'.$this->uri->segment(3), 'Email Lists');?></p>
-	  <p><?=anchor('national/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
+	  <p><?=anchor('national/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
+	  <p><?=anchor('national/create_list/'.$this->uri->segment(3), 'Request New E-mail List');?></p>
 
       <?php endif; ?>
          </div>
