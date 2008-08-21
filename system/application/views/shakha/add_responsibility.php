@@ -6,7 +6,9 @@ $shakha_id = $row->shakha_id;
 //echo $this->ajax->link_to_remote("Login", array('url' => "/ajax/resp_autocomplete/$shakha_id", 'update' => 'name_auto_complete'));
 
 //echo $this->ajax->auto_complete_field('name', array('url'=> "/ajax/resp_autocomplete/$shakha_id", 'paramName' => 'value'));
-$allowed_res = array('010','020','021','030','031','040','050','060','070','080','090','100','130','140','150','160','170','999');
+
+//Show Responsibilities that are relevant to the Shakha context
+$allowed_res = array('020','021','030','031','040','050','060','070','080','090','100','130','140','150','160','170','180','190','200','999');
 if(isset($row->kk))
 {
 	echo '<h3>Current Responsibilities</h3>';
@@ -40,8 +42,8 @@ if(isset($row->kk))
                        <option value="0" selected="selected">Select Responsibility&nbsp;</option>
                      	<?php
 								foreach($resp as $var){
-									if(in_array($var->REF_CODE, $allowed_res))
-										echo "<option value=\"$var->REF_CODE\">$var->short_desc &nbsp;</option>\n";
+									if(in_array($var['REF_CODE'], $allowed_res))
+										echo "<option value=\"",$var['REF_CODE'],"\">",$var['short_desc']," &nbsp;</option>\n";
 								}
 						?>
                      </select>

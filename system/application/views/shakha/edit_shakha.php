@@ -96,7 +96,7 @@
                  <td align="right">Shakha Status:</td>
                  <td valign="middle"><select name="shakha_status" id="shakha_status">
                    <option value="1" <?php echo ($row->shakha_status == 1) ? ' selected="selected"' : ''; ?>>Active&nbsp;</option>
-                   <option value="0" <?php echo ($row->shakha_status == 0) ? ' selected="selected"' : ''; ?>>Unactive&nbsp;</option>
+                   <option value="0" <?php echo ($row->shakha_status == 0) ? ' selected="selected"' : ''; ?>>Inactive&nbsp;</option>
                  </select>
                  </td>
                </tr>

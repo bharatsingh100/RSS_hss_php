@@ -271,7 +271,7 @@ class Shakha extends Controller
 		//$this->load->library('ajax');
 		$data['shakha'] = $id;
 		$data['row'] = $this->Shakha_model->getShakhaInfo($id);
-		$data['resp'] = $this->Shakha_model->getRefCodes(4)->result();
+		$data['resp'] = $this->Shakha_model->getRefCodes(4)->result_array();
 		$data['pageTitle'] = $data['row']->name;
 		$data['names'] = $this->Shakha_model->get_swayamsevaks(1800000, 0, $id, 'name')->result();
 		$this->layout->view('shakha/add_responsibility', $data);
@@ -521,7 +521,8 @@ class Shakha extends Controller
 		$data['shakha_id'] = $id;
 		$data['shakha_st'] = $this->db->select('state')->getwhere('shakhas', array('shakha_id'=>$id))->row()->state;
 		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 11')->result();
-		$data['pageTitle'] = 'Add new Swayamsevak';
+		$data['ganas'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 12')->result();
+		$data['pageTitle'] = 'Add New Contact';
 		$this->layout->view('shakha/add-swayamsevak', $data);
 	}
 	

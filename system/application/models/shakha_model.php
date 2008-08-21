@@ -90,7 +90,9 @@ class Shakha_model extends Model
 	
 	function get_swayamsevaks($num, $offset, $shakha_id, $sort_by)
 	{
-		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gatanayak')->orderby($sort_by, 'asc')->getwhere('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
+		//$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak')->orderby($sort_by, 'asc')->getwhere('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
+		$sort_by = ($sort_by === 'name') ? 'first_name' : $sort_by;
+		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak')->orderby($sort_by, 'asc')->getwhere('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
 		return $query;
 	}
 	function getShakhaName($id)

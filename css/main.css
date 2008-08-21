@@ -154,9 +154,9 @@ input, select {
 	font-family: "Trebuchet MS", Helvetica, Arial;
 	/*font-size: 12px;
 */
-	vertical-align: middle;
-	font-weight: bold;
-	color: #000033;
+	vertical-align: top;
+	/*font-weight: bold;
+	color: #000033;*/
 }
 select {
 	padding: 0px;
@@ -198,3 +198,11 @@ select {
    overflow:hidden;
 }
 .min400 {height: 400px;}*/
+
+#leftcolumn form input[type="text"], 
+#leftcolumn form select {
+	color: #000033;
+	border: 1px solid #888888;
+	background-color: #FCFBDC;
+	padding: 1px;
+}
