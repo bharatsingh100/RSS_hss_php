@@ -92,7 +92,7 @@ if(!empty($gata)) {
 <?php echo(($row->email != '' && $row->email_status != 'Active') ? '<span style="color:#FF0000;"> ('.$row->email_status.')</span><br /><br />' :'<br /><br />'); endif;?>
 <?php 
 	$count = $households->num_rows();
-	if($count - 1 > 0)
+	if(($count - 1) > 0)
 	{
 		echo '<h3>Family Members: </h3>';
 		for($i=0; $i < $count; $i++)
@@ -122,5 +122,5 @@ $min  = substr($datefromdb,14,2);
 $sec  = substr($datefromdb,17,2);
 $orgdate = date('F dS, Y h:i A' , mktime($hour,$min,$sec,$mon,$day,$year));
 ?>
-<p>&nbsp;</p></span><div style="clear:both;"></div>
+<br /><p>&nbsp;</p></span><div style="clear:both;"></div>
 <h4>Last Update: <? echo $orgdate; ?></h4>

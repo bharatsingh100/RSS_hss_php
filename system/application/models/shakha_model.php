@@ -228,9 +228,27 @@ class Shakha_model extends Model
 			$d['state'] = (isset($contacts[$i]['state']) && $contacts[$i]['state'] != '') ? strtoupper($contacts[$i]['state']) : $shakha->state;			
 			$d['zip'] = isset($contacts[$i]['zip']) ? $contacts[$i]['zip'] : '';
 			$d['notes'] = isset($contacts[$i]['notes']) ? $contacts[$i]['notes'] : '';
+			$d['gana'] = isset($contacts[[$i]['gana']) ? $contacts[[$i]['gana'] : '';
+			$d['gana'] = $this->_format_gana($d['gana']);
+
 			$this->db->insert('swayamsevaks', $d);														
 		}
 	}
+	
+	function _format_gana($gana){
+		
+		switch($gana){
+			case 'Shishu': $gana = 1; break;
+			case 'Bala': $gana = 2; break;
+			case 'Kishor': $gana = 3; break;
+			case 'Yuva': $gana = 4; break;
+			case 'Tarun': $gana = 5; break;
+			case 'Praudh': $gana = 6; break;
+			default: $gana = ''; break;
+		}
+		return $gana;
+	}
+	
 	function reformat_phone_dash($ph) 
 	{
 		$onlynums = preg_replace('/[^0-9]/','',$ph);

@@ -152,11 +152,8 @@ h4 {
 }
 input, select {
 	font-family: "Trebuchet MS", Helvetica, Arial;
-	/*font-size: 12px;
-*/
-	vertical-align: top;
-	/*font-weight: bold;
-	color: #000033;*/
+	vertical-align: middle;
+	font-weight: bold;
 }
 select {
 	padding: 0px;
@@ -203,6 +200,6 @@ select {
 #leftcolumn form select {
 	color: #000033;
 	border: 1px solid #888888;
-	background-color: #FCFBDC;
+	/*background-color: #FCFBDC;*/
 	padding: 1px;
 }
