@@ -1,11 +1,5 @@
-
-function confirmSubmit()
-{
-var agree=confirm("Are you sure you wish to continue?");
-if (agree)
-	return true ;
-else
-	return false ;
+function confirmSubmit(){
+	return confirm("Are you sure you wish to continue?") ? true : false;
 }
 
 function MM_jumpMenuGo(objId,targ,restore){ //v9.0
@@ -32,6 +26,30 @@ function elistCheck() {
 	{form.button.disabled=true;}
 	else {form.button.disabled=false;}
 }
+
+/* Automatically Set Gana when entering date while adding a new contact */
+function setGana() {
+	var d = new Date();
+	var currYear = d.getFullYear();
+
+	var age =  parseInt(document.getElementById("birth_year").value);
+	
+	if(age >= currYear - 6) { //Shishu
+		document.getElementById('gana').selectedIndex = 0; 
+	} else if(age >= currYear - 12) { //Bala
+		document.getElementById('gana').selectedIndex = 1;
+	} else if(age >= currYear - 19) { //Kishor
+		document.getElementById('gana').selectedIndex = 2;
+	} else if(age >= currYear - 25) { //Yuva
+		document.getElementById('gana').selectedIndex = 3;
+	} else if(age >= currYear - 50) { //Tarun
+		document.getElementById('gana').selectedIndex = 4;
+	} else if(age < currYear - 50) { //Praudh
+		document.getElementById('gana').selectedIndex = 5;
+	}
+}
+
+/*Dynamically show updated sankhya when submitting sankhya */
 function totalSankhya(){
 	var a = parseInt(document.getElementById("shishu_m").value);
 	var b = parseInt(document.getElementById("bala_m").value);

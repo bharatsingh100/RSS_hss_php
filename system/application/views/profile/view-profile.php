@@ -12,48 +12,64 @@ $sh_add .= (!empty($row->city) ?  $row->city: '');
 $sh_add .= (!empty($row->state) ?  ', '.$row->state: '');
 $sh_add .= (!empty($row->zip) ?  ', '.$row->zip : '');
 $sh_add = ltrim($sh_add,',');
+
+if(strlen($row->gana)){
+	switch ($row->gana) {
+		case 1: $row->gana = 'Shishu'; break;
+		case 2: $row->gana = 'Bala'; break;
+		case 3: $row->gana = 'Kishor'; break;
+		case 4: $row->gana = 'Yuva'; break;
+		case 5: $row->gana = 'Tarun'; break;
+		case 6: $row->gana = 'Praudh'; break;
+	}
+}
 //$sh_add .= $row->city . ', ' . $row->state . ', ' . $row->zip;
 ?>
 <?php $name = $row->first_name.' '.$row->last_name;?>
 <h2><?php /*if(!empty($resp)) echo '<img src="/images/aum.gif" height="25" width="24" title="Aum image signifies that swayamsevak has some responsiblity in Sangh"/>&nbsp;'; */
-if(strlen(trim($name))) echo $name; else echo 'NO NAME';?>
-<?php if(!empty($row->birth_year)){
+echo strlen(trim($name)) ? $name : 'Name Unavailable';?>
+<?php
+
+	if(!empty($row->birth_year)){
 		$age = date("Y") -  $row->birth_year;
-		echo ', ' . $age;
-		}?></h2>
+		echo ', ',$age;
+		}
+	echo strlen($row->gana) ? '&#8212;'.$row->gana : '';	
+		?></h2>
 <span class="leftcol">
-<p><?php echo anchor('shakha/view/' . $shakha->shakha_id, $shakha->name),',&nbsp;';
+<p><?php echo '<strong>',anchor('shakha/view/' . $shakha->shakha_id, $shakha->name),'</strong>,&nbsp;';
 		 echo anchor('vibhag/view/' . $vibhag->REF_CODE, $vibhag->short_desc),',&nbsp;';
 		 echo anchor('sambhag/view/' . $sambhag->REF_CODE, $sambhag->short_desc);?></p>
 
 <?php //Characters to replace for Google Map link
 $gmaps = array("<br />", " ", "#",','); ?>
-<p><?=$sh_add?>&nbsp;(<?php echo (!empty($sh_add) ? anchor_popup('http://maps.google.com/maps?q=' . str_replace($gmaps, '+', $sh_add.', USA'), 'Map') : ''); ?>)</p>
-<?php if($this->permission->is_shakha_kkl($shakha->shakha_id)){
-	   if(strlen($row->gatanayak)) {
-		 echo '<p>&nbsp;</p><p><strong>Gatanayak: </strong>';
+<p><?=$sh_add?>&nbsp;(<?php echo (!empty($sh_add) ? anchor_popup('http://maps.google.com/maps?q=' . str_replace($gmaps, '+', $sh_add.', USA'), 'Map') : ''); ?>)</p><p>&nbsp;</p>
+<?php //if($this->permission->is_shakha_kkl($shakha->shakha_id)){ ?>
+
+<!--<h3>Demographics:</h3>
+<strong>Gender:</strong>&nbsp;<?php echo strlen($row->gender) ? (($row->gender == 'M') ? 'Swayamsevak' : 'Sevika') : 'Not Available', '<br />'; ?>
+<strong>Gana:</strong>&nbsp;<?php echo strlen($row->gana) ? $row->gana   : 'Not Available', '<br />'; ?>-->
+
+	   <?php
+       if(strlen($row->gatanayak)) {
+		 echo '<strong>Gatanayak: </strong>';
 		 echo anchor('profile/view/'.$gatanayak->contact_id, $gatanayak->first_name.' '.$gatanayak->last_name);
-		 echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+		 echo '<br />';
 	}
 		if(empty($resp)) {
-		foreach($ctype as $t)
-		 {
-		 	if($t->REF_CODE == $row->contact_type)
-				echo '<p>&nbsp;</p><p><strong>Contact Type: </strong>',$t->short_desc,'</p>';
+			foreach($ctype as $t){
+				if($t->REF_CODE == $row->contact_type)
+					echo '<strong>Contact Type: </strong>',$t->short_desc,'<br />';
+		 	}
 		 }
-		 }
-		 echo '</p>';
-	}?>
+//	}?>
 <p>&nbsp;</p>
 <?php
 
 if(!empty($resp))
 {
-	echo '<h3>Responsibilities: </h3>';
-	foreach ($resp as $temp)
-	{
-//		if($temp->level != 'Shakha')
-//			echo $temp->level.' ';
+	echo '<h3>Sangh Responsibilities: </h3>';
+	foreach ($resp as $temp){
 		echo $temp->level.' '.$temp->resp_title . '<br />';
 	}
 	echo '<br />';
@@ -67,17 +83,18 @@ if(!empty($gata)) {
 }
 ?>
 </span><span class="rightcol">
+<?php if(!empty($row->ph_mobile) || !empty($row->ph_home) || !empty($row->ph_work) || !empty($row->email)): ?>
 <h3>Contact Information: </h3>
 <?php echo((!empty($row->ph_mobile)) ? "$row->ph_mobile (Mobile)<br />" : '');?>
 <?php echo((!empty($row->ph_home)) ? "$row->ph_home (Home)<br />" : '');?>
 <?php echo((!empty($row->ph_work)) ? "$row->ph_work (Work)<br />" : '');?>
 <?php echo(($row->email != '') ? mailto($row->email, $row->email) : '');?>
-<?php echo(($row->email != '' && $row->email_status != 'Active') ? '<span style="color:#FF0000;"> ('.$row->email_status.')</span><br /><br />' :'<br /><br />'); ?>
+<?php echo(($row->email != '' && $row->email_status != 'Active') ? '<span style="color:#FF0000;"> ('.$row->email_status.')</span><br /><br />' :'<br /><br />'); endif;?>
 <?php 
 	$count = $households->num_rows();
-	if($count - 1 > 0)
+	if(($count - 1) > 0)
 	{
-		echo '<h3>Family: </h3>';
+		echo '<h3>Family Members: </h3>';
 		for($i=0; $i < $count; $i++)
 		{
 			$fams = $households->row($i);
@@ -91,7 +108,7 @@ if(!empty($gata)) {
 ?>
 <br />
 <?php if(strlen(trim($row->position)) || strlen(trim($row->company))): ?>
-<h3>Work: </h3>
+<h3>Work/School Information: </h3>
 <?php if(strlen(trim($row->position))) echo $row->position.', ';?><?php if(strlen(trim($row->company))) echo $row->company;?><br /><br />
 <? endif; ?>
 
@@ -105,5 +122,5 @@ $min  = substr($datefromdb,14,2);
 $sec  = substr($datefromdb,17,2);
 $orgdate = date('F dS, Y h:i A' , mktime($hour,$min,$sec,$mon,$day,$year));
 ?>
-<p>&nbsp;</p></span><div style="clear:both;"></div>
+<br /><p>&nbsp;</p></span><div style="clear:both;"></div>
 <h4>Last Update: <? echo $orgdate; ?></h4>

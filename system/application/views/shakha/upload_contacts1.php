@@ -10,7 +10,7 @@
   <p>&nbsp;</p>
   <table width="400" border="0">
     <tr>
-      <td align="right"><strong>Name<span class="style1">*</span></strong></td>
+      <td align="right"><strong>Name</strong></td>
       <td><select name="name" id="name">
         <option value="" selected="selected">&nbsp;</option>
         <?php foreach($list as $l => $v) {
@@ -18,7 +18,7 @@
       </select></td>
     </tr>
     <tr>
-      <td width="110" align="right"><h4>First Name<span class="style1">*</span></h4></td>
+      <td width="110" align="right"><h4>First Name</h4></td>
       <td width="280"><label>
         <select name="first_name" id="first_name">
           <option value="" selected="selected">&nbsp;</option>
@@ -28,12 +28,20 @@
       </label></td>
     </tr>
     <tr>
-      <td align="right"><h4>Last Name<span class="style1">*</span></h4></td>
+      <td align="right"><h4>Last Name</h4></td>
       <td><select name="last_name" id="last_name">
         <option value="" selected="selected">&nbsp;</option>
           <?php foreach($list as $l => $v) {
 		  		echo "<option value=\"$l\">$v&nbsp;</option>\n"; } ?>
         </select>
+      </select></td>
+    </tr>
+    <tr>
+      <td align="right"><h4>Gana</h4></td>
+      <td><select name="gana" id="gana">
+        <option value="" selected="selected">&nbsp;</option>
+        <?php foreach($list as $l => $v) {
+		  		echo "<option value=\"$l\">$v&nbsp;</option>\n"; } ?>
       </select></td>
     </tr>
     <tr>

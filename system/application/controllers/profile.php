@@ -85,6 +85,7 @@ class Profile extends Controller
 		$data['gatanayak'] = $this->Profile_model->getGatanayaks($data['query']->row(0)->shakha_id);
 		$data['shakha_name'] = $this->Profile_model->getShakhaName($data['query']->row(0)->shakha_id);
 		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 11')->result();
+		$data['ganas'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 12')->result();
 		//$data['shakhas'] = $this->db->getwhere('shakhas', array('state' => $data['query']->row(0)->state))->result();
 		/* Changed to show all shakhas in Edit Profile page */
 		$data['shakhas'] = $this->db->orderby('state, name')->get('shakhas')->result();

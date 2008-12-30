@@ -2,7 +2,8 @@
 
 class Xmlrpc_client extends Controller {
 	
-	function index() {
+	/*
+  function index() {
 		
 		$this->load->helper ( 'url' );
 		$server_url = site_url ( 'xmlrpc_server' );
@@ -22,15 +23,32 @@ class Xmlrpc_client extends Controller {
 			print_r ( $this->xmlrpc->display_response () );
 			echo '</pre>';
 		}
-	}
+	} */
 	
 	function getShakhas($id) {
+    //phpinfo();
 		$rs = $this->db->select('shakha_id, name, city, state, zip, shakha_status, frequency, frequency_day, time_from, time_to')->getwhere('shakhas', array('state' => $id, "shakha_status" => 1));
-		print_r(json_encode($rs->result_array()));
+		
+		$shakhas = $rs->result_array();
+		
+		foreach($shakhas as &$shakha) {
+		  $shakhaid = $shakha['shakha_id'];
+		  $this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
+  		$this->db->from('swayamsevaks');
+  		$this->db->orderby('responsibilities.responsibility');
+  		$this->db->join('responsibilities', "responsibilities.shakha_id = $shakhaid AND (responsibilities.responsibility = 020 OR responsibilities.responsibility = 030) AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+  		$contacts = $this->db->get();
+  		
+  		if($contacts->num_rows() > 0)
+  		  $shakha['contacts'] = $contacts->result_array();
+		}
+	  
+		print(json_encode($shakhas));
 	}
 	
+	/*
 	function getShakhaContacts($shakha_id) {
-		//$resp = 
+		
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
 		$this->db->orderby('responsibilities.responsibility');
@@ -38,7 +56,7 @@ class Xmlrpc_client extends Controller {
 		$rs = $this->db->get();
         print_r(json_encode($rs->result_array())); 
 		
-	}
+	}*/
 	
 	
 }

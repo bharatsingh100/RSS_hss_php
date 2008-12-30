@@ -271,7 +271,7 @@ class Shakha extends Controller
 		//$this->load->library('ajax');
 		$data['shakha'] = $id;
 		$data['row'] = $this->Shakha_model->getShakhaInfo($id);
-		$data['resp'] = $this->Shakha_model->getRefCodes(4)->result();
+		$data['resp'] = $this->Shakha_model->getRefCodes(4)->result_array();
 		$data['pageTitle'] = $data['row']->name;
 		$data['names'] = $this->Shakha_model->get_swayamsevaks(1800000, 0, $id, 'name')->result();
 		$this->layout->view('shakha/add_responsibility', $data);
@@ -398,7 +398,7 @@ class Shakha extends Controller
 	{
 		$this->output->enable_profiler(FALSE);
 		$this->load->dbutil();
-		$this->db->select('contact_id, household_id, shakha_id, contact_type, first_name, last_name, gender, birth_year, company, position, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, ssv_completed, notes');
+		$this->db->select('contact_id, household_id, contact_type, gana, first_name, last_name, gender, birth_year, company, position, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, ssv_completed, notes');
 		$data['query'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id));
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=". url_title($this->Shakha_model->getShakhaName($id)) . '-' . date("M-d_H-i") .".csv");
@@ -457,39 +457,43 @@ class Shakha extends Controller
 	{
 		$data['shakha'] = $this->Shakha_model->getShakhaInfo($id);
 		
-    //Get Gatanayak Information to find Swayamsevaks and populate CSV file
-    $gatanayaks = '';
-    $gataIDs = '';
+    	//Get Gatanayak Information to find Swayamsevaks and populate CSV file
+    	$gatanayaks = '';
+    	$gataIDs = '';
 		foreach($data['shakha']->kk as $k){
 		  $gataIDs[] = $k->contact_id;
 		  $gatanayaks[$k->contact_id] = $k->first_name.' '.$k->last_name;
 		}
-    // Create MySQL compatible format to find Swayamsevaks with specific Gatayanayaks only
-    $g = '('.implode(',',$gataIDs).')';
+    	
+		// Create MySQL compatible format to find Swayamsevaks with specific Gatayanayaks only
+	    $g = '('.implode(',',$gataIDs).')';
     
-		$this->db->select('gatanayak, contact_id, household_id, first_name, last_name, gender, birth_year, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip');
+		$this->db->select('gatanayak, contact_id, household_id, first_name, last_name, gender, birth_year, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, notes');
 		$this->db->orderby('gatanayak, household_id');
 		$this->db->where('gatanayak IN '.$g);
 		$data['ss'] = $this->db->get('swayamsevaks');
 		
 		//Replace Gatanayak Contact ID with Full Name in CSV
 		$q = $data['ss']->result_array();
+		
 		if($data['ss']->num_rows()){
-      foreach($q as &$y)
-        $y['gatanayak'] = $gatanayaks[$y['gatanayak']];
-    }
+      		foreach($q as &$y)
+        		$y['gatanayak'] = $gatanayaks[$y['gatanayak']];
+    	}
 
+		//CSV File Output setters
 		$delim = ",";
 		$newline = "\r\n";
-		$out = '';
-    //Output CSV File header ...
-    foreach ($data['ss']->list_fields() as $name)
+		$headers = $out = '';
+    
+		//Output CSV File header ...
+    	foreach ($data['ss']->list_fields() as $name)
 		{
-			$out .= ucwords($name).$delim;
+			$headers .= ucwords($name).$delim;
 		}
 		
-		$out = rtrim($out);
-		$out .= $newline;
+		$headers = rtrim($headers);
+		$headers .= $newline;
 		
 		// Next blast through the result array and build out the rows
 		foreach ($q as $row)
@@ -501,7 +505,7 @@ class Shakha extends Controller
 			$out = rtrim($out);
 			$out .= $newline;
 		}
-		$data['out'] = $out;
+		$data['out'] = $headers.$out;
 		
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=". url_title($data['shakha']->name). '-Gatas-' . date("M-d_H-i") .".csv");
@@ -521,7 +525,8 @@ class Shakha extends Controller
 		$data['shakha_id'] = $id;
 		$data['shakha_st'] = $this->db->select('state')->getwhere('shakhas', array('shakha_id'=>$id))->row()->state;
 		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 11')->result();
-		$data['pageTitle'] = 'Add new Swayamsevak';
+		$data['ganas'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 12')->result();
+		$data['pageTitle'] = 'Add New Contact';
 		$this->layout->view('shakha/add-swayamsevak', $data);
 	}
 	
