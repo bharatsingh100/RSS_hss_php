@@ -2,7 +2,12 @@
 
 class Xmlrpc_client extends Controller {
 	
-	/*
+  /*
+  function Xmlrpc_client() {
+    parent::Controller();
+    $this->output->enable_profiler(TRUE);
+  }
+	
   function index() {
 		
 		$this->load->helper ( 'url' );
@@ -44,6 +49,18 @@ class Xmlrpc_client extends Controller {
 		}
 	  
 		print(json_encode($shakhas));
+	}
+	
+	function syncUsers($lastTime) {
+	  $this->db->select('ss.contact_id, ss.first_name, ss.last_name, ss.email, ss.passwordmd5, UNIX_TIMESTAMP(ss.modified) as modified, responsibilities.level, responsibilities.created');
+	  $this->db->from('swayamsevaks ss');
+	  $this->db->join('responsibilities', 'responsibilities.swayamsevak_id = ss.contact_id');
+	  $this->db->having("modified >= $lastTime OR UNIX_TIMESTAMP(responsibilities.created) >= $lastTime");
+	  //$this->db->having("modified >= $lastTime");
+	  $rs = $this->db->get();
+	  
+	  if($rs->num_rows() > 0)
+	    print(json_encode($rs->result_array()));
 	}
 	
 	/*
