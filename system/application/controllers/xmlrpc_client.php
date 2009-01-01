@@ -55,7 +55,7 @@ class Xmlrpc_client extends Controller {
 	  $this->db->select('ss.contact_id, ss.first_name, ss.last_name, ss.email, ss.passwordmd5, UNIX_TIMESTAMP(ss.modified) as modified, responsibilities.level, responsibilities.created');
 	  $this->db->from('swayamsevaks ss');
 	  $this->db->join('responsibilities', 'responsibilities.swayamsevak_id = ss.contact_id');
-	  $this->db->having("modified >= $lastTime OR UNIX_TIMESTAMP(responsibilities.created) >= $lastTime");
+	  $this->db->having("modified > $lastTime OR UNIX_TIMESTAMP(responsibilities.created) > $lastTime");
 	  //$this->db->having("modified >= $lastTime");
 	  $rs = $this->db->get();
 	  
