@@ -52,7 +52,7 @@ class Vibhag_model extends Model
 		
 		//Get the Contact's information and set password = to his email if blank.
 		$var = $this->db->getwhere('swayamsevaks', array('contact_id' => $data['swayamsevak_id']));
-		if($var->num_rows() && $var->row(0)->password == '')
+		if($var->num_rows() && $var->row(0)->password == '' && trim($var->row(0)->email) != '' )
 		{
 			$t['password'] = sha1($var->row(0)->email);
 			$t['passwordmd5'] = md5($var->row(0)->email);

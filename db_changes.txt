@@ -21,7 +21,7 @@ INSERT INTO `Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc`,
 'System');
 
 #Update Ganas
-UPDATE swayamsevaks SET gana =1 WHERE birth_year >= ( 2008 -6 );
+UPDATE swayamsevaks SET gana = 1 WHERE birth_year >= ( 2008 -6 );
 UPDATE swayamsevaks SET gana = 2 WHERE birth_year >= ( 2008 - 12 ) AND birth_year < (2008 - 6);
 UPDATE swayamsevaks SET gana = 3 WHERE birth_year >= ( 2008 - 19 ) AND birth_year < (2008 - 12);
 UPDATE swayamsevaks SET gana = 4 WHERE birth_year >= ( 2008 - 25 ) AND birth_year < (2008 - 19);

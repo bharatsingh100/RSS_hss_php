@@ -4,6 +4,9 @@ class Shakha extends Controller
     function Shakha()
     {
         parent::Controller();
+        
+        //If the user is not logged in, redirect them to login page
+        //Set the redirect so that user comes back here after login
 		if(!$this->session->userdata('logged_in'))
 		{
 			$this->session->set_userdata('message', 'Please login to access the system.');
@@ -17,6 +20,7 @@ class Shakha extends Controller
 
 	  
 	  	//Check Permissions
+        //$perml = Array of functions for lower shakha level permissions
 		$perml = array('browse', 'gata', 'addss', 'add_family_member', 'import_contacts' , 'add_sankhya' , 'responsibilities' , 'edit_shakha' , 'statistics' , 'email_lists' , 'create_list');
 		$permh = array('import_contacts','add_sankhya','responsibilities','edit_shakha','email_lists','create_list');
 		
@@ -59,7 +63,8 @@ class Shakha extends Controller
         $this->db->select('id,address,level_id,status,style,size,mod1,mod2,mod3');
         //$this->db->where('level_id = '.$id.' AND status = \'Active\' OR status = \'Creating'\');
         $d['lists'] = $this->db->getwhere('lists', array('level_id' => $id))->result_array();
-        foreach($d['lists'] as &$list)
+        
+        foreach ($d['lists'] as &$list)
         {
 			$list['address'] .= '@hssusa.org';
             if($list['mod1'])

@@ -1,17 +1,16 @@
-<?php $m = $query->row(0); //$shakhas = $shakhas->result()?>
-<?php //echo '<pre>' . var_dump($shakhas) . '</pre>'; ?>
+<?php $m = $query->row(0); ?>
 <?=form_open($this->uri->uri_string())?>
-<?php //form_hidden('shakha_id', $m->shakha_id);?>
+
 <?=form_hidden('household_id', $m->household_id);?>
 <?=form_hidden('contact_id', $m->contact_id);?>
-<?php //if($fam) echo form_hidden('household_id', $family['household_id']); ?>
-			 <h2><?=$shakha_name?></h2>
+
+<h2><?=$shakha_name?></h2>
 		     <h3>Update Information for <?=$m->first_name;?> <?=$m->last_name;?></h3>
 		     <table width="100%" border="0" cellpadding="2" cellspacing="4">
                <tr>
                  <td width="19%"><div align="right"><strong>Name:
                    </strong></div>                   <label></label></td>
-                 <td><input name="first_name" type="text" id="textfield" size="30" maxlength="50" value="<?=$m->first_name;?>"/>
+                 <td colspan="3"><input name="first_name" type="text" id="textfield" size="30" maxlength="50" value="<?=$m->first_name;?>"/>
                    &nbsp;                   
                    <label>
                    <input name="last_name" type="text" id="textfield2" size="30" maxlength="50" value="<?=$m->last_name;?>"/>
@@ -19,7 +18,7 @@
                </tr>
                <tr>
                  <td><div align="right"><strong>Gender:</strong></div></td>
-                 <td valign="middle"><label></label>
+                 <td colspan="3" valign="middle"><label></label>
                    <p>
                      <label>
                        <input name="gender" type="radio" id="RadioGroup1_0" value="M" <?php echo ($m->gender == 'M') ? 'checked="checked"' : '';?>/>
@@ -49,7 +48,7 @@
                </tr>
                <tr>
                  <td align="right"><strong>Contact Type:</strong></td>
-                 <td valign="middle"><select name="contact_type" id="contact_type">
+                 <td colspan="3" valign="middle"><select name="contact_type" id="contact_type">
                      <?php foreach($ctype as $t){ ?>
                      <option value="<?php echo $t->REF_CODE; ?>" <?php if($t->REF_CODE == $m->contact_type) echo 'selected="selected"';?>><?php echo $t->short_desc,'&nbsp;';?></option>
                      <?php } ?>
@@ -63,20 +62,20 @@
                </tr>
                <tr>
                  <td>&nbsp;</td>
-                 <td valign="middle">&nbsp;</td>
+                 <td colspan="3" valign="middle">&nbsp;</td>
                </tr>
                <tr>
                  <td><div align="right"><strong>Company/School:</strong></div></td>
-                 <td valign="middle"><input name="company" type="text" id="company" size="30" maxlength="50" value="<?=$m->company;?>"/>
+                 <td colspan="3" valign="middle"><input name="company" type="text" id="company" size="30" maxlength="50" value="<?=$m->company;?>"/>
                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Position/Grade:</strong>:
                    <input name="position" type="text" id="position" size="25" maxlength="50" value="<?=$m->position;?>"/></td>
                </tr>
                <tr>
-                 <td colspan="2"><h3>Contact Information</h3></td>
+                 <td colspan="4"><h3>Contact Information</h3></td>
                </tr>
                <tr>
                  <td><div align="right"><strong>E-mail:</strong></div></td>
-                 <td><label>
+                 <td colspan="3"><label>
                    <input name="email" type="text" id="email" size="35" maxlength="60" value="<?=$m->email;?>"/>
                  </label><?php if($m->email != ''): ?>
                  &nbsp;<select name="email_status" id="email_status">
@@ -88,31 +87,31 @@
                </tr>
                <tr>
                  <td><div align="right"><strong>Phone:</strong></div></td>
-                 <td>
-                   <input name="ph_mobile" type="text" id="ph_mobile" value="<?php echo ($m->ph_mobile == '') ? 'Mobile...' : $m->ph_mobile;?>" size="15" maxlength="12"/>
-                 &nbsp;
-                 <input name="ph_home" type="text" id="ph_home" size="15" maxlength="12" value="<?php echo ($m->ph_home == '') ? 'Home...' : $m->ph_home;?>"/>
-&nbsp;           <input name="ph_work" type="text" id="ph_work" maxlength="12" value="<?php echo ($m->ph_work == '') ? 'Work...' : $m->ph_work;?>" size="15" /></td>
+                 <td width="9%">
+                   <input name="ph_mobile" type="text" id="ph_mobile" value="<?php echo ($m->ph_mobile == '') ? 'Mobile...' : $m->ph_mobile;?>" size="15" maxlength="12"/><span class="style2">Mobile</span></td>
+                 <td width="9%"><input name="ph_home" type="text" id="ph_home" size="15" maxlength="12" value="<?php echo ($m->ph_home == '') ? 'Home...' : $m->ph_home;?>"/>&nbsp;<span class="style2">Home</span></td>
+                 <td width="63%"><input name="ph_work" type="text" id="ph_work" maxlength="12" value="<?php echo ($m->ph_work == '') ? 'Work...' : $m->ph_work;?>" size="15" />&nbsp;<br />
+                 <span class="style2">Work</span></td>
                </tr>
                <tr>
                  <td><div align="right"></div></td>
-                 <td>&nbsp;</td>
+                 <td colspan="3">&nbsp;</td>
                </tr>
                <tr>
                  <td><div align="right"><strong>Street Address:</strong></div></td>
-                 <td><input name="street_add1" type="text" id="street_add1" size="35" maxlength="50" value="<?=$m->street_add1;?>"/></td>
+                 <td colspan="3"><input name="street_add1" type="text" id="street_add1" size="35" maxlength="50" value="<?=$m->street_add1;?>"/></td>
                </tr>
                <tr>
                  <td><div align="right"></div></td>
-                 <td><input name="street_add2" type="text" id="street_add2" size="35" maxlength="50" value="<?=$m->street_add2;?>"/></td>
+                 <td colspan="3"><input name="street_add2" type="text" id="street_add2" size="35" maxlength="50" value="<?=$m->street_add2;?>"/></td>
                </tr>
                <tr>
                  <td><div align="right"><strong>City:</strong></div></td>
-                 <td><input name="city" type="text" id="city" size="35" maxlength="50" value="<?=$m->city;?>"/>                   <label></label></td>
+                 <td colspan="3"><input name="city" type="text" id="city" size="35" maxlength="50" value="<?=$m->city;?>"/>                   <label></label></td>
                </tr>
                <tr>
                  <td><div align="right"><strong>State: </strong></div></td>
-                 <td valign="middle"><strong>
+                 <td colspan="3" valign="middle"><strong>
                    <select name="state" id="select">
                      <?php foreach($states as $var) 
 				   {
@@ -128,15 +127,15 @@
                </tr>
                <tr>
                  <td>&nbsp;</td>
-                 <td valign="middle"><input name="add_update" type="checkbox" id="add_update" value="1" checked="checked" />
+                 <td colspan="3" valign="middle"><input name="add_update" type="checkbox" id="add_update" value="1" checked="checked" />
                    Update address of all family members?</td>
                </tr>
                <tr>
-                 <td colspan="2"><h3>Sangh Information</h3></td>
+                 <td colspan="4"><h3>Sangh Information</h3></td>
                </tr>
                <tr>
                  <td align="right"><strong>Shakha:</strong></td>
-                 <td valign="middle"><select name="shakha_id" id="shakha_id">
+                 <td colspan="3" valign="middle"><select name="shakha_id" id="shakha_id">
                  	
                    <?php 
 				   $iState = $shakhas[0]->state;
@@ -155,7 +154,7 @@
                </tr>
                <tr>
                  <td><div align="right"><strong>Gatanayak:</strong></div></td>
-                 <td valign="middle"><label>
+                 <td colspan="3" valign="middle"><label>
                    <select name="gatanayak" id="select7">
                    <option value="" <?php echo (($m->gatanayak == '') ? 'selected="selected"' : ''); ?>></option>
                    <?php foreach($gatanayak as $v) {
@@ -168,7 +167,7 @@
                </tr>
                <tr>
                  <td><div align="right"><strong>SSV Completed:</strong></div></td>
-                 <td valign="middle"><label>
+                 <td colspan="3" valign="middle"><label>
                    <select name="ssv_completed" id="select3">
                      <option value="" <?php echo ($m->ssv_completed == '') ? 'selected="selected"' : '';?>></option>
                      <option value="USA1" <?php echo ($m->ssv_completed == 'USA1') ? 'selected="selected"' : '';?>>Prathmik (1st year)</option>
@@ -183,7 +182,7 @@
                </tr>               
                <tr>
                  <td><div align="right"><strong>Notes:</strong></div></td>
-                 <td rowspan="2" valign="top"><label>
+                 <td colspan="3" rowspan="2" valign="top"><label>
                    <textarea name="notes" id="textarea" cols="45" rows="5"><?=$m->notes;?></textarea>
                  </label></td>
                </tr>
@@ -192,35 +191,35 @@
                </tr>
                <tr>
                  <td>&nbsp;</td>
-                 <td valign="middle">
+                 <td colspan="3" valign="middle">
                    <input type="submit" name="save" id="save" value="Update Information" />
                  <?=anchor('profile/view/'.$this->uri->segment(3),'Cancel');?></td>
                </tr>
 		</form>
                <tr>
                  <td>&nbsp;</td>
-                 <td valign="middle">&nbsp;</td>
+                 <td colspan="3" valign="middle">&nbsp;</td>
                </tr>
           <?php if($this->session->userdata('contact_id') != $m->contact_id && empty($resp)) { ?>
                <tr>
                  <td>&nbsp;</td>
-                 <td valign="middle">&nbsp;</td>
+                 <td colspan="3" valign="middle">&nbsp;</td>
                </tr>
                <tr>
                  <td>&nbsp;</td>
-                 <td valign="middle">&nbsp;</td>
+                 <td colspan="3" valign="middle">&nbsp;</td>
                </tr>
 
 		<form id="del_ss" name="del_ss" onsubmit="return confirmSubmit()" method="post" action="/profile/del_ss/">
               <tr>
                  <td>&nbsp;</td>
 		   <?=form_hidden('contact_id', $m->contact_id);?>
-                 <td valign="middle"><input type="submit" name="button" id="button" value="DELETE THIS CONTACT" /></td>
+                 <td colspan="3" valign="middle"><input type="submit" name="button" id="button" value="DELETE THIS CONTACT" /></td>
                </tr>
 		</form>
         <?php } ?>
                <tr>
                  <td>&nbsp;</td>
-                 <td valign="middle">&nbsp;</td>
+                 <td colspan="3" valign="middle">&nbsp;</td>
                </tr>
              </table>

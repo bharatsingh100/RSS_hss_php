@@ -45,7 +45,7 @@ class Shakha_model extends Model
 		}
 		$var = $this->db->getwhere('swayamsevaks', array('contact_id' => $data['swayamsevak_id']));
 		//$var = $var->row();
-		if($var->num_rows() && $var->row()->password == '')
+		if($var->num_rows() && $var->row()->password == '' && trim($var->row(0)->email) != '' )
 		{
 			//$this->load->library('encrypt');
 			$t['password'] = sha1($var->row()->email);
@@ -235,6 +235,7 @@ class Shakha_model extends Model
 		}
 	}
 	
+	//Convert Gana from Words to Numbers for DB
 	function _format_gana($gana){
 		
 		switch($gana){

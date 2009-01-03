@@ -37,12 +37,24 @@ class User extends Controller
 		}
 		elseif($this->_logincheck($this->input->post('username'), $this->input->post('password')))
 		{
-			if(isset($redirect_url))
-				redirect($redirect_url);	
-			else
-			  if($this->input->post('username') == $this->input->post('password'))
+		    if($this->input->post('username') == $this->input->post('password'))
 			    redirect('profile/change_password/' . $this->session->userdata('contact_id'));
-				redirect('shakha/view/' . $this->session->userdata('shakha_id'));
+		    else { //Add MD5 hash of password if wrong or not present (Shouldn't need this After Some Time)
+		      $this->db->select('passwordmd5');
+		      $pass = $this->db->getwhere('swayamsevaks', array('contact_id' => $this->session->userdata('contact_id')));
+		      $pass = $pass->row();
+		      if(md5($this->input->post('password')) != $pass->passwordmd5){
+		        $p['passwordmd5'] = md5($this->input->post('password'));
+		        $this->db->where('contact_id', $this->session->userdata('contact_id'));
+		        $this->db->update('swayamsevaks', $p);
+		      }
+		        
+		    }
+  			
+		    if(isset($redirect_url))
+				  redirect($redirect_url);	
+			  else
+				  redirect('shakha/view/' . $this->session->userdata('shakha_id'));
 		}
 		else
 		{
@@ -203,8 +215,9 @@ class User extends Controller
 				//Create a fresh, brand new session
 				$this->session->sess_create();
 			
-				//Remove the password field
+				//Remove the password fields
 				unset($row->password);
+				unset($row->passwordmd5);
 			
 				//Set session data
 				$this->session->set_userdata($row);
