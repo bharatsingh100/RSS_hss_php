@@ -2,12 +2,12 @@
 
 class Xmlrpc_client extends Controller {
 
-
+  /*
   function Xmlrpc_client() {
     parent::Controller();
     $this->output->enable_profiler(TRUE);
   }
-  /*
+  
   function index() {
 
 		$this->load->helper ( 'url' );

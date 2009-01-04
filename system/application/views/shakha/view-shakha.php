@@ -1,13 +1,13 @@
 <?php
+//print_r($row);
 $sh_add = $row->address1 . ', ';
 $sh_add .= (empty($row->address2) ? '' : $row->address2 . ', ');
 $sh_add .= $row->city . ', ' . $row->state . ', ' . $row->zip;
 ?>
 
-
-<h2><?=$row->name?><?php echo ($row->shakha_status == 0) ? '<font color="red"> (Inactive)</font>': '';?></h2>
-<p><?=$sh_add?>&nbsp;(<?php echo anchor_popup('http://maps.google.com/maps?q=' . str_replace(' ', '+', $sh_add), 'Map'); ?>)</p>
-<p><?=$row->frequency_day?>, <?php echo (substr($row->time_from, 0, 2) > 12) ? substr($row->time_from, 0, 2) - 12 . substr($row->time_from, 2,3).' PM ' : substr($row->time_from,0,5); ?> - <?php echo (substr($row->time_to, 0, 2) > 12) ? substr($row->time_to, 0, 2) - 12 . substr($row->time_to, 2,3).' PM ' : substr($row->time_to,0,5); ?></p>
+<h2><?php echo $row->name?><?php echo ($row->shakha_status == 0) ? '<font color="red"> (Inactive)</font>': '';?></h2>
+<p><?php echo $sh_add?>&nbsp;(<?php echo anchor_popup('http://maps.google.com/maps?q=' . str_replace(' ', '+', $sh_add), 'Map'); ?>)</p>
+<p><?php echo 'Every ' . $row->frequency_day?>, <?php echo date('g:i A', strtotime($row->time_from)) . ' - ' .  date('g:i A', strtotime($row->time_to));?>
 <p>&nbsp;</p>
 <?php 
 if(isset($row->kk))
@@ -44,3 +44,5 @@ if(isset($row->sankhyas)){
 <p>Sep 5: <a href="#">Conference call for Vijyadashmi Utsav tonight</a></p>
 <p><a href="#">more ...</a> </p>
 -->
+<br />
+<h4>Last Update on: <?php echo date('F jS, Y h:i A' , strtotime($row->modified)) ?></h4>

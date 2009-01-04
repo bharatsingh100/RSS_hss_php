@@ -23,7 +23,6 @@ if(strlen($row->gana)){
 		case 6: $row->gana = 'Praudh'; break;
 	}
 }
-//$sh_add .= $row->city . ', ' . $row->state . ', ' . $row->zip;
 ?>
 <?php $name = $row->first_name.' '.$row->last_name;?>
 <h2><?php /*if(!empty($resp)) echo '<img src="/images/aum.gif" height="25" width="24" title="Aum image signifies that swayamsevak has some responsiblity in Sangh"/>&nbsp;'; */
@@ -62,7 +61,7 @@ $gmaps = array("<br />", " ", "#",','); ?>
 					echo '<strong>Contact Type: </strong>',$t->short_desc,'<br />';
 		 	}
 		 }
-//	}?>
+    ?>
 <p>&nbsp;</p>
 <?php
 
@@ -82,45 +81,42 @@ if(!empty($gata)) {
 		echo (anchor('profile/view/'. $g->contact_id, $g->first_name.' '.$g->last_name) . '<br />');
 }
 ?>
-</span><span class="rightcol">
-<?php if(!empty($row->ph_mobile) || !empty($row->ph_home) || !empty($row->ph_work) || !empty($row->email)): ?>
-<h3>Contact Information: </h3>
-<?php echo((!empty($row->ph_mobile)) ? "$row->ph_mobile (Mobile)<br />" : '');?>
-<?php echo((!empty($row->ph_home)) ? "$row->ph_home (Home)<br />" : '');?>
-<?php echo((!empty($row->ph_work)) ? "$row->ph_work (Work)<br />" : '');?>
-<?php echo(($row->email != '') ? mailto($row->email, $row->email) : '');?>
-<?php echo(($row->email != '' && $row->email_status != 'Active') ? '<span style="color:#FF0000;"> ('.$row->email_status.')</span><br /><br />' :'<br /><br />'); endif;?>
-<?php 
-	$count = $households->num_rows();
-	if(($count - 1) > 0)
-	{
-		echo '<h3>Family Members: </h3>';
-		for($i=0; $i < $count; $i++)
-		{
-			$fams = $households->row($i);
-			if($fams->contact_id != $row->contact_id)
-			{
-		    	echo '<p>' . anchor('profile/view/'. $fams->contact_id, $fams->first_name . ' ' . $fams->last_name);
-					echo (strlen($fams->birth_year)) ? '&nbsp;&mdash;&nbsp;'. (date("Y") -  $fams->birth_year) : '' , '</p>'; 
-			}
-		} 
-	}
-?>
-<br />
-<?php if(strlen(trim($row->position)) || strlen(trim($row->company))): ?>
-<h3>Work/School Information: </h3>
-<?php if(strlen(trim($row->position))) echo $row->position.', ';?><?php if(strlen(trim($row->company))) echo $row->company;?><br /><br />
-<? endif; ?>
+</span>
 
-<?php
-$datefromdb = $row->modified;
-$year = substr($datefromdb,0,4);
-$mon  = substr($datefromdb,5,2);
-$day  = substr($datefromdb,8,2);
-$hour = substr($datefromdb,11,2);
-$min  = substr($datefromdb,14,2);
-$sec  = substr($datefromdb,17,2);
-$orgdate = date('F dS, Y h:i A' , mktime($hour,$min,$sec,$mon,$day,$year));
-?>
-<br /><p>&nbsp;</p></span><div style="clear:both;"></div>
-<h4>Last Update: <? echo $orgdate; ?></h4>
+<span class="rightcol">
+	<?php if(!empty($row->ph_mobile) || !empty($row->ph_home) || !empty($row->ph_work) || !empty($row->email)): ?>
+	<h3>Contact Information: </h3>
+	<?php echo((!empty($row->ph_mobile)) ? "$row->ph_mobile (Mobile)<br />" : '');?>
+	<?php echo((!empty($row->ph_home)) ? "$row->ph_home (Home)<br />" : '');?>
+	<?php echo((!empty($row->ph_work)) ? "$row->ph_work (Work)<br />" : '');?>
+	<?php echo(($row->email != '') ? mailto($row->email, $row->email) : '');?>
+	<?php echo(($row->email != '' && $row->email_status != 'Active') ? '<span style="color:#FF0000;"> ('.$row->email_status.')</span><br /><br />' :'<br /><br />'); endif;?>
+	<?php 
+		$count = $households->num_rows();
+		if(($count - 1) > 0)
+		{
+			echo '<h3>Family Members: </h3>';
+			for($i=0; $i < $count; $i++)
+			{
+				$fams = $households->row($i);
+				if($fams->contact_id != $row->contact_id)
+				{
+			    	//Set Name to N/A if empty
+					  if(trim($fams->first_name) == '' && trim($fams->last_name) == '') $fams->first_name == 'N/A';
+			    	
+					  echo '<p>' . anchor('profile/view/'. $fams->contact_id, $fams->first_name . ' ' . $fams->last_name);
+						echo (strlen($fams->birth_year)) ? '&nbsp;&mdash;&nbsp;'. (date("Y") -  $fams->birth_year) : '' , '</p>'; 
+				}
+			} 
+		}
+	?>
+	<br />
+	<?php if(strlen(trim($row->position)) || strlen(trim($row->company))): ?>
+    <h3>Work/School Information: </h3>
+    <?php if(strlen(trim($row->position))) echo $row->position.', ';?><?php if(strlen(trim($row->company))) echo $row->company;?><br /><br />
+	<?php endif; ?>
+	<br />
+</span>
+
+<div style="clear:both;"><br /></div>
+<h4>Last Update on: <?php echo date('F jS, Y h:i A' , strtotime($row->modified)) ?></h4>
