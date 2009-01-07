@@ -2,40 +2,42 @@
 
 class Profile_model extends Model 
 {
-    function Profile_model()
-    {
-        parent::Model();
-    }
+  function Profile_model()
+  {
+    parent::Model();
+  }
 	
-   	function insert_ss()
-	{
+  function insert_ss()
+  {
 		foreach($_POST as $key => $val)
 			$data[$key] = trim($val);
 		//$max_hh = $this->db->select('MAX(household_id)')->get('swayamsevaks')->result_array();
 		//$max_hh = $max_hh[0]['MAX(household_id)'] + 1;
 		
-		$data['ph_home'] = ($data['ph_home']== 'Home...') ? '' : $this->reformat_phone_dash($data['ph_home']);
-		$data['ph_mobile']= ($data['ph_mobile']== 'Mobile...') ? '' : $this->reformat_phone_dash($data['ph_mobile']);
-		$data['ph_work'] = ($data['ph_work']== 'Work...') ? '' : $this->reformat_phone_dash($data['ph_work']);
+		$data['ph_home']    = ($data['ph_home'] == 'Home...') ? '' : $this->reformat_phone_dash($data['ph_home']);
+		$data['ph_mobile']  = ($data['ph_mobile'] == 'Mobile...') ? '' : $this->reformat_phone_dash($data['ph_mobile']);
+		$data['ph_work']    = ($data['ph_work'] == 'Work...') ? '' : $this->reformat_phone_dash($data['ph_work']);
+		
 		if(!isset($data['email_status']) || trim($data['email_status']) == ''
 			|| !isset($data['email']) || trim($data['email']) == '')
 			$data['email_status'] = (isset($data['email']) && $data['email'] != '') ? 'Active' : '';
 		
 		//$data['household_id'] = ((isset($data['household_id']) && !empty($data['household_id'])) ? $data['household_id'] : $max_hh);
-		$data['first_name'] = ucwords(strtolower($data['first_name']));
-		$data['last_name'] = ucwords(strtolower($data['last_name']));
-		$data['city'] = ucwords(strtolower($data['city']));
-		$data['street_add1'] = ucwords(strtolower($data['street_add1']));
-		$data['street_add2'] = ucwords(strtolower($data['street_add2']));
+		$data['first_name']   = $this->capitalizeName($data['first_name']);
+		$data['last_name']    = $this->capitalizeName($data['last_name']);
+		$data['city']         = $this->capitalizeName($data['city']);
+		$data['street_add1']  = $this->capitalizeName($data['street_add1']);
+		$data['street_add2']  = $this->capitalizeName($data['street_add2']);
+		
 		if(isset($data['add_update'])) //If update address of other family membmers
 		{
 			$this->db->where('household_id', $data['household_id']);
 			//$this->db->where('date', $data['date']);
 			$temp['street_add1'] = $data['street_add1'];
 			$temp['street_add2'] = $data['street_add2'];
-			$temp['city'] = $data['city'];
-			$temp['state'] = $data['state'];
-			$temp['zip'] = $data['zip'];
+			$temp['city']        = $data['city'];
+			$temp['state']       = $data['state'];
+			$temp['zip']         = $data['zip'];
 			$this->db->update('swayamsevaks', $temp);
 		}
 		unset($data['save']);
@@ -153,6 +155,12 @@ class Profile_model extends Model
 	{
 		$query = $this->db->select('name')->getwhere('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
+	}
+	
+	function capitalizeName($name) {
+		$name = strtolower($name);
+		$name = join("-", array_map('ucwords', explode("-", $name)));
+		return $name;
 	}
 }
 

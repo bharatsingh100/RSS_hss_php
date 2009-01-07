@@ -33,7 +33,7 @@ class Xmlrpc_client extends Controller {
 	function getShakhas($id) {
 
     $this->db->select('shakha_id, name, city, state, zip, shakha_status, frequency, frequency_day, time_from, time_to');
-
+    $this->db->orderby('city');
     if(strlen($id) == 2)
       $rs = $this->db->getwhere('shakhas', array('state' => $id, "shakha_status" => 1));
     else if($id == 'ALL')
