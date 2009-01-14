@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
 />
 <title><?=$pageTitle?> - Swayamsevak Information Management - HSS</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
@@ -39,19 +39,19 @@
              <?php echo anchor('national/view', 'National'); ?>
              <?php endif; ?>
            </span>
-            <span class="right active"><?php echo anchor('help', 'Help ?'); ?></span>
+            <span class="right active"><?php echo anchor('tour', 'Tutorial Video'); ?></span>
          </div>
 <!-- End Navigation -->
 		 <!-- Begin Left Column -->
-		 <div id="leftcolumn"><?=$content_for_layout?></div>  
+		 <div id="leftcolumn"><?=$content_for_layout?></div>
 		 <!-- End Left Column -->
-		 
+
 		 <!-- Begin Right Column -->
-		 <div id="rightcolumn"> 
+		 <div id="rightcolumn">
          </div>
 
 		 <!-- End Right Column -->
-		 
+
 		 <!-- Begin Footer -->
 		 <div id="footer">
 		   <div align="center">
@@ -61,9 +61,9 @@
 	       </div>
 	 </div>
 	 <!-- End Footer -->
-		 
+
    </div>
    <!-- End Wrapper -->
-   
+
 </body>
 </html>

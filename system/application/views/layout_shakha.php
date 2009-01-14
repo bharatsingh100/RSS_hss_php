@@ -31,7 +31,7 @@
 		 <!-- Begin Navigation -->
 		 <div id="navigation">
 			<span class="left">
-			 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?> 
+			 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?>
              <?php if($this->session->userdata('shakha_id') == $this->uri->segment(3)) {$t = TRUE; echo '<span class="active">';}?>
              <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?><?php if(isset($t)) echo '</span>';?>
              <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>
@@ -41,7 +41,7 @@
              <?php //echo anchor('events', 'Events'); ?>  |
              <?php //echo anchor('organization', 'Organization'); ?>-->
              </span>
-            <span class="right"><?php echo anchor('help', 'Help ?'); ?></span>
+            <span class="right"><?php echo anchor('tour', 'Tutorial Video'); ?></span>
          </div>
 <!-- End Navigation -->
 		 <!-- Breadcrumb -->
@@ -53,12 +53,12 @@
 		 <!-- Begin Left Column -->
 		 <div id="leftcolumn"> <?=$content_for_layout?> </div>
 		 <!-- End Left Column -->
-		 
+
 		 <!-- Begin Right Column -->
 		 <div id="rightcolumn">
           <?php if($this->permission->is_shakha_kkl($this->session->userdata('shakha_id'))):?>
          <form id="form1" name="form1" method="post" action="/search/index">
-              <input type="text" name="term" 
+              <input type="text" name="term"
 				<?php if($this->uri->segment(1) == 'search'){
                 echo 'value="'.$this->uri->segment(4).'"';}
             else
@@ -75,17 +75,17 @@
                 <option <?php if($this->session->userdata('within') == 'NT') echo ' selected="selected" '; ?> value="<?='NT_'?>">Everything&nbsp;</option><?php //endif; ?>
               </select>
               <?php $this->session->set_userdata('redirect_url', $this->uri->uri_string());?>
-              
+
             </form>
-         <br />   
+         <br />
 		 <hr />
          <?php endif; ?>
          <br />
          <?php if($this->uri->segment(3)) $shakha_id = $this->uri->segment(3); $is_kkh = false; ?>
-         <?php if($this->permission->is_shakha_kkl($shakha_id)): 
+         <?php if($this->permission->is_shakha_kkl($shakha_id)):
 					if($this->permission->is_shakha_kkh($shakha_id)) $is_kkh = true;?>
          <h3>Navigation </h3>
-	  
+
          <?php echo '<p>',anchor('shakha/browse/'.$shakha_id. '/name/', 'List All Contacts'),'</p>';?>
          <?php echo '<p>',anchor('shakha/gata/'.$shakha_id, 'List Gatas'),'</p>';?>
 		 <?php echo '<p>',anchor('shakha/addss/'.$shakha_id, 'Add New Contact'),'</p>';?>
@@ -93,7 +93,7 @@
          <?php if($is_kkh) echo '<p>',anchor('shakha/add_sankhya/'.$shakha_id, 'Report Sankhya'),'</p>';?>
          <?php if($is_kkh) echo '<p>',anchor('shakha/responsibilities/'.$shakha_id, 'Manage Responsibilities'),'</p>';?>
          <?php if($is_kkh) echo '<p>',anchor('shakha/edit_shakha/'.$shakha_id, 'Change Shakha Details'),'</p>';?>
-	     <?php echo '<p>',anchor('shakha/statistics/'.$shakha_id, 'Shakha Statistics'),'</p>';?>         
+	     <?php echo '<p>',anchor('shakha/statistics/'.$shakha_id, 'Shakha Statistics'),'</p>';?>
 	  <p>&nbsp;</p>
 	  <?php if($is_kkh) echo '<p>',anchor('shakha/email_lists/'.$shakha_id, 'View Email Lists'),'</p>';?>
 	  <?php if($is_kkh) echo '<p>',anchor('shakha/create_list/'.$shakha_id, 'Request E-mail List'),'</p>';?>
@@ -102,7 +102,7 @@
          </div>
 
 		 <!-- End Right Column -->
-		 
+
 		 <!-- Begin Footer -->
 		 <div id="footer">
 		   <div align="center">
@@ -112,9 +112,9 @@
 	       </div>
 	 </div>
 	 <!-- End Footer -->
-		 
+
    </div>
    <!-- End Wrapper -->
-   
+
 </body>
 </html>

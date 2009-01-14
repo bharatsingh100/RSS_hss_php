@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
 />
 <title><?=$pageTitle?> - Swayamsevak Information Management - HSS</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
@@ -43,25 +43,25 @@
              <?php //echo anchor('events', 'Events'); ?>  |
              <?php //echo anchor('organization', 'Organization'); ?>-->
           	</span>
-            <span class="right"><?php echo anchor('help', 'Help ?'); ?></span>
+            <span class="right"><?php echo anchor('tour', 'Tutorial Video'); ?></span>
           </div>
 <!-- End Navigation -->
 		 <!-- Breadcrumb -->
          <div id="breadcrumb">
          <?php echo anchor('shakha/view/'.$this->session->ro_userdata('bc_shakha_id'), $this->session->userdata('bc_shakha')); ?>
          <?php echo ' / ',anchor('vibhag/view/'.$this->session->ro_userdata('bc_vibhag_id'), $this->session->userdata('bc_vibhag')); ?>
-	     <?php echo ' / ',anchor('sambhag/view/'.$this->session->ro_userdata('bc_sambhag_id'), $this->session->userdata('bc_sambhag')); ?>         			         
+	     <?php echo ' / ',anchor('sambhag/view/'.$this->session->ro_userdata('bc_sambhag_id'), $this->session->userdata('bc_sambhag')); ?>
          </div>
          <!-- End BreadCrumb -->
 		 <!-- Begin Left Column -->
 		 <div id="leftcolumn"> <?=$content_for_layout?> </div>
 		 <!-- End Left Column -->
-		 
+
 		 <!-- Begin Right Column -->
 		 <div id="rightcolumn">
          <?php if($this->permission->is_shakha_kkl($this->session->userdata('shakha_id'))):?>
          <form id="form1" name="form1" method="post" action="/search/index">
-              <input type="text" name="term" 
+              <input type="text" name="term"
 				<?php if($this->uri->segment(1) == 'search'){
                 echo 'value="'.$this->uri->segment(4).'"';}
             else
@@ -78,9 +78,9 @@
                 <option <?php if($this->session->userdata('within') == 'NT') echo ' selected="selected" '; ?> value="<?='NT_'?>">Everything&nbsp;</option><?php //endif; ?>
               </select>
               <?php $this->session->set_userdata('redirect_url', $this->uri->uri_string());?>
-              
+
             </form>
-         <br />   
+         <br />
 		 <hr />
          <?php endif; ?>
          <br />
@@ -90,12 +90,12 @@
          <?php $b = $this->db->select('shakha_id')->getwhere('swayamsevaks', array('contact_id'=>$this->uri->segment(3)))->row(); ?>
          <p><?=anchor('shakha/add_family_member/' . $b->shakha_id . '/' . $this->uri->segment(3), 'Add Family Member')?></p>
          <p><?=anchor('profile/add_to_family/' . $this->uri->segment(3), 'Connect to Family')?></p>
-         <p><?=anchor('profile/change_password/' . $this->uri->segment(3), 'Change Password')?></p>                  
+         <p><?=anchor('profile/change_password/' . $this->uri->segment(3), 'Change Password')?></p>
 		 <?php endif; ?>
          </div>
-		
+
 		 <!-- End Right Column -->
-		 
+
 		 <!-- Begin Footer -->
 		 <div id="footer">
 		   <div align="center">
@@ -105,9 +105,9 @@
 	       </div>
 	 </div>
 	 <!-- End Footer -->
-		 
+
    </div>
    <!-- End Wrapper -->
-   
+
 </body>
 </html>

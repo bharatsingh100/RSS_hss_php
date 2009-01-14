@@ -1,6 +1,5 @@
 <h2>General Information</h2>
 <ul>
-	<li>A Shakha is marked Inactive after 6 weeks of no sankhya reporting.</li>
     <li>Only swayamsevaks with an assigned responsibility in this system are allowed to login.</li>
     <li>The Age is stored as Birth Year internally. For example, if you add a contact with age 44, we will save it as year <?php echo date('Y')-44; ?>. Thus, age will increase automatically as years go by.</li>
     <li>To add a Vibhag or Sambhag in this website, send an e-mail message to <a href="/admin/contact">System Administrator</a>.</li>

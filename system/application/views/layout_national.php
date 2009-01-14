@@ -30,7 +30,7 @@
 		 <!-- End Header -->
 		 <!-- Begin Navigation -->
 		 <div id="navigation">
-			<span class="left"> 
+			<span class="left">
 			 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?>
              <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>
              <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>
@@ -40,7 +40,7 @@
              <?php //echo anchor('events', 'Events'); ?>  |
              <?php //echo anchor('organization', 'Organization'); ?>-->
              </span>
-            <span class="right"><?php echo anchor('help', 'Help ?'); ?></span>
+            <span class="right"><?php echo anchor('tour', 'Tutorial Video'); ?></span>
          </div>
 <!-- End Navigation -->
 		 <!-- Breadcrumb -->
@@ -52,12 +52,12 @@
 		 <!-- Begin Left Column -->
 		 <div id="leftcolumn"> <?=$content_for_layout?> </div>
 		 <!-- End Left Column -->
-		 
+
 		 <!-- Begin Right Column -->
 		 <div id="rightcolumn">
           <?php if($this->permission->is_shakha_kkl($this->session->userdata('shakha_id'))):?>
          <form id="form1" name="form1" method="post" action="/search/index">
-              <input type="text" name="term" 
+              <input type="text" name="term"
 				<?php if($this->uri->segment(1) == 'search'){
                 echo 'value="'.$this->uri->segment(4).'"';}
             else
@@ -74,9 +74,9 @@
                 <option <?php if($this->session->userdata('within') == 'NT') echo ' selected="selected" '; ?> value="<?='NT_'?>">Everything&nbsp;</option><?php //endif; ?>
               </select>
               <?php $this->session->set_userdata('redirect_url', $this->uri->uri_string());?>
-              
+
             </form>
-         <br />   
+         <br />
 		 <hr />
          <?php endif; ?>
          <br />
@@ -92,7 +92,7 @@
          </div>
 
 		 <!-- End Right Column -->
-		 
+
 		 <!-- Begin Footer -->
 		 <div id="footer">
 		   <div align="center">
@@ -102,9 +102,9 @@
 	       </div>
 	 </div>
 	 <!-- End Footer -->
-		 
+
    </div>
    <!-- End Wrapper -->
-   
+
 </body>
 </html>

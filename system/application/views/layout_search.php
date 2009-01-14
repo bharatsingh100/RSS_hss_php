@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
 />
 <title><?=$pageTitle?> - Swayamsevak Information Management - HSS</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
@@ -42,17 +42,17 @@
              <?php //echo anchor('events', 'Events'); ?>  |
              <?php //echo anchor('organization', 'Organization'); ?>-->
              </span>
-            <span class="right"><?php echo anchor('help', 'Help ?'); ?></span>
+            <span class="right"><?php echo anchor('tour', 'Tutorial Video'); ?></span>
          </div>
 <!-- End Navigation -->
 		 <!-- Begin Left Column -->
 		 <div id="leftcolumn"> <?=$content_for_layout?> </div>
 		 <!-- End Left Column -->
-		 
+
 		 <!-- Begin Right Column -->
 		 <div id="rightcolumn">
          <form id="form1" name="form1" method="post" action="/search/index">
-              <input type="text" name="term" 
+              <input type="text" name="term"
 				<?php if($this->uri->segment(1) == 'search'){
                 echo 'value="'.$this->uri->segment(4).'"';}
             else
@@ -69,12 +69,12 @@
                 <option <?php if($this->session->userdata('within') == 'NT') echo ' selected="selected" '; ?> value="<?='NT_'?>">Everything&nbsp;</option><?php //endif; ?>
               </select>
               <?php $this->session->set_userdata('redirect_url', 'profile/view/'.$this->session->userdata('contact_id'));?>
-              
+
             </form>
            </div>
-		
+
 		 <!-- End Right Column -->
-		 
+
 		 <!-- Begin Footer -->
 		 <div id="footer">
 		   <div align="center">
@@ -84,9 +84,9 @@
 	       </div>
 	 </div>
 	 <!-- End Footer -->
-		 
+
    </div>
    <!-- End Wrapper -->
-   
+
 </body>
 </html>
