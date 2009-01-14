@@ -7,17 +7,17 @@ INSERT INTO `Domain` (`DOM_ID`, `DOM_NAME`, `LAST_MOD_DT`, `LAST_MOD_USER`, `ACT
 
 #Insert Following Ganas to the Ref_Code Table
 
-INSERT INTO `Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc`, 
+INSERT INTO `Ref_Code` (`DOM_ID`, `REF_CODE`, `short_desc`, 
 `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES
-(00152, 12, '1', 'Shishu', 'Shishu Gana', '2008-08-12 12:28:31', 
+(12, '1', 'Shishu', 'Shishu Gana', '2008-08-12 12:28:31', 
 'System'),
-(00153, 12, '2', 'Bala', 'Bala Gana', '2008-08-12 12:28:31', 'System'),
-(00154, 12, '3', 'Kishor', 'Kishor Gana', '2008-08-12 12:27:18', 
+(12, '2', 'Bala', 'Bala Gana', '2008-08-12 12:28:31', 'System'),
+(12, '3', 'Kishor', 'Kishor Gana', '2008-08-12 12:27:18', 
 'System'),
-(00155, 12, '4', 'Yuva', 'Yuva Gana', '2008-08-12 12:27:18', 'System'),
-(00156, 12, '5', 'Tarun', 'Tarun Gana', '2008-08-12 12:27:50', 
+(12, '4', 'Yuva', 'Yuva Gana', '2008-08-12 12:27:18', 'System'),
+(12, '5', 'Tarun', 'Tarun Gana', '2008-08-12 12:27:50', 
 'System'),
-(00158, 12, '6', 'Praudh', 'Pruadh Gana', '2008-08-12 12:28:01', 
+(12, '6', 'Praudh', 'Pruadh Gana', '2008-08-12 12:28:01', 
 'System');
 
 #Update Ganas
@@ -29,10 +29,10 @@ UPDATE swayamsevaks SET gana = 5 WHERE birth_year >= ( 2009 - 50 ) AND birth_yea
 UPDATE swayamsevaks SET gana = 6 WHERE birth_year < ( 2009 - 50 ) AND birth_year != '';
 
 #Add New Responsibilities
-INSERT INTO `Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES
-(00161, 4, '170', 'Sevak Pramukh', '', '2008-08-12 17:36:01', 'System'),
-(00159, 4, '150', 'Shishu Pramukh', '', '2008-08-12 17:35:32', 'System'),
-(00160, 4, '160', 'Kishor Pramukh', '', '2008-08-12 17:35:32', 'System');
+INSERT INTO `Ref_Code` (`DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES
+(4, '170', 'Sevak Pramukh', '', '2008-08-12 17:36:01', 'System'),
+(4, '150', 'Shishu Pramukh', '', '2008-08-12 17:35:32', 'System'),
+(4, '160', 'Kishor Pramukh', '', '2008-08-12 17:35:32', 'System');
 
 #Add Tickets Table
 CREATE TABLE IF NOT EXISTS `tickets` (

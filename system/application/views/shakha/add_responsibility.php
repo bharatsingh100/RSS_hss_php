@@ -1,6 +1,6 @@
 <h2><?=$row->name;?> - Manage Responsibilities</h2>
 <p>&nbsp;</p>
-<?php 
+<?php
 //echo $this->ajax->link_to_remote("Login", array('url' => '/login', 'update' => 'divblock'));
 $shakha_id = $row->shakha_id;
 //echo $this->ajax->link_to_remote("Login", array('url' => "/ajax/resp_autocomplete/$shakha_id", 'update' => 'name_auto_complete'));
