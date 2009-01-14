@@ -21,12 +21,12 @@ INSERT INTO `Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc`,
 'System');
 
 #Update Ganas
-UPDATE swayamsevaks SET gana = 1 WHERE birth_year >= ( 2008 -6 );
-UPDATE swayamsevaks SET gana = 2 WHERE birth_year >= ( 2008 - 12 ) AND birth_year < (2008 - 6);
-UPDATE swayamsevaks SET gana = 3 WHERE birth_year >= ( 2008 - 19 ) AND birth_year < (2008 - 12);
-UPDATE swayamsevaks SET gana = 4 WHERE birth_year >= ( 2008 - 25 ) AND birth_year < (2008 - 19);
-UPDATE swayamsevaks SET gana = 5 WHERE birth_year >= ( 2008 - 50 ) AND birth_year < (2008 - 25);
-UPDATE swayamsevaks SET gana = 6 WHERE birth_year < ( 2008 - 50 ) AND birth_year != '';
+UPDATE swayamsevaks SET gana = 1 WHERE birth_year >= ( 2009 -6 );
+UPDATE swayamsevaks SET gana = 2 WHERE birth_year >= ( 2009 - 12 ) AND birth_year < (2009 - 6);
+UPDATE swayamsevaks SET gana = 3 WHERE birth_year >= ( 2009 - 19 ) AND birth_year < (2009 - 12);
+UPDATE swayamsevaks SET gana = 4 WHERE birth_year >= ( 2009 - 25 ) AND birth_year < (2009 - 19);
+UPDATE swayamsevaks SET gana = 5 WHERE birth_year >= ( 2009 - 50 ) AND birth_year < (2009 - 25);
+UPDATE swayamsevaks SET gana = 6 WHERE birth_year < ( 2009 - 50 ) AND birth_year != '';
 
 #Add New Responsibilities
 INSERT INTO `Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES
