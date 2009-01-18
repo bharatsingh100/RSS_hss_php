@@ -90,10 +90,10 @@
          <p><?php echo anchor('nagar/add_shakha/'.$this->uri->segment(3), 'Add New Shakha');?></p>
          <p><?php echo anchor('nagar/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
 	   	 <p>Nagar Statistics</p>
-	  <p>&nbsp;</p>
+	  <!--  <p>&nbsp;</p>
 	  <p><?php echo anchor('nagar/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
 	  <p><?php echo anchor('nagar/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
-
+		-->
       <?php endif; ?>
          </div>
 

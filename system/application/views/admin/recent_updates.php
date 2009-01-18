@@ -1,9 +1,17 @@
 <h2>Recent Updates</h2>
 <ul>
+  <li><strong>January 18, 2009</strong>
+    <ul><li>Added Optional Support for Nagas under Vibhags</li>
+        <li>Improved Performance by adding Index to DB Table</li>
+        <li>Fixed Bugs with permissions for some Shakha Karyakartas</li>
+        <li>Many small bug fixes</li>
+      </ul>
+  </li>
   <li><strong>January 14, 2009</strong>
-    <ul><li>Added Gana as Field on Profile Page</li>
+    <ul><li>Added Gana as Field on Profile Page & Shakha Listing Page</li>
         <li>Added New Sah-Responsibilities</li>
-        <li>Many Bug Fixes</li>
+        <li>Added Enhancement to make Yelloji's name appear with proper capitalizatoin :)</li>
+        <li>Many other Bug Fixes</li>
       </ul>
   </li>
   <li><strong>August 1, 2008</strong>

@@ -2,6 +2,7 @@
 UPDATE shakhas SET nagar_id = NULL;
 #Adding Nagar to RefCode
 INSERT INTO `crmhss_crm`.`Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES (NULL, '8', 'NA', 'Nagar', '', NOW(), 'System');
+#Add Index on Shakha ID field for Responsibilities Table
 
 #Add Contact Type to the Domains Table with DOM_ID 11
 #Add Gana to the Domains Table with DOM_ID 12
