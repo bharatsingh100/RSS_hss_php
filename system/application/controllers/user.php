@@ -224,6 +224,8 @@ class User extends Controller
 				if($row->shakha_id != '')
 				{
 					$t = $this->db->getwhere('shakhas', array('shakha_id' => $row->shakha_id))->row();
+					if(trim($t->nagar_id) != '')
+						$this->session->set_userdata('nagar_id', $t->nagar_id);
 					$this->session->set_userdata('vibhag_id', $t->vibhag_id);
 					$this->session->set_userdata('sambhag_id', $t->sambhag_id);					
 				}

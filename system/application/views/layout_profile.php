@@ -36,6 +36,9 @@
              <?php if($this->session->userdata('contact_id') == $this->uri->segment(3)) {$t = TRUE; echo '<span class="active">';}?>
 			       <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?><?php if(isset($t)) echo '</span>';?>
              <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>
+             <?php if($this->session->userdata('nagar_id')) {
+			 		echo anchor('nagar/view/' . $this->session->userdata('nagar_id'), 'My Nagar');
+			 }?>
              <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>
              <?php echo anchor('sambhag/view/' . $this->session->userdata('sambhag_id'), 'My Sambhag'); ?>
              <?php echo anchor('national/view', 'National'); ?>
@@ -49,6 +52,8 @@
 		 <!-- Breadcrumb -->
          <div id="breadcrumb">
          <?php echo anchor('shakha/view/'.$this->session->ro_userdata('bc_shakha_id'), $this->session->userdata('bc_shakha')); ?>
+         <?php if($this->session->userdata('bc_nagar_id'))
+         			echo ' / ' . anchor('nagar/view/'.$this->session->ro_userdata('bc_nagar_id'), $this->session->ro_userdata('bc_nagar')); ?>
          <?php echo ' / ',anchor('vibhag/view/'.$this->session->ro_userdata('bc_vibhag_id'), $this->session->userdata('bc_vibhag')); ?>
 	     <?php echo ' / ',anchor('sambhag/view/'.$this->session->ro_userdata('bc_sambhag_id'), $this->session->userdata('bc_sambhag')); ?>
          </div>

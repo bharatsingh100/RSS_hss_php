@@ -1,4 +1,4 @@
-<h2><?=$row->name?> Vibhag</h2>
+<h2><?=$row->name?> Nagar</h2>
 <?php 
 if(isset($row->kk))
 {
@@ -9,39 +9,36 @@ if(isset($row->kk))
 	}
 }
 ?>
-<?php if(isset($row->nagars)) : ?>
-<p>&nbsp;</p>
-<h3>Nagars:</h3>
-<table id="tb">
-  <tr align="left">
-  	<th>&nbsp;</th>
-    <th>Nagar</th>
-    <th>Karyavah</th>
-    <th>Sah-Karyavah</th>
-  </tr>
-<?php $i = 1; foreach($row->nagars as $nagar) { ?>
-  <tr>
-  	<td valign="top"><?=$i++?></td>
-    <td valign="top"><?=anchor('nagar/view/'.$nagar->nagar_id, $nagar->name)?></td>
-    <?php 	if(isset($nagar->kk)) 
-	{
-		echo '<td valign="top">';
-		foreach($nagar->kk as $kk)
-			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
-		echo '</td><td valign="top">';
-		foreach($nagar->kk as $kk)
-			if($kk->responsibility == '021') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
-		echo '</td>';
-	}
-	else { ?>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <?php } }?>
-  </tr>
-</table>
-<?php endif; ?>
 <p>&nbsp;</p>
 <h3>Shakhas:</h3>
+<p>
+  <?php /*
+$resp_ar = array('030','020');
+echo "<ol>\n";
+foreach($row->shakhas as $shakha)
+{
+	echo '<li>',anchor('shakha/view/'.$shakha->shakha_id, $shakha->name);
+	echo ($shakha->shakha_status == 0) ? '<font color="red"> (Unactive)</font>': '';
+	echo "</li>\n";
+	if(isset($shakha->kk)) 
+	{
+		foreach($shakha->kk as $k)
+		{
+			echo '<ul>';
+			if(in_array($k->responsibility, $resp_ar))
+			{ 
+				//echo "<li>$k->resp_title: ";
+				echo '<li>',anchor('profile/view/'.$k->contact_id, $k->first_name.' '.$k->last_name);
+				echo "&nbsp;($k->resp_title)",'</li>';
+			}
+			echo '</ul>';
+		}
+	}
+ 
+}
+echo "</ol>\n"
+*/?>
+</p>
 <table id="tb">
   <tr align="left">
   	<th>&nbsp;</th>

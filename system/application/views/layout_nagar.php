@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title><?=$pageTitle?> - Swayamsevak Information Management - HSS</title>
+<title><?php echo $pageTitle; ?> - Swayamsevak Information Management - HSS</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
 <script type="text/javascript" src="/css/all.js"></script>
@@ -16,10 +16,10 @@
    		<div id="header">
         <div id="info">
         <?php if($this->session->userdata('message')): ?>
-        <span style="float:left; color:#FFCC33; font-weight: bolder; padding: 2px 0px 0px 10px;"><?=$this->session->ro_userdata('message');?></span>
+        <span style="float:left; color:#FFCC33; font-weight: bolder; padding: 2px 0px 0px 10px;"><?php echo $this->session->ro_userdata('message');?></span>
         <?php endif;?>
-		<?=mdate("%l, %F %j%S", time())?><?php echo ' | <strong>' . $this->session->userdata('email') . '</strong> | ';?>
-		<?=anchor('user/logout', 'Logout')?>
+		<?php echo mdate("%l, %F %j%S", time()); ?><?php echo ' | <strong>' . $this->session->userdata('email') . '</strong> | ';?>
+		<?php echo anchor('user/logout', 'Logout'); ?>
         </div>
          <!-- Begin Header -->
          <br />
@@ -33,21 +33,15 @@
          	<span class="left">
            	 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?>
              <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>
-             <?php if($this->session->userdata('nagar_id')) {
-			 		echo anchor('nagar/view/' . $this->session->userdata('nagar_id'), 'My Nagar');
-			 }?>
-			  <?php 
-			  		$vibhag_link = anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag');
-			  		if($this->uri->segment(3) == $this->session->userdata('vibhag_id'))
-						echo '<span class="active">'. $vibhag_link . '</span>';
-				   	else
-				   		echo $vibhag_link;
+             <?php $nagar_link = anchor('shakha/view/' . $this->session->userdata('nagar_id'), 'My Nagar'); ?>
+             <?php if($this->uri->segment(3) == $this->session->userdata('nagar_id'))
+					echo '<span class="active">' . $nagar_link . '</span>';
+				   else
+				   	echo $nagar_link;
 		   	 ?>
+             <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>
              <?php echo anchor('sambhag/view/' . $this->session->userdata('sambhag_id'), 'My Sambhag'); ?>
              <?php echo anchor('national/view', 'National'); ?>
-<!--             <?php //echo anchor('email/view/', 'E-mail'); ?>  |
-             <?php //echo anchor('events', 'Events'); ?>  |
-             <?php //echo anchor('organization', 'Organization'); ?>-->
              </span>
             <span class="right"><?php echo anchor('tour', 'Tutorial Video'); ?></span>
          </div>
@@ -55,11 +49,12 @@
 		 <!-- Breadcrumb -->
          <div id="breadcrumb">
          <?php //echo anchor('shakha/view/'.$this->session->userdata('bc_shakha_id'), $this->session->userdata('bc_shakha')); ?>
-         <?php echo anchor('vibhag/view/'.$this->session->ro_userdata('bc_vibhag_id'), $this->session->userdata('bc_vibhag')); ?>
-	     <?php echo ' / '.anchor('sambhag/view/'.$this->session->ro_userdata('bc_sambhag_id'), $this->session->userdata('bc_sambhag')); ?>         			         </div>
+         <?php echo anchor('nagar/view/'.$this->session->ro_userdata('bc_nagar_id'), $this->session->userdata('bc_nagar')); ?>
+         <?php echo ' / ',anchor('vibhag/view/'.$this->session->ro_userdata('bc_vibhag_id'), $this->session->userdata('bc_vibhag')); ?>
+	     <?php echo ' / ',anchor('sambhag/view/'.$this->session->ro_userdata('bc_sambhag_id'), $this->session->userdata('bc_sambhag')); ?>         			         </div>
          <!-- End BreadCrumb -->
 		 <!-- Begin Left Column -->
-		 <div id="leftcolumn"> <?=$content_for_layout?> </div>
+		 <div id="leftcolumn"> <?php echo $content_for_layout; ?> </div>
 		 <!-- End Left Column -->
 
 		 <!-- Begin Right Column -->
@@ -75,12 +70,12 @@
               size="18" onclick="this.value = ''" id="term" />&nbsp;<input type="submit" name="submit" id="submit" value="Go" />
               <br />
               Within:&nbsp;<select name="limit" id="limit">
-              	<option <?php if($this->session->userdata('within') == 'SH') echo ' selected="selected" '; ?> value="<?='SH_'.$this->session->userdata('shakha_id')?>">My Shakha&nbsp;</option>
-                <option <?php if($this->session->userdata('within') == 'VI') echo ' selected="selected" '; ?> value="<?='VI_'.$this->session->userdata('vibhag_id')?>">My Vibhag&nbsp;</option>
+              	<option <?php if($this->session->userdata('within') == 'SH') echo ' selected="selected" '; ?> value="<?php echo 'SH_'.$this->session->userdata('shakha_id')?>">My Shakha&nbsp;</option>
+                <option <?php if($this->session->userdata('within') == 'VI') echo ' selected="selected" '; ?> value="<?php echo 'VI_'.$this->session->userdata('vibhag_id'); ?>">My Vibhag&nbsp;</option>
                 <?php //if($this->permission->is_sambhag_kk($this->session->userdata('sambhag_id'))):?>
-                <option <?php if($this->session->userdata('within') == 'SA') echo ' selected="selected" '; ?> value="<?='SA_'.$this->session->userdata('sambhag_id')?>">My Sambhag&nbsp;</option><?php // endif; ?>
+                <option <?php if($this->session->userdata('within') == 'SA') echo ' selected="selected" '; ?> value="<?php echo 'SA_'.$this->session->userdata('sambhag_id'); ?>">My Sambhag&nbsp;</option><?php // endif; ?>
                  <?php //if($this->permission->is_nt_kk()):?>
-                <option <?php if($this->session->userdata('within') == 'NT') echo ' selected="selected" '; ?> value="<?='NT_'?>">Everything&nbsp;</option><?php //endif; ?>
+                <option <?php if($this->session->userdata('within') == 'NT') echo ' selected="selected" '; ?> value="<?php echo 'NT_'; ?>">Everything&nbsp;</option><?php //endif; ?>
               </select>
               <?php $this->session->set_userdata('redirect_url', $this->uri->uri_string());?>
 
@@ -89,15 +84,15 @@
 		 <hr />
          <?php endif; ?>
          <br />
-         <?php if($this->permission->is_vibhag_kk($this->uri->segment(3))): ?>
+         <?php if($this->permission->is_nagar_kk($this->uri->segment(3))): ?>
          <h3>Navigation </h3>
-         <p><?=anchor('vibhag/browse/'.$this->uri->segment(3). '/name/', 'List All Contacts');?></p>
-         <p><?=anchor('vibhag/add_shakha/'.$this->uri->segment(3), 'Add New Shakha');?></p>
-         <p><?=anchor('vibhag/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
-	   	 <p>Vibhag Statistics</p>
+         <p><?php echo anchor('nagar/browse/'.$this->uri->segment(3). '/name/', 'List All Contacts');?></p>
+         <p><?php echo anchor('nagar/add_shakha/'.$this->uri->segment(3), 'Add New Shakha');?></p>
+         <p><?php echo anchor('nagar/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
+	   	 <p>Nagar Statistics</p>
 	  <p>&nbsp;</p>
-	  <p><?=anchor('vibhag/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
-	  <p><?=anchor('vibhag/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
+	  <p><?php echo anchor('nagar/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
+	  <p><?php echo anchor('nagar/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
 
       <?php endif; ?>
          </div>

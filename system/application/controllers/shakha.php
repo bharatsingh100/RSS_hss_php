@@ -45,8 +45,12 @@ class Shakha extends Controller
 			$rs = $this->db->getwhere('shakhas', array('shakha_id' => $this->uri->segment(3)))->row();
 			$this->session->set_userdata('bc_shakha', $rs->name);
 			$this->session->set_userdata('bc_shakha_id', $rs->shakha_id);
-	//		$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);
-	//		$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);		
+			
+			if(trim($rs->nagar_id) != '') {		
+				$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);
+				$this->session->set_userdata('bc_nagar', $this->Shakha_model->getShortDesc($rs->nagar_id));
+			}	
+				
 			$this->session->set_userdata('bc_vibhag', $this->Shakha_model->getShortDesc($rs->vibhag_id));	
 			$this->session->set_userdata('bc_vibhag_id', $rs->vibhag_id);
 			$this->session->set_userdata('bc_sambhag', $this->Shakha_model->getShortDesc($rs->sambhag_id));			
@@ -346,7 +350,14 @@ class Shakha extends Controller
 		$data['row'] = $this->Shakha_model->getShakhaInfo($id);
 		$data['pageTitle'] = $data['row']->name;
 		$this->db->orderby('short_desc', 'desc'); 
-		$data['vibhags'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', array('DOM_ID' => 2))->result();
+		$vibhags = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', array('DOM_ID' => 2))->result();
+		foreach($vibhags as $vibhag)
+			$data['vibhags'][$vibhag->REF_CODE] = $vibhag->short_desc;
+		$nagars = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', array('DOM_ID' => 3))->result();
+		foreach($nagars as $nagar)
+			$data['vibhags'][$nagar->REF_CODE] = $data['vibhags'][substr($nagar->REF_CODE, 0, 4)]
+												 . ' - ' . $nagar->short_desc . ' Nagar';
+	 	ksort($data['vibhags']);
 		$this->layout->view('shakha/edit_shakha', $data);
 	}
 	

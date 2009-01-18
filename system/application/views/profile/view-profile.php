@@ -37,6 +37,8 @@ echo strlen(trim($name)) ? $name : 'Name Unavailable';?>
 		?></h2>
 <span class="leftcol">
 <p><?php echo '<strong>',anchor('shakha/view/' . $shakha->shakha_id, $shakha->name),'</strong>,&nbsp;';
+		 if(isset($nagar))
+		 	echo anchor('nagar/view/' . $nagar->REF_CODE, $nagar->short_desc),',&nbsp;';
 		 echo anchor('vibhag/view/' . $vibhag->REF_CODE, $vibhag->short_desc),',&nbsp;';
 		 echo anchor('sambhag/view/' . $sambhag->REF_CODE, $sambhag->short_desc);?></p>
 

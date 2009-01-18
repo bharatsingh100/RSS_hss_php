@@ -91,9 +91,10 @@ class Sambhag_model extends Model
 	{
 		
 		//Get Vibhag Information
+		$this->db->where('DOM_ID', 2);
 		$this->db->like('REF_CODE', $id);
 		$this->db->orderby('short_desc', 'asc'); 
-		$v->vibhags = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', array('DOM_ID' => 2))->result();
+		$v->vibhags = $this->db->select('REF_CODE, short_desc')->get('Ref_Code')->result();
 
 		//Get Vibhag Karyakarta Information
 		foreach($v->vibhags as & $temp) 

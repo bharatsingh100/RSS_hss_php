@@ -84,6 +84,15 @@ class Shakha_model extends Model
 	{
 		foreach($_POST as $key => $val)
 			$data[$key] = trim($val);
+			
+		$data['sambhag_id'] = substr($data['vibhag_id'], 0, 2);
+		$data['nagar_id'] = '';
+		//In case Shakha is part of a Nagar
+		if(strlen($data['vibhag_id']) == 6) {
+			$data['nagar_id'] = $data['vibhag_id'];
+			$data['vibhag_id'] = substr($data['nagar_id'], 0, 4);
+		}
+		
 		unset($data['save']);
 		$this->db->update('shakhas', $data, array('shakha_id' => $id));
 	}

@@ -103,8 +103,10 @@
                <tr>
                  <td align="right">Vibhag:</td>
                  <td valign="middle"><select name="vibhag_id" id="vibhag_id">
-                 <?php foreach($vibhags as $vibhag): ?>
-                 <option value="<?=$vibhag->REF_CODE?>" <?php if($row->vibhag_id == $vibhag->REF_CODE) echo ' selected="selected"';?>><?=$vibhag->short_desc?>&nbsp;</option>
+                 <?php foreach($vibhags as $key => $vibhag): ?>
+                 <option value="<?=$key?>" 
+                 	<?php if($row->vibhag_id == $key || $row->nagar_id == $key) echo ' selected="selected"';?>>
+                 <?=$vibhag?>&nbsp;</option>
                  <?php endforeach; ?>
                  </select>
                  </td>

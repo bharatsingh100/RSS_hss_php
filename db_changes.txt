@@ -1,47 +1,52 @@
+#Set Nagar ID to Null for Permissions
+UPDATE shakhas SET nagar_id = NULL;
+#Adding Nagar to RefCode
+INSERT INTO `crmhss_crm`.`Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES (NULL, '8', 'NA', 'Nagar', '', NOW(), 'System');
+
 #Add Contact Type to the Domains Table with DOM_ID 11
 #Add Gana to the Domains Table with DOM_ID 12
 
-INSERT INTO `Domain` (`DOM_ID`, `DOM_NAME`, `LAST_MOD_DT`, `LAST_MOD_USER`, `ACTIVE`) VALUES
-(11, 'ContactType', '2008-08-12 12:25:19', 'System', 0),
-(12, 'Gana', '2008-08-12 12:25:07', 'System', 0);
+#INSERT INTO `Domain` (`DOM_ID`, `DOM_NAME`, `LAST_MOD_DT`, `LAST_MOD_USER`, `ACTIVE`) VALUES
+#(11, 'ContactType', '2008-08-12 12:25:19', 'System', 0),
+#(12, 'Gana', '2008-08-12 12:25:07', 'System', 0);
 
 #Insert Following Ganas to the Ref_Code Table
 
-INSERT INTO `Ref_Code` (`DOM_ID`, `REF_CODE`, `short_desc`, 
-`long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES
-(12, '1', 'Shishu', 'Shishu Gana', '2008-08-12 12:28:31', 
-'System'),
-(12, '2', 'Bala', 'Bala Gana', '2008-08-12 12:28:31', 'System'),
-(12, '3', 'Kishor', 'Kishor Gana', '2008-08-12 12:27:18', 
-'System'),
-(12, '4', 'Yuva', 'Yuva Gana', '2008-08-12 12:27:18', 'System'),
-(12, '5', 'Tarun', 'Tarun Gana', '2008-08-12 12:27:50', 
-'System'),
-(12, '6', 'Praudh', 'Pruadh Gana', '2008-08-12 12:28:01', 
-'System');
+#INSERT INTO `Ref_Code` (`DOM_ID`, `REF_CODE`, `short_desc`, 
+#`long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES
+#(12, '1', 'Shishu', 'Shishu Gana', '2008-08-12 12:28:31', 
+#'System'),
+#(12, '2', 'Bala', 'Bala Gana', '2008-08-12 12:28:31', 'System'),
+#(12, '3', 'Kishor', 'Kishor Gana', '2008-08-12 12:27:18', 
+#'System'),
+#(12, '4', 'Yuva', 'Yuva Gana', '2008-08-12 12:27:18', 'System'),
+#(12, '5', 'Tarun', 'Tarun Gana', '2008-08-12 12:27:50', 
+#'System'),
+#(12, '6', 'Praudh', 'Pruadh Gana', '2008-08-12 12:28:01', 
+#'System');
 
 #Update Ganas
-UPDATE swayamsevaks SET gana = 1 WHERE birth_year >= ( 2009 -6 );
-UPDATE swayamsevaks SET gana = 2 WHERE birth_year >= ( 2009 - 12 ) AND birth_year < (2009 - 6);
-UPDATE swayamsevaks SET gana = 3 WHERE birth_year >= ( 2009 - 19 ) AND birth_year < (2009 - 12);
-UPDATE swayamsevaks SET gana = 4 WHERE birth_year >= ( 2009 - 25 ) AND birth_year < (2009 - 19);
-UPDATE swayamsevaks SET gana = 5 WHERE birth_year >= ( 2009 - 50 ) AND birth_year < (2009 - 25);
-UPDATE swayamsevaks SET gana = 6 WHERE birth_year < ( 2009 - 50 ) AND birth_year != '';
+#UPDATE swayamsevaks SET gana = 1 WHERE birth_year >= ( 2009 -6 );
+#UPDATE swayamsevaks SET gana = 2 WHERE birth_year >= ( 2009 - 12 ) AND birth_year < (2009 - 6);
+#UPDATE swayamsevaks SET gana = 3 WHERE birth_year >= ( 2009 - 19 ) AND birth_year < (2009 - 12);
+#UPDATE swayamsevaks SET gana = 4 WHERE birth_year >= ( 2009 - 25 ) AND birth_year < (2009 - 19);
+#UPDATE swayamsevaks SET gana = 5 WHERE birth_year >= ( 2009 - 50 ) AND birth_year < (2009 - 25);
+#UPDATE swayamsevaks SET gana = 6 WHERE birth_year < ( 2009 - 50 ) AND birth_year != '';
 
 #Add New Responsibilities
-INSERT INTO `Ref_Code` (`DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES
-(4, '170', 'Sevak Pramukh', '', '2008-08-12 17:36:01', 'System'),
-(4, '150', 'Shishu Pramukh', '', '2008-08-12 17:35:32', 'System'),
-(4, '160', 'Kishor Pramukh', '', '2008-08-12 17:35:32', 'System');
+#INSERT INTO `Ref_Code` (`DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`) VALUES
+#(4, '170', 'Sevak Pramukh', '', '2008-08-12 17:36:01', 'System'),
+#(4, '150', 'Shishu Pramukh', '', '2008-08-12 17:35:32', 'System'),
+#(4, '160', 'Kishor Pramukh', '', '2008-08-12 17:35:32', 'System');
 
 #Add Tickets Table
-CREATE TABLE IF NOT EXISTS `tickets` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(60) NOT NULL,
-  `email` varchar(60) NOT NULL,
-  `status` enum('Pending','Close') NOT NULL default 'Pending',
-  `message` text NOT NULL,
-  `modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `ip_add` varchar(15) NOT NULL,
-  PRIMARY KEY  (`id`)
-) 
+#CREATE TABLE IF NOT EXISTS `tickets` (
+#  `id` int(11) NOT NULL auto_increment,
+#  `name` varchar(60) NOT NULL,
+#  `email` varchar(60) NOT NULL,
+#  `status` enum('Pending','Close') NOT NULL default 'Pending',
+# `message` text NOT NULL,
+#  `modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+# `ip_add` varchar(15) NOT NULL,
+# PRIMARY KEY  (`id`)
+##) 

@@ -33,6 +33,9 @@
 			<span class="left">
 			 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?>
              <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>
+             <?php if($this->session->userdata('nagar_id')) {
+			 		echo anchor('nagar/view/' . $this->session->userdata('nagar_id'), 'My Nagar');
+			 }?>
              <?php echo anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag'); ?>
              <?php echo anchor('sambhag/view/' . $this->session->userdata('sambhag_id'), 'My Sambhag'); ?>
              <span class="active"><?php echo anchor('national/view', 'National'); ?></span>

@@ -33,8 +33,10 @@ class Profile extends Controller
 			$rs = $this->db->getwhere('shakhas', array('shakha_id' => $t1))->row();
 			$this->session->set_userdata('bc_shakha', $rs->name);
 			$this->session->set_userdata('bc_shakha_id', $rs->shakha_id);
-//			$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);
-//			$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);		
+			if(trim($rs->nagar_id) != '') {		
+				$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);
+				$this->session->set_userdata('bc_nagar', $this->Profile_model->getShortDesc($rs->nagar_id));
+			}	
 			$this->session->set_userdata('bc_vibhag', $this->Profile_model->getShortDesc($rs->vibhag_id));	
 			$this->session->set_userdata('bc_vibhag_id', $rs->vibhag_id);
 			$this->session->set_userdata('bc_sambhag', $this->Profile_model->getShortDesc($rs->sambhag_id));		
@@ -49,6 +51,10 @@ class Profile extends Controller
 	{		
 		$data['query'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id));
 		$data['shakha'] = $this->db->getwhere('shakhas', array('shakha_id' => $data['query']->row()->shakha_id))->row();
+		if ($data['shakha']->nagar_id != '') {	
+			$this->db->select('REF_CODE, short_desc');
+			$data['nagar'] = $this->db->getwhere('Ref_Code', array('DOM_ID' => 3, 'REF_CODE' => $data['shakha']->nagar_id))->row();
+		}
 		$this->db->select('REF_CODE, short_desc');
 		$data['vibhag'] = $this->db->getwhere('Ref_Code', array('DOM_ID' => 2, 'REF_CODE' => $data['shakha']->vibhag_id))->row();
 		$this->db->select('REF_CODE, short_desc');
