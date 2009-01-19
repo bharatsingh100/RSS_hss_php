@@ -4,6 +4,7 @@
     <ul><li>Added Optional Support for Nagas under Vibhags</li>
         <li>Improved Performance by adding Index to DB Table</li>
         <li>Fixed Bugs with permissions for some Shakha Karyakartas</li>
+        <li>Switched from using First Name & Lasn Name field in Profile to just Name</li>
         <li>Many small bug fixes</li>
       </ul>
   </li>
