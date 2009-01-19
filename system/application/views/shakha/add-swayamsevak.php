@@ -1,6 +1,6 @@
 <?php $fam = (isset($family)) ? true : false; ?>
 <?php //if($fam) print_r($family); ?>
-<?=form_open('shakha/add_family/')?>
+<?=form_open('shakha/add_family/'.$shakha_id)?>
 <?=form_hidden('shakha_id', $shakha_id);?>
 <?php if($fam) echo form_hidden('household_id', $family['household_id']); ?>
 
@@ -10,11 +10,13 @@
                <tr>
                  <td width="19%"><div align="right"><strong>Name:
                    </strong></div>                   <label></label></td>
-                 <td colspan="3"><input name="first_name" type="text" id="textfield" size="30" maxlength="50" />
+                 <td colspan="3">
+                 	<input name="name" type="text" id="name" value="<?php if($fam) echo ($family['last_name']); ?>" size="45" maxlength="50" />
                    &nbsp;                   
-                   <label>
+                 <!--  <label>
                    <input name="last_name" type="text" id="textfield2" size="30" maxlength="50" value = "<?php if($fam) echo ($family['last_name']); ?>"/>
-                   </label></td>
+                   </label> -->
+                 </td>
                </tr>
                <tr>
                  <td valign="top"><div align="right"><strong>Gender:</strong></div></td>
@@ -184,55 +186,3 @@
 <p>&nbsp;</p>
 		     <p>&nbsp;</p>
 <?=form_close(); ?>		   </form>
-
-<?php /*
-<?php 
-$row = $query->row();
-$sh_add = $row->street_add1 . ', ';
-$sh_add .= (empty($row->stree_add2) ? '' : $row->street_add2 . ', ');
-$sh_add .= $row->city . ', ' . $row->state . ', ' . $row->zip;
-?>
-
-<h2><?=$row->first_name;?>&nbsp;<?=$row->last_name?>, <?=date("Y")-$row->birth_year;?></h2>
-<p><?=$sh_add?>&nbsp;<?php echo (!empty($sh_add) ? anchor_popup('http://maps.google.com/maps?q=' . str_replace(' ', '+', $sh_add), 'Google Map') : ''); ?></p>
-<p><?=anchor('shakha/view/' . $shakha->shakha_id, $shakha->name);?>, New Jersey, North East</p>
-<p>&nbsp;</p>
-<?php
-
-if(!empty($resp))
-{
-	echo '<h3>Responsibilities: </h3>';
-	foreach ($resp as $temp)
-	{
-//		if($temp->level != 'Shakha')
-//			echo $temp->level.' ';
-		echo $temp->level.' '.$temp->resp_title . '<br />';
-	}
-}
-?>
-<br />
-<h3>Contact Information: </h3>
-<?php echo((!empty($row->ph_mobile)) ? "$row->ph_mobile (Mobile)<br />" : '');?>
-<?php echo((!empty($row->ph_home)) ? "$row->ph_home (Home)<br />" : '');?>
-<?php echo((!empty($row->email)) ? mailto($row->email, $row->email).'<br /><br />' : '<br />');?>
-<?php 
-	$count = $households->num_rows();
-	if($count)
-	{
-		echo '<h3>Family: </h3>';
-		for($i=0; $i < $count; $i++)
-		{
-			$fams = $households->row($i);
-			if($fams->contact_id != $row->contact_id)
-		    	echo '<p>' . anchor('profile/view/'. $fams->contact_id, $fams->first_name . ' ' . $fams->last_name) . '</p>'; 
-		} 
-	}
-?>
-<br />
-<?php if(!empty($row->position) OR !empty($row->company)): ?>
-<h3>Work: </h3>
-<?=$row->position?>, <?=$row->company?><br /><br />
-<? endif; ?>
-
-<h3>Gata: </h3>
-*/ ?>

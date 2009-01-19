@@ -23,8 +23,21 @@ class Profile_model extends Model
 			$data['email_status'] = (isset($data['email']) && $data['email'] != '') ? 'Active' : '';
 		
 		//$data['household_id'] = ((isset($data['household_id']) && !empty($data['household_id'])) ? $data['household_id'] : $max_hh);
-		$data['first_name']   = $this->capitalizeName($data['first_name']);
-		$data['last_name']    = $this->capitalizeName($data['last_name']);
+  		
+		//Split Name into First and Last
+		$name = str_word_count(trim($data['name']), 2);
+		unset($data['name']);
+		//If there is Last Name then set it otherwise set it to none.
+		if(count($name) > 1){
+			$data['last_name'] = $this->capitalizeName(array_pop($name));
+			$data['first_name'] = $this->capitalizeName(implode(' ',$name));
+		} else { 
+			$data['first_name'] = $this->capitalizeName(array_pop($name));
+			$data['last_name'] = '';
+		}
+		
+		//$data['first_name']   = $this->capitalizeName($data['first_name']);
+		//$data['last_name']    = $this->capitalizeName($data['last_name']);
 		$data['city']         = $this->capitalizeName($data['city']);
 		$data['street_add1']  = $this->capitalizeName($data['street_add1']);
 		$data['street_add2']  = $this->capitalizeName($data['street_add2']);
@@ -33,9 +46,9 @@ class Profile_model extends Model
 		{
 			$this->db->where('household_id', $data['household_id']);
 			//$this->db->where('date', $data['date']);
-			$temp['street_add1'] = $data['street_add1'];
-			$temp['street_add2'] = $data['street_add2'];
-			$temp['city']        = $data['city'];
+			$temp['street_add1'] = $this->capitalizeName($data['street_add1']);
+			$temp['street_add2'] = $this->capitalizeName($data['street_add2']);
+			$temp['city']        = $this->capitalizeName($data['city']);
 			$temp['state']       = $data['state'];
 			$temp['zip']         = $data['zip'];
 			$this->db->update('swayamsevaks', $temp);

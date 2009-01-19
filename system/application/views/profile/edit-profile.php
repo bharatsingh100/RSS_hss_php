@@ -10,11 +10,14 @@
                <tr>
                  <td width="19%"><div align="right"><strong>Name:
                    </strong></div>                   <label></label></td>
-                 <td colspan="3"><input name="first_name" type="text" id="textfield" size="30" maxlength="50" value="<?=$m->first_name;?>"/>
+                 <td colspan="3">
+                 	<input name="name" type="text" id="name" size="40" maxlength="50" 
+                 		value="<?php echo $m->first_name,' ',$m->last_name;?>"/>
                    &nbsp;                   
-                   <label>
+                   <!-- <label>
                    <input name="last_name" type="text" id="textfield2" size="30" maxlength="50" value="<?=$m->last_name;?>"/>
-                   </label></td>
+                   </label> -->
+                   </td>
                </tr>
                <tr>
                  <td><div align="right"><strong>Gender:</strong></div></td>

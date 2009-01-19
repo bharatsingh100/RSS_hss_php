@@ -144,10 +144,21 @@ class Shakha_model extends Model
 		$max_hh = $this->db->select('MAX(household_id)')->get('swayamsevaks')->result_array();
 		$max_hh = $max_hh[0]['MAX(household_id)'] + 1;
 		
-		/*$data['ph_home'] = (isset($data['ph_home']) && $data['ph_home'] == 'Home...') ? '' : $this->reformat_phone_dash($data['ph_home']);
-		$data['ph_mobile']= (isset($data['ph_mobile']) && $data['ph_mobile'] == 'Mobile...') ? '' : $this->reformat_phone_dash($data['ph_mobile']);
-		$data['ph_work'] = (isset($data['ph_work']) && $data['ph_work'] == 'Work...') ? '' : $this->reformat_phone_dash($data['ph_work']);
-		*/
+		//Split Name into First and Last
+		$name = str_word_count(trim($data['name']), 2);
+		unset($data['name']);
+			//If there is Last Name then set it otherwise set it to none.
+		if(count($name) > 1)
+		{
+			$data['last_name'] = ucwords(strtolower(array_pop($name)));
+			$data['first_name'] = ucwords(strtolower(implode(' ',$name)));
+		}
+		else
+		{ 
+			$data['first_name'] = ucwords(strtolower(array_pop($name)));
+			$data['last_name'] = '';
+		}
+			
 		$data['ph_home'] = (isset($data['ph_home']) && strlen(trim($data['ph_home'])) < 10) ? '' : $this->reformat_phone_dash($data['ph_home']);
 		$data['ph_mobile']= (isset($data['ph_mobile']) && strlen(trim($data['ph_mobile'])) < 10) ? '' : $this->reformat_phone_dash($data['ph_mobile']);
 		$data['ph_work'] = (isset($data['ph_work']) && strlen(trim($data['ph_work'])) < 10) ? '' : $this->reformat_phone_dash($data['ph_work']);
@@ -210,8 +221,8 @@ class Shakha_model extends Model
 					$d['last_name'] = '';
 				}
 					
-				if($d['last_name'] == '') $d['last_name'] = '';	
-				if($d['first_name'] == '') $d['first_name'] = '';
+				//if($d['last_name'] == '') $d['last_name'] = '';	
+				//if($d['first_name'] == '') $d['first_name'] = '';
 			}
 			else
 			{
@@ -306,6 +317,12 @@ class Shakha_model extends Model
 				$result->row($i)->num = $this->db->getwhere('swayamsevaks', array('gatanayak' => $result->row($i)->contact_id))->num_rows();
 		}
 		return $result->result();
+	}
+	
+	function capitalizeName($name) {
+		$name = strtolower($name);
+		$name = join("-", array_map('ucwords', explode("-", $name)));
+		return $name;
 	}
 }
 
