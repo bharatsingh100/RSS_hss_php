@@ -33,15 +33,16 @@ echo strlen(trim($name)) ? $name : 'Name Unavailable';?>
 		$age = date("Y") -  $row->birth_year;
 		echo ', ',$age;
 		}
-	echo strlen($row->gana) ? '&#8212;'.$row->gana : '';	
+	echo strlen($row->gana) ? '&#8212;'.$row->gana : '';
 		?></h2>
 <span class="leftcol">
+<!--
 <p><?php echo '<strong>',anchor('shakha/view/' . $shakha->shakha_id, $shakha->name),'</strong>,&nbsp;';
 		 if(isset($nagar))
 		 	echo anchor('nagar/view/' . $nagar->REF_CODE, $nagar->short_desc),',&nbsp;';
 		 echo anchor('vibhag/view/' . $vibhag->REF_CODE, $vibhag->short_desc),',&nbsp;';
 		 echo anchor('sambhag/view/' . $sambhag->REF_CODE, $sambhag->short_desc);?></p>
-
+ -->
 <?php //Characters to replace for Google Map link
 $gmaps = array("<br />", " ", "#",','); ?>
 <p><?=$sh_add?>&nbsp;(<?php echo (!empty($sh_add) ? anchor_popup('http://maps.google.com/maps?q=' . str_replace($gmaps, '+', $sh_add.', USA'), 'Map') : ''); ?>)</p><p>&nbsp;</p>
@@ -76,7 +77,7 @@ if(!empty($resp))
 	echo '<br />';
 }
 ?>
-<?php 
+<?php
 if(!empty($gata)) {
 	echo '<h3>Gata: </h3>';
 	foreach($gata as $g)
@@ -93,7 +94,7 @@ if(!empty($gata)) {
 	<?php echo((!empty($row->ph_work)) ? "$row->ph_work (Work)<br />" : '');?>
 	<?php echo(($row->email != '') ? mailto($row->email, $row->email) : '');?>
 	<?php echo(($row->email != '' && $row->email_status != 'Active') ? '<span style="color:#FF0000;"> ('.$row->email_status.')</span><br /><br />' :'<br /><br />'); endif;?>
-	<?php 
+	<?php
 		$count = $households->num_rows();
 		if(($count - 1) > 0)
 		{
@@ -105,11 +106,11 @@ if(!empty($gata)) {
 				{
 			    	//Set Name to N/A if empty
 					  if(trim($fams->first_name) == '' && trim($fams->last_name) == '') $fams->first_name == 'N/A';
-			    	
+
 					  echo '<p>' . anchor('profile/view/'. $fams->contact_id, $fams->first_name . ' ' . $fams->last_name);
-						echo (strlen($fams->birth_year)) ? '&nbsp;&mdash;&nbsp;'. (date("Y") -  $fams->birth_year) : '' , '</p>'; 
+						echo (strlen($fams->birth_year)) ? '&nbsp;&mdash;&nbsp;'. (date("Y") -  $fams->birth_year) : '' , '</p>';
 				}
-			} 
+			}
 		}
 	?>
 	<br />
