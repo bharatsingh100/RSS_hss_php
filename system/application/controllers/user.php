@@ -142,7 +142,7 @@ class User extends Controller
 					
 					$body = "Namaste \n\n";
 					$body .= 'Someone from the IP Address: '.$this->input->ip_address(). " requested to reset your password. \n\n";
-					$body .= 'If you want to reset your password, click here http://crm.hssusa.org/user/reset_pass/' . sha1($email);
+					$body .= 'If you want to reset your password, click here ' . base_url() . 'user/reset_pass/' . sha1($email);
 					$body .= "\n\nOtherwise, just ignore this e-mail.\n";
 					$body .= "\n-----\nWed Admin Team\ncrm_admin@hssusa.org\n\n";
 					//Create the message

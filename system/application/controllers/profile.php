@@ -104,6 +104,11 @@ class Profile extends Controller
 		if(isset($_POST['button']))
 		{
 			$d['household_id'] = $_POST['household_id'];
+			if($_POST['household_id'] == '-999') {
+				$this->db->select('MAX(household_id) as maxhid');
+				$result = $this->db->get('swayamsevaks');
+				$d['household_id'] = $result->row()->maxhid + 1;
+			}
 			$this->db->update('swayamsevaks', $d, array('contact_id' => $id));
 			$this->session->set_userdata('message', 'Contact\'s family was successfully updated.&nbsp;');
 			redirect('profile/view/' . $id);

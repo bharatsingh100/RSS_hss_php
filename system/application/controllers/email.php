@@ -62,7 +62,7 @@ class Email extends Controller
     $message .= '<channel>'."\n\n";
     $message .= '<title>Login Logs for CRM</title>'."\n";
     $message .= '<description>Time when everyone logs in.</description>'."\n";
-    $message .= '<link>https://crm.hssusa.org</link>'."\n";
+    $message .= '<link>' . base_url() . '</link>'."\n";
 	//	$message = 'Login Logs for '.date("F j, Y").'<br /><br />';
 	//	$message = "Name\t\tIP-Address\t\tTime\t<br />";
 		if($logs->num_rows())

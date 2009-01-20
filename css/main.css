@@ -4,22 +4,15 @@
 	margin: 0;
 }
 body {
-	font-family: "Trebuchet MS", Helvetica, Arial;
+	/*font-family: "Trebuchet MS", Helvetica, Arial; */
+	font-family: "Segoe UI [10]", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans serif;
 	font-size: 14px;
 	line-height: 140%;
 	background-color: #EBEBEB;
-	/*background-image: url('http://devcrm.hssusa.org/css/background1.png');
-background-repeat: repeat-x*/
-	/*background-color: #333333;
-*/
 }
 a {
 	text-decoration: none;
 	color: #FF6600;
-	/*border-bottom-width: thin;
-	border-bottom-style: dotted;
-	border-bottom-color: #FF3300;
-*/
 }
 a:hover {
 	/*color: #FFFFFF;
@@ -184,17 +177,6 @@ select {
 	color: #888888;
 	font-size: 12px;
 }
-/*.prop {
-   float:right;
-   width:1px;
-}
-
-.clear {
-   clear:both;
-   height:1px;
-   overflow:hidden;
-}
-.min400 {height: 400px;}*/
 
 #leftcolumn form input[type="text"], 
 #leftcolumn form select {

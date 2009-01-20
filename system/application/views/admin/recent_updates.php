@@ -1,10 +1,13 @@
 <h2>Recent Updates</h2>
 <ul>
-  <li><strong>January 18, 2009</strong>
+  <li><strong>January 19, 2009</strong>
     <ul><li>Added Optional Support for Nagas under Vibhags</li>
         <li>Improved Performance by adding Index to DB Table</li>
         <li>Fixed Bugs with permissions for some Shakha Karyakartas</li>
         <li>Switched from using First Name & Lasn Name field in Profile to just Name</li>
+        <li>Added Ability to Remove Swayamsevak from a Family.
+        	To Do it, go to Profile Page of Swayamsevak -> Connect to Family
+        	-> Select Create Own Family.</li>
         <li>Many small bug fixes</li>
       </ul>
   </li>

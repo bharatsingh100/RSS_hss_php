@@ -16,8 +16,9 @@
   <tr>
     <td>&nbsp;</td>
     <td><label>
-      <input type="submit" name="login" id="login" value="Login">
-      <a href="http://devcrm.hssusa.org/user/forgot_password">Forgot Password ?</a></label></td>
+      <input type="submit" name="login" id="login" value="Login"></label>
+      <?php echo anchor('user/forgot_password', 'Forgot Password ?');?>
+      </td>
   </tr>
 </table>
 

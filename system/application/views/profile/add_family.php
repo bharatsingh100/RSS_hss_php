@@ -6,10 +6,11 @@
                  <td width="60%"><label>
                  	<select name="household_id" id="household_id">
                        <option value="0" selected="selected">Select Person to Connect to ...</option>
+                       <option value="-999">CREATE OWN FAMILY</option>
                      	<?php
 								foreach($households as $h){
-									if($h->household_id != $contact->household_id)
-									echo "<option value=\"$h->household_id\">$h->first_name $h->last_name&nbsp;</option>\n";
+									if($h->household_id != $contact->household_id && trim($h->first_name) != '' && trim($h->last_name) != '') {
+										echo "<option value=\"$h->household_id\">$h->first_name $h->last_name&nbsp;</option>\n"; }
 								}
 						?>
                      </select>
