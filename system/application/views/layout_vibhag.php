@@ -36,7 +36,7 @@
              <?php if($this->session->userdata('nagar_id')) {
 			 		echo anchor('nagar/view/' . $this->session->userdata('nagar_id'), 'My Nagar');
 			 }?>
-			  <?php 
+			  <?php
 			  		$vibhag_link = anchor('vibhag/view/' . $this->session->userdata('vibhag_id'), 'My Vibhag');
 			  		if($this->uri->segment(3) == $this->session->userdata('vibhag_id'))
 						echo '<span class="active">'. $vibhag_link . '</span>';
@@ -94,10 +94,10 @@
          <p><?=anchor('vibhag/browse/'.$this->uri->segment(3). '/name/', 'List All Contacts');?></p>
          <p><?=anchor('vibhag/add_shakha/'.$this->uri->segment(3), 'Add New Shakha');?></p>
          <p><?=anchor('vibhag/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
-	   	 <p>Vibhag Statistics</p>
-	  <p>&nbsp;</p>
-	  <p><?=anchor('vibhag/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
-	  <p><?=anchor('vibhag/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
+	   	 <p><?=anchor('vibhag/statistics/'.$this->uri->segment(3), 'Statistics');?></p>
+	     <p>&nbsp;</p>
+	     <p><?=anchor('vibhag/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
+	     <p><?=anchor('vibhag/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
 
       <?php endif; ?>
          </div>

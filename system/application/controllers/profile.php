@@ -10,7 +10,7 @@ class Profile extends Controller
 			$this->session->set_userdata('redirect', $this->uri->uri_string());
 			redirect('user');
 		}
-		
+
 		//Check Permissions
 		$perm = array('edit_profile', 'add_to_family', 'change_password');
 		if(in_array($this->uri->segment(2), $perm)){
@@ -20,7 +20,7 @@ class Profile extends Controller
 				redirect('profile/view/'.$this->session->userdata('contact_id'));
 			}
 		}
-			
+
 		//$this->output->enable_profiler(TRUE);
 		$this->load->model('Profile_model');
 		$this->load->library('layout', 'layout_profile');
@@ -33,25 +33,25 @@ class Profile extends Controller
 			$rs = $this->db->getwhere('shakhas', array('shakha_id' => $t1))->row();
 			$this->session->set_userdata('bc_shakha', $rs->name);
 			$this->session->set_userdata('bc_shakha_id', $rs->shakha_id);
-			if(trim($rs->nagar_id) != '') {		
+			if(trim($rs->nagar_id) != '') {
 				$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);
 				$this->session->set_userdata('bc_nagar', $this->Profile_model->getShortDesc($rs->nagar_id));
-			}	
-			$this->session->set_userdata('bc_vibhag', $this->Profile_model->getShortDesc($rs->vibhag_id));	
+			}
+			$this->session->set_userdata('bc_vibhag', $this->Profile_model->getShortDesc($rs->vibhag_id));
 			$this->session->set_userdata('bc_vibhag_id', $rs->vibhag_id);
-			$this->session->set_userdata('bc_sambhag', $this->Profile_model->getShortDesc($rs->sambhag_id));		
+			$this->session->set_userdata('bc_sambhag', $this->Profile_model->getShortDesc($rs->sambhag_id));
 			$this->session->set_userdata('bc_sambhag_id', $rs->sambhag_id);
 		}
-		
+
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 		$this->output->set_header('Pragma: no-cache');
     }
-	
+
 	function view($id)
-	{		
+	{
 		$data['query'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id));
 		$data['shakha'] = $this->db->getwhere('shakhas', array('shakha_id' => $data['query']->row()->shakha_id))->row();
-		if ($data['shakha']->nagar_id != '') {	
+		if ($data['shakha']->nagar_id != '') {
 			$this->db->select('REF_CODE, short_desc');
 			$data['nagar'] = $this->db->getwhere('Ref_Code', array('DOM_ID' => 3, 'REF_CODE' => $data['shakha']->nagar_id))->row();
 		}
@@ -73,7 +73,7 @@ class Profile extends Controller
 		}
 		$this->layout->view('profile/view-profile', $data);
 	}
-	
+
 	function edit_profile($id)
 	{
 		$submit = $this->input->post('save');
@@ -83,7 +83,7 @@ class Profile extends Controller
 			$this->session->set_userdata('message', 'Profile was updated successfully.&nbsp;');
 			redirect('profile/view/' . $_POST['contact_id']);
 		}
-			
+
 		$data['query'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id));
 		$data['pageTitle'] = 'Edit Profile';
 		$data['states'] = $this->Profile_model->getStates();
@@ -96,9 +96,9 @@ class Profile extends Controller
 		/* Changed to show all shakhas in Edit Profile page */
 		$data['shakhas'] = $this->db->orderby('state, name')->get('shakhas')->result();
 		$this->layout->view('profile/edit-profile', $data);
-		
+
 	}
-	
+
 	function add_to_family($id)
 	{
 		if(isset($_POST['button']))
@@ -115,52 +115,52 @@ class Profile extends Controller
 		}
 		$data['contact'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id))->row();
 		$this->db->orderby('first_name');
-		$this->db->where('state', $data['contact']->state); 
+		$this->db->where('state', $data['contact']->state);
 		$temp = $this->db->select('contact_id, household_id, first_name, last_name')->get('swayamsevaks');
 		if($temp->num_rows())
 			$data['households'] = $temp->result();
 		$data['shakha_name'] = $this->Profile_model->getShakhaName($data['contact']->shakha_id);
 		$data['pageTitle'] = 'Connect to a Family';
 		$this->layout->view('profile/add_family.php', $data);
-			
+
 	}
-		
+
 	function del_ss()
 	{
 		//Get Shakha ID for redirect
 		$ss = $this->db->select('shakha_id')->getwhere('swayamsevaks', array('contact_id' => $_POST['contact_id']))->row();
 		$shakha_id = $ss->shakha_id;
-		
+
 		//Remove the contact as Gatanayak for anyone
 		$d['gatanayak'] = '';
 		$this->db->update('swayamsevaks', $d, array('gatanayak' =>  $_POST['contact_id']));
-		
+
 		//Remove contact from moderatership of any email lists
 		$e['mod1'] = '';
 		$this->db->update('lists', $e, array('mod1' =>  $_POST['contact_id']));
-		$f['mod2'] = '';		
+		$f['mod2'] = '';
 		$this->db->update('lists', $f, array('mod2' =>  $_POST['contact_id']));
-		$g['mod3'] = '';				
-		$this->db->update('lists', $g, array('mod3' =>  $_POST['contact_id']));	
-		
-		//Delete the contact			
+		$g['mod3'] = '';
+		$this->db->update('lists', $g, array('mod3' =>  $_POST['contact_id']));
+
+		//Delete the contact
 		$this->db->delete('swayamsevaks', array('contact_id' =>  $_POST['contact_id']));
-		
+
 		//Delete all the responsibilities of the contact
 		$this->db->delete('responsibilities', array('swayamsevak_id' =>  $_POST['contact_id']));
-		
+
 		$this->session->set_userdata('message', 'The Contact was successfully deleted');
-		
+
 		//Redirect to contact's shakha list page
 		redirect('shakha/browse/'.$shakha_id.'/name');
 	}
-	
+
 	function change_password($id)
 	{
 		if($this->input->post('password'))
 		{
 			$oldpass = $this->db->select('password')->getwhere('swayamsevaks', array('contact_id' => $id))->row()->password;
-			if(trim($oldpass) != '' && sha1(trim($this->input->post('old_pass'))) != $oldpass) 
+			if(trim($oldpass) != '' && sha1(trim($this->input->post('old_pass'))) != $oldpass)
 			{
 				$this->session->set_userdata('message', 'Your old password didn\'t match. Please try again.');
 				redirect('profile/change_password/'.$id);

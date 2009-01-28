@@ -1,134 +1,33 @@
-<?php //echo '<pre>' . print_r($shakha) . '</pre>'; ?>
-<h2><?=$shakha->name;?></h2>
-<h3>Contact List:</h3>
-<table width="50%" border="1" cellspacing="2" cellpadding="2">
-  <tr>
-    <td width="45%">Total Families:</td>
-    <td width="18%" align="center"><?=$families?></td>
-    <td width="21%" align="center" valign="middle">Swayamsevak</td>
-    <td width="16%" align="center" valign="middle">Sevika</td>
-  </tr>
-  <tr>
-    <td>Total Swayamsevaks</td>
-    <td align="center"><?=$swayamsevaks?></td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>
-  <tr>
-    <td>Shishu ( &lt; 6)</td>
-    <td align="center"><?=$shishu?></td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>
-  <tr>
-    <td>Bala (6 - 12)</td>
-    <td align="center"><?=$bala?></td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>
-  <tr>
-    <td>Kishor (13 - 18)</td>
-    <td align="center"><?=$kishor?></td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>
-  <tr>
-    <td>Yuva(18 - 25)</td>
-    <td align="center"><?=$yuva?></td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>
-  <tr>
-    <td>Tarun (26 - 50)</td>
-    <td align="center"><?=$tarun?></td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>
-  <tr>
-    <td>Praudh</td>
-    <td align="center">12</td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>
-</table>
+<?php //print_r($vibhag);//echo '<pre>' . print_r($shakha) . '</pre>';/* ?>
+<h2><?=$vibhag->name?> Vibhag - Statistics</h2>
 <p>&nbsp;</p>
-<h3>Sankhya:</h3>
+<h3>Average Sankhya:</h3>
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
   <tr>
-    <td>Date</td>
-    <td>Info</td>
-    <td>Total</td>
-    <td>Shishu</td>
-    <td>Bala</td>
-    <td>Kishor</td>
-    <td>Yuva</td>
-    <td>Tarun</td>
-    <td>Mahila</td>
-    <td>Praudh</td>
+    <td><strong>Shakha</strong></td>
+    <td><strong><?=date('F Y')?></strong></td>
+    <td><strong><?=date('F Y', strtotime('-1 Month', strtotime(date('F Y'))))?></strong></td>
+    <td><strong><?=date('F Y', strtotime('-2 Month', strtotime(date('F Y'))))?></strong></td>
+    <td><strong><?=date('Y')?></strong></td>
+    <td><strong><?=date('Y', strtotime('-1 Year', strtotime(date('Y'))))?></strong></td>
   </tr>
+  <?php $i = 0; foreach($shakhas as $shakha): ?>
   <tr>
-    <td>10/14/07</td>
-    <td>&nbsp;</td>
-    <td>15</td>
-    <td>5</td>
-    <td>4</td>
-    <td>2</td>
-    <td>3</td>
-    <td>0</td>
-    <td>4</td>
-    <td>0</td>
-  </tr>
+    <td><?=anchor('shakha/statistics/'.$shakha['shakha_id'], $shakha['name'])?></td>
+    <td><?=(int)$shakha['this_month']?></td>
+    <td><?=(int)$shakha['last_month']?></td>
+    <td><?=(int)$shakha['last_last_month']?></td>
+    <td><?=(int)$shakha['this_year']?></td>
+    <td><?=(int)$shakha['last_year']?></td>
+  </tr><?php endforeach; ?>
+  <tr><td colspan="6">&nbsp;</tr>
   <tr>
-    <td>10/07/07</td>
-    <td>No Shakha</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td><strong>Vibhag Average</strong></td>
+    <td><?=(int)$vibhag->sankhya['this_month']['total']?></td>
+    <td><?=(int)$vibhag->sankhya['last_month']['total']?></td>
+    <td><?=(int)$vibhag->sankhya['last_last_month']['total']?></td>
+    <td><?=(int)$vibhag->sankhya['this_year']['total']?></td>
+    <td><?=(int)$vibhag->sankhya['last_year']['total']?></td>
   </tr>
-  <tr>
-    <td>09/30/07</td>
-    <td>Celebrated Utsav</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
+
 </table>
-<h3>Other:</h3>
-<p>Swayamsevaks with at least 1 phone # : <?=$phone;?></p>
-<p>Swayamsevaks with active e-mail: <?=$email?></p>
-<p>Swayamsevaks with inactive (unsubscribed, bounced) e-mails: <?=$email_unactive?></p>
-<p>&nbsp;</p>

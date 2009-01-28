@@ -5,9 +5,10 @@ class Admin extends Controller
     {
         parent::Controller();
 		$this->load->library('layout', 'layout_admin');
+		$this->output->enable_profiler($this->config->item('debug'));
 
     }
-	
+
 	function recent_updates()
 	{
 		if(!$this->session->userdata('logged_in'))
@@ -19,7 +20,7 @@ class Admin extends Controller
 		$d['pageTitle'] = 'Recent Updates';
 		$this->layout->view('admin/recent_updates', $d);
 	}
-	
+
 	function info()
 	{
 		if(!$this->session->userdata('logged_in'))
@@ -31,7 +32,7 @@ class Admin extends Controller
 		$d['pageTitle'] = 'Recent Updates';
 		$this->layout->view('admin/general_info', $d);
 	}
-		
+
 	function contact()
 	{
 		if(isset($_POST['button']))
@@ -48,7 +49,7 @@ class Admin extends Controller
 				$d['ip_add'] = $this->session->userdata('session_ip_address');
 				$d['status'] = 'Pending';
 				$this->db->insert('tickets',$d);
-				
+
 				$headers = 'From: HSS Sampark System <crm_admin@hssusa.org>'."\r\n";
 				$message = "We have received your message and we will reply to you shortly. If you do hear back from us soon. Please contact us at crm_admin@hssusa.org\r\n\r\n";
 				$message .= "Your Message:\r\n".$d['message'];
