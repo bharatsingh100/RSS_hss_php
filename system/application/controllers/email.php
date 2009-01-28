@@ -1,19 +1,19 @@
 <?php
 class Email extends Controller
 {
-    
+
 	var $userdir;
-	
+
 	function Email()
     {
         parent::Controller();
-	//$this->output->enable_profiler(TRUE);
+	    $this->output->enable_profiler($this->config->item('debug'));
 		$this->load->helper('file');
 		$this->load->model('Vibhag_model');
 		$this->userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
 		$this->userdir = $this->userdir[2];
     }
-	
+
 	function zip_code_fixes($id)
 	{
 		//$state = $this->db->select('state')->getwhere('shakhas', array('shakha_id' => $id))->row()->state;
@@ -28,7 +28,7 @@ class Email extends Controller
 				{
 					$d['zip'] = $zip->row()->zip;
 					echo $s->contact_id,' ',$s->city,' ',$s->state,' ',$d['zip'],'<br />';
-					//$this->db->update('swayamsevaks', 
+					//$this->db->update('swayamsevaks',
 				}
 			}
 		}
@@ -49,6 +49,24 @@ class Email extends Controller
         if ($swift->send($message, "zzzabhi@gmail.com", "admin@theuniversalwisdom.org")) echo "Sent";
         else echo "Failed";
     }*/
+
+	//Testing E-mail
+	function email_test() {
+	    $this->load->library('email');
+
+        $this->email->from('your@example.com', 'Your Name');
+        $this->email->to('zzzabhi@gmail.com');
+        //$this->email->cc('another@another-example.com');
+        //$this->email->bcc('them@their-example.com');
+
+        $this->email->subject('Email Test');
+        $this->email->message('Testing the email class.');
+
+        $this->email->send();
+
+        echo $this->email->print_debugger();
+	}
+
 	function login_log_rss()
 	{
 	//	require_once "Swift.php";
@@ -75,15 +93,15 @@ class Email extends Controller
 				$message .= "$log->login".'</description>'."\n";
 				$message .= '</item>'."\n";
 			}
-		
+
     $message .= '</channel>'."\n\n";
     $message .= '</rss>'."\n";
-    echo $message;	
-      //$message =& new Swift_Message($subject, $message, "text/html");	
+    echo $message;
+      //$message =& new Swift_Message($subject, $message, "text/html");
 			//$swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
 		}
 	}
-	
+
 	function login_log()
 	{
 		require_once "Swift.php";
@@ -102,11 +120,11 @@ class Email extends Controller
 				$message .= "\t\t" . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr);
 				$message .="\t\t$log->login\t<br />";
 			}
-			$message =& new Swift_Message($subject, $message, "text/html");	
+			$message =& new Swift_Message($subject, $message, "text/html");
 			$swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
 		}
 	}
-	
+
 	function email_lists()
 	{
 		require_once "Swift.php";
@@ -136,80 +154,122 @@ class Email extends Controller
 					case 'NT':
 						$list_type = 'national';
 						break;
-				}																		
+				}
 				$message .= anchor(site_url($list_type.'/email_lists/'.$list->level_id), $list->address.'@hssusa.org');
 				//$message .= "\t\t" . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr);
-				$message .="\t\t$list->status\t\t$list->level\t\t".anchor(site_url($list_type.'/view/'.$list->level_id), $list->level_id);				
+				$message .="\t\t$list->status\t\t$list->level\t\t".anchor(site_url($list_type.'/view/'.$list->level_id), $list->level_id);
 				$message .= '<br />';
 			}
-			$message =& new Swift_Message($subject, $message, "text/html");	
+			$message =& new Swift_Message($subject, $message, "text/html");
 			$swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
 		}
 	}
+
+	//Set Shakha sankhya to 0 if there isn't sankhya entered for the Shakha
 	function initialize_sankhya()
 	{
-		$day = date('l');
+		//Find All Shakhas that are held Today (i.e. Monday, Tuesday)
+	    $day = date('l');
+		$this->db->select('shakha_id');
 		$shakhas = $this->db->getwhere('shakhas', array('frequency_day' => $day, 'frequency' => 'WK', 'shakha_status' => 1));
+        $exists = '';
 		if($shakhas->num_rows()){
+
+		    $shakha_ids = $shakhas->result_array();
+		    $ids = array();
+		    foreach($shakha_ids as $j)
+		        $ids[] = $j['shakha_id'];
+
+		    $shakha_ids = implode(',',array_values($ids));
+
+		    //Build Array of Shakahs that already have their Sankhya Entered
+		    $this->db->select('shakha_id');
+		    $this->db->where("shakha_id IN ($shakha_ids)");
+		    $exists = $this->db->getwhere('sankhyas', array('date' => date('Y-m-d')));
+
+		    if($exists->num_rows()) {
+		        $exists = $exists->result_array();
+		        foreach($exists as $k)
+		            $keys[] = $k['shakha_id'];
+		        $exists = $keys;
+		    } else {
+                $exists = array();
+		    }
+
 			foreach($shakhas->result() as $shakha)
 			{
-				$data['total'] = $data['shishu_m'] = $data['shishu_f'] = $data['bala_f'] = $data['bala_m'] = $data['kishor_m'] = $data['kishor_f'] = $data['yuva_m'] = $data['yuva_f'] = $data['tarun_m'] = $data['tarun_f'] = $data['praudh_m'] = $data['praudh_f'] = 0;
+				if(in_array($shakha->shakha_id, $exists)) continue;
+
+			    $data['total'] = $data['shishu_m'] = $data['shishu_f'] = 0;
+			    $data['bala_f'] = $data['bala_m'] = $data['kishor_m'] = 0;
+			    $data['kishor_f'] = $data['yuva_m'] = $data['yuva_f'] = 0;
+			    $data['tarun_m'] = $data['tarun_f'] = $data['praudh_m'] = $data['praudh_f'] = 0;
 				$data['contact_id'] = $this->session->userdata('0');
 				$data['ip'] = $this->input->ip_address();
 				$data['date'] = date('Y-m-d');
 				$data['shakha_id'] = $shakha->shakha_id;
-				
-				$exists = $this->db->getwhere('sankhyas', array('date' => $data['date'], 'shakha_id' => $data['shakha_id']));
-				if(!$exists->num_rows())
-					$this->db->insert('sankhyas', $data);
+				$this->db->insert('sankhyas', $data);
 			}
 		}
+
+		return $exists;
 	}
-		
+
 	function sankhya_reminder()
 	{
-		require_once "Swift.php";
-        require_once "Swift/Connection/SMTP.php";
-		$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
+		//require_once "Swift.php";
+        //require_once "Swift/Connection/SMTP.php";
+		//$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
+        $this->load->library('email');
 
-		$this->initialize_sankhya();
-		$day = date('l');
-		$shakhas = $this->db->getwhere('shakhas', array('frequency_day' => $day, 'frequency' => 'WK', 'shakha_status' => 1));
+		$exclude_shakhas = $this->initialize_sankhya();
+
+		$shakhas = $this->db->getwhere('shakhas', array('frequency_day' => date('l'), 'frequency' => 'WK', 'shakha_status' => 1));
 		if($shakhas->num_rows()){
 			$shakhas = $shakhas->result();
 			foreach($shakhas as $shakha){
+
+			    if(in_array($shakha->shakha_id, $exclude_shakhas)) continue;
+
 				$this->db->where('shakha_id', $shakha->shakha_id);
-				$this->db->where("responsibility IN ('030','031')");
+				$this->db->where("responsibility IN ('020', '030','031')");
 				$kks = $this->db->select('swayamsevak_id')->get('responsibilities');
-				
-				$message = "Please enter the sankhya of $shakha->name for " . date("F j, Y") . ' at ';
-				$message .= site_url('shakha/add_sankhya/'.$shakha->shakha_id);
-				$message .= "\n\nThanks\ncrm_admin@hssusa.org\n";
-				$subject = "Sankhya reminder for $shakha->name";
-				$recipients =& new Swift_RecipientList();
-				
+
 				if($kks->num_rows()){
+    				$message    = "Please enter the sankhya of $shakha->name for " . date("F j, Y") . ' at ';
+                    $message   .= site_url('shakha/add_sankhya/'.$shakha->shakha_id);
+                    $message   .= "\n\nThanks\nHSS Sampark System\n";
+                    $subject    = "Sankhya reminder for $shakha->name";
+
+                    $this->email->subject($subject);
+                    $this->email->from('crm_admin@hssusa.org', 'HSS Sampark System');
+                    $this->email->reply_to('crm_admin@hssusa.org', 'HSS Sampark System');
+    				//$recipients =& new Swift_RecipientList();
+
 					$kks = $kks->result();
 					foreach ($kks as $k){
 						$t = $this->db->select('first_name, last_name,  email')->getwhere('swayamsevaks', array('contact_id' => $k->swayamsevak_id, 'email_status' => 'Active'));
-						if($t->num_rows()) $recipients->addTo($t->row()->email, $t->row()->first_name .' '.$t->row()->last_name);
-					}
-					
-					//Create the message
-					$message =& new Swift_Message($subject, $message);
+						if($t->num_rows() && trim($t->row()->email) != '' ){
+                            $text   = 'Pranam ' . $t->row()->first_name. " Ji\n\n";
+                            $text  .= $message;
 
-					//Now check if Swift actually sends it
-					if ($swift->send($message, $recipients, "crm_admin@hssusa.org")) echo "Sent";
-					else echo "Failed";
+                            $this->email->to($t->row()->email);
+                            $this->email->to('zzzabhi@yahoo.com');
+                            $this->email->message($text);
+                            $this->email->send();
+                            $this->email->print_debugger();
+						}
+					}
+
 				}
-			}	
+			}
 		}
 
 	}
-	
+
 /*	function unsubscribed()
 	{
-	
+
 	    // Define the full path to your folder from root
 	    $path = "/home/$this->userdir/www/emails/unsubscribed/";
 
@@ -224,7 +284,7 @@ class Email extends Controller
 			$theData = '';
 			while(!feof($fh)) $theData .= fgets($fh);
 			fclose($fh);
-			$values = explode("\n", $theData); 
+			$values = explode("\n", $theData);
 			$t['email_status'] = 'Unsubscribed';
 			foreach($values as $val)
 			{
@@ -232,7 +292,7 @@ class Email extends Controller
 				$this->db->where('email', $val);
 				$this->db->update('swayamsevaks', $t);
 			}
-			
+
 			//echo "<a href=\"$file\">$file</a><br />";
 	    }
 	    // Close
@@ -241,7 +301,7 @@ class Email extends Controller
 
 	function bounced()
 	{
-	
+
 	    // Define the full path to your folder from root
 	    $path = "/home/$this->userdir/www/emails/bounced/";
 
@@ -257,7 +317,7 @@ class Email extends Controller
 			$theData = '';
 			while(!feof($fh)) $theData .= fgets($fh);
 			fclose($fh);
-			$values = explode("\n", $theData); 
+			$values = explode("\n", $theData);
 			$t['email_status'] = 'Bounced';
 			foreach($values as $val)
 			{
@@ -265,13 +325,13 @@ class Email extends Controller
 				$this->db->where('email', $val);
 				$this->db->update('swayamsevaks', $t);
 			}
-			
+
 			//echo "<a href=\"$file\">$file</a><br />";
 	    }
 	    // Close
 	    closedir($dir_handle);
 	}
-	
+
 	function config_files()
 	{
 		//List Lists
@@ -308,12 +368,12 @@ class Email extends Controller
 					}
 					else $mods .= "]\n";
 				}
-				else $mods .= "]\n";			
+				else $mods .= "]\n";
 				//Append moderaters to config file
 				$fh = fopen($file, 'a') or die("can't open file");
 				fwrite($fh, $mods);
 				fclose($fh);
-				
+
 				$file = $p.'configs_pass/'.$list->address.$host;
 				$fh = fopen($file, 'w') or die("Can't open file");
 				$txt = "import sha\n";
@@ -322,7 +382,7 @@ class Email extends Controller
 				fwrite($fh, $txt);
 				fclose($fh);
 			}
-		} 
+		}
 	}
 
 	function shakha_lists()
@@ -339,7 +399,7 @@ class Email extends Controller
 			}
 			echo write_file('/home/'.$this->userdir.'/www/emails/elists.txt', $l);
 			echo shell_exec("chmod 0666 /home/$this->userdir/www/emails/elists.txt");
-			
+
 			foreach($lists as $list)
 			{
 				$list_name = $list->address . $host;
@@ -362,13 +422,13 @@ class Email extends Controller
 							$t = $this->db->get()->result();
 							foreach($t as $j) $emails .= $j->email . "\n";
 							break;
-					}	
+					}
 				}
 				$e_arr = explode("\n",$emails);
 				$q['size'] = count(array_unique($e_arr));
 				$this->db->where('id',$list->id);
 				$this->db->update('lists',$q);
-				
+
 				if($emails != '' && write_file($file, $emails))
 				{
 					echo $file . '<br />';
@@ -380,7 +440,7 @@ class Email extends Controller
 		}
 		else echo '=======No Lists Found=======';
 	}
-	
+
 	function vibhag_lists()
 	{
 		$host = '_hssusa.org';
@@ -388,7 +448,7 @@ class Email extends Controller
 		if($lists->num_rows())
 		{
 			$lists = $lists->result();
-			
+
 			foreach($lists as $list)
 			{
 				$list_name = $list->address . $host;
@@ -396,7 +456,7 @@ class Email extends Controller
 				$members = unserialize($list->members);
 				$emails = '';
 //				echo $list_name . '<br />';
-				
+
 				$shakha_ids = $this->Vibhag_model->get_shakhas($list->level_id);
 				$shakha_ids = '('.implode(',',$shakha_ids).')';
 				foreach($members as $member)
@@ -417,13 +477,13 @@ class Email extends Controller
 							foreach($t as $j) $emails .= $j->email . "\n";
 							break;
 					}
-						
+
 				}
 				$e_arr = explode("\n",$emails);
 				$q['size'] = count(array_unique($e_arr));
 				$this->db->where('id',$list->id);
 				$this->db->update('lists',$q);
-				
+
 				if($emails != '' && write_file($file, $emails))
 				{
 					echo $file . '<br />';
@@ -435,7 +495,7 @@ class Email extends Controller
 		}
 		else echo '=======No Lists Found=======';
 	}
-	
+
 	function sambhag_lists()
 	{
 		$host = '_hssusa.org';
@@ -443,7 +503,7 @@ class Email extends Controller
 		if($lists->num_rows())
 		{
 			$lists = $lists->result();
-			
+
 			foreach($lists as $list)
 			{
 				$list_name = $list->address . $host;
@@ -451,7 +511,7 @@ class Email extends Controller
 				$members = unserialize($list->members);
 				$emails = '';
 //				echo $list_name . '<br />';
-				
+
 				$shakha_ids = $this->Sambhag_model->get_shakhas($list->level_id);
 				$shakha_ids = '('.implode(',',$shakha_ids).')';
 				foreach($members as $member)
@@ -472,13 +532,13 @@ class Email extends Controller
 							foreach($t as $j) $emails .= $j->email . "\n";
 							break;
 					}
-						
+
 				}
 				$e_arr = explode("\n",$emails);
 				$q['size'] = count(array_unique($e_arr));
 				$this->db->where('id',$list->id);
 				$this->db->update('lists',$q);
-				
+
 				if($emails != '' && write_file($file, $emails))
 				{
 					echo $file . '<br />';
@@ -490,7 +550,7 @@ class Email extends Controller
 		}
 		else echo '=======No Lists Found=======';
 	}
-	
+
 	function national_lists()
 	{
 		$host = '_hssusa.org';
@@ -498,7 +558,7 @@ class Email extends Controller
 		if($lists->num_rows())
 		{
 			$lists = $lists->result();
-			
+
 			foreach($lists as $list)
 			{
 				$list_name = $list->address . $host;
@@ -545,13 +605,13 @@ class Email extends Controller
 							foreach($t as $j) $emails .= $j->email . "\n";
 							break;
 					}
-						
+
 				}
 				$e_arr = explode("\n",$emails);
 				$q['size'] = count(array_unique($e_arr));
 				$this->db->where('id',$list->id);
 				$this->db->update('lists',$q);
-				
+
 				if($emails != '' && write_file($file, $emails))
 				{
 					echo $file . '<br />';
