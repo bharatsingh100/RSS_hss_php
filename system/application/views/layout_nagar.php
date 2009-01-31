@@ -43,7 +43,10 @@
              <?php echo anchor('sambhag/view/' . $this->session->userdata('sambhag_id'), 'My Sambhag'); ?>
              <?php echo anchor('national/view', 'National'); ?>
              </span>
-            <span class="right"><?php echo anchor('tour', 'Tutorial Video'); ?></span>
+            <span class="right">
+                <?php echo anchor('admin/hssdocs','Share Documents'); ?>
+                <?php echo anchor('tour', 'Tutorial Video'); ?>
+            </span>
          </div>
 <!-- End Navigation -->
 		 <!-- Breadcrumb -->

@@ -64,6 +64,17 @@ class Admin extends Controller
 		$d['pageTitle'] = 'Contact System Admin';
 		$this->layout->view('admin/contact', $d);
 	}
+
+	function hssdocs(){
+    	if (!$this->session->userdata('logged_in')) {
+            $this->session->set_userdata('message', 'Please login to access the system.');
+            $this->session->set_userdata('redirect', $this->uri->uri_string());
+            redirect('user');
+        }
+
+	    $d['pageTitle'] = 'Share Documents';
+	    $this->layout->view('admin/hssdocs', $d);
+	}
 }
 
 ?>

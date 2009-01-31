@@ -32,7 +32,7 @@
 		 <div id="navigation">
 			<span class="left">
 			 <?php echo anchor('profile/view/' . $this->session->userdata('contact_id'), 'My Profile'); ?>
-             <?php if($this->session->userdata('shakha_id') == $this->uri->segment(3)) 
+             <?php if($this->session->userdata('shakha_id') == $this->uri->segment(3))
              		{$t = TRUE; echo '<span class="active">';}?>
              <?php echo anchor('shakha/view/' . $this->session->userdata('shakha_id'), 'My Shakha'); ?>
              	<?php if(isset($t)) echo '</span>';?>
@@ -46,7 +46,10 @@
              <?php //echo anchor('events', 'Events'); ?>  |
              <?php //echo anchor('organization', 'Organization'); ?>-->
              </span>
-            <span class="right"><?php echo anchor('tour', 'Tutorial Video'); ?></span>
+            <span class="right">
+                <?php echo anchor('admin/hssdocs','Share Documents'); ?>
+                <?php echo anchor('tour', 'Tutorial Video'); ?>
+            </span>
          </div>
 <!-- End Navigation -->
 		 <!-- Breadcrumb -->
