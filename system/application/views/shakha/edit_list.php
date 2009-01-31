@@ -21,10 +21,7 @@
         <!--<input name="address" type="text" id="address" size="35" maxlength="50" value=""/>-->
         <strong><?=$lists->address?>@hssusa.org</strong></label></td>
     </tr>
-        <tr valign="middle">
-      <td align="right">&nbsp;</td>
-      <td colspan="2"><span class="style3">(No spaces. Only alphanumeric characters, dash and underscores are allowd.)</span></td>
-    </tr>
+
     <tr valign="middle">
       <td align="right" valign="top"><strong>List Style:</strong></td>
       <td colspan="2"><p>
@@ -90,7 +87,12 @@
     <tr valign="middle">
       <td align="right"><strong>Moderator Password:</strong></td>
       <td colspan="2"><label>
-        <input name="mod_pass" type="text" id="pass1" size="35" maxlength="50" value="<?=$lists->mod_pass?>"/>
+        <?php if($lists->mod_pass == 'swayamsevak') : ?>
+            <strong>swayamsevak</strong>
+            <input name="mod_pass" type="hidden" id="mod_pass" value='swayamsevak'/>
+        <?php else: ?>
+            <input name="mod_pass" type="text" id="pass1" size="35" maxlength="50" value="<?=$lists->mod_pass?>"/>
+        <?php endif; ?>
       </label></td>
     </tr>
     <tr valign="middle">
@@ -102,36 +104,36 @@
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
-    <tr valign="middle">
+    <tr valign="top">
       <td align="right"><strong>List Members:</strong></td>
       <td width="203"><label>
       <?php $members = unserialize($lists->members); ?>
         <span class="style2">
         <input name="members[]" type="checkbox" id="checkbox" value="allss" <?php if(in_array('allss', $members)) echo 'checked="checked"';?>/>
         </span></label>
-        <strong>      All Swayamsevaks</strong></td>
+        <strong>All Shakha Swayamsevak </strong><span class="style3">Including All Karyakarta</span></td>
       <td width="276"><label>
         <span class="style1">
         <input name="members[]" type="checkbox" id="checkbox2" value="allkk" <?php if(in_array('allkk', $members)) echo 'checked="checked"';?>/>
         </span></label>
-        <strong> All Karyakartas</strong></td>
+        <strong> All Shakha Karyakartas</strong></td>
     </tr>
     <!--<tr valign="middle">
       <td align="right">&nbsp;</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox3" value="bala" />
-      </label> 
+      </label>
         Bala only</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox8" value="gatanayak" />
-      </label> 
+      </label>
         Gatanayaks Only</td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox4" value="kishor" />
-      </label> 
+      </label>
         Kishor only</td>
       <td>&nbsp;</td>
     </tr>
@@ -139,7 +141,7 @@
       <td align="right">&nbsp;</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox5" value="yuva" />
-      </label> 
+      </label>
         Yuva only</td>
       <td>&nbsp;</td>
     </tr>
@@ -147,7 +149,7 @@
       <td align="right">&nbsp;</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox6" value="tarun" />
-      </label> 
+      </label>
         Tarun only</td>
       <td>&nbsp;</td>
     </tr>

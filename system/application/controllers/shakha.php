@@ -4,7 +4,7 @@ class Shakha extends Controller
     function Shakha()
     {
         parent::Controller();
-        
+
         //If the user is not logged in, redirect them to login page
         //Set the redirect so that user comes back here after login
 		if(!$this->session->userdata('logged_in'))
@@ -13,17 +13,17 @@ class Shakha extends Controller
 			$this->session->set_userdata('redirect', $this->uri->uri_string());
 			redirect('user');
 		}
-		
+
 		//$this->output->enable_profiler(TRUE);
 		$this->load->model('Shakha_model');
 		$this->load->library('layout', 'layout_shakha');
 
-	  
+
 	  	//Check Permissions
         //$perml = Array of functions for lower shakha level permissions
 		$perml = array('browse', 'gata', 'addss', 'add_family_member', 'import_contacts' , 'add_sankhya' , 'responsibilities' , 'edit_shakha' , 'statistics' , 'email_lists' , 'create_list');
 		$permh = array('import_contacts','add_sankhya','responsibilities','edit_shakha','email_lists','create_list');
-		
+
 		if(in_array($this->uri->segment(2), $perml))
 		{
 			if(!$this->permission->is_shakha_kkl($this->uri->segment(3)))
@@ -37,7 +37,7 @@ class Shakha extends Controller
 				redirect('shakha/view/'.$this->session->userdata('shakha_id'));
 			}
 		}
-		
+
 		//Set Breadcrump variables
 		$exception = array('add_email_list', 'insert_sankhya', 'add_family');
 		if(!in_array( $this->uri->segment(2), $exception))
@@ -45,29 +45,29 @@ class Shakha extends Controller
 			$rs = $this->db->getwhere('shakhas', array('shakha_id' => $this->uri->segment(3)))->row();
 			$this->session->set_userdata('bc_shakha', $rs->name);
 			$this->session->set_userdata('bc_shakha_id', $rs->shakha_id);
-			
-			if(trim($rs->nagar_id) != '') {		
+
+			if(trim($rs->nagar_id) != '') {
 				$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);
 				$this->session->set_userdata('bc_nagar', $this->Shakha_model->getShortDesc($rs->nagar_id));
-			}	
-				
-			$this->session->set_userdata('bc_vibhag', $this->Shakha_model->getShortDesc($rs->vibhag_id));	
+			}
+
+			$this->session->set_userdata('bc_vibhag', $this->Shakha_model->getShortDesc($rs->vibhag_id));
 			$this->session->set_userdata('bc_vibhag_id', $rs->vibhag_id);
-			$this->session->set_userdata('bc_sambhag', $this->Shakha_model->getShortDesc($rs->sambhag_id));			
+			$this->session->set_userdata('bc_sambhag', $this->Shakha_model->getShortDesc($rs->sambhag_id));
 			$this->session->set_userdata('bc_sambhag_id', $rs->sambhag_id);
 		}
-		
+
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 		$this->output->set_header('Pragma: no-cache');
-		
+
     }
-	
+
 	function email_lists($id)
 	{
         $this->db->select('id,address,level_id,status,style,size,mod1,mod2,mod3');
         //$this->db->where('level_id = '.$id.' AND status = \'Active\' OR status = \'Creating'\');
         $d['lists'] = $this->db->getwhere('lists', array('level_id' => $id))->result_array();
-        
+
         foreach ($d['lists'] as &$list)
         {
 			$list['address'] .= '@hssusa.org';
@@ -124,26 +124,26 @@ class Shakha extends Controller
 				$this->session->set_userdata('message', 'Your password should be at least 5 characters long.');
 				redirect('shakha/edit_list/'.$id.'/'.$list_id);
 			}
-			
+
 			foreach($_POST as $key => $val)
 				$d[$key] = $val;
-			
+
 			unset($d['button']);
 			if(!isset($d['mod3']) || $d['mod3'] == '') $d['mod3'] = 0;
 			if(!isset($d['mod2']) || $d['mod2'] == '') $d['mod2'] = 0;
 			$d['members'] = serialize($d['members']);
 			$this->db->update('lists', $d, array('id' => $list_id));
-			
+
 			$this->session->set_userdata('message', 'Your list was updated successfully.');
 			redirect('shakha/email_lists/'.$id);
-			
+
 		}
 
-        	
+
 		$c['lists'] = $this->db->getwhere('lists', array('id' => $list_id))->row();
 		$c['shakha'] = $this->Shakha_model->getShakhaInfo($c['lists']->level_id);
 		$c['pageTitle'] = 'Edit E-mail list';
-		$this->layout->view('shakha/edit_list', $c);	
+		$this->layout->view('shakha/edit_list', $c);
     }
 
 	function create_list($id, $error = '')
@@ -154,7 +154,7 @@ class Shakha extends Controller
 		$c['pageTitle'] = 'Create new e-mail list';
 		$this->layout->view('shakha/create_list', $c);
 	}
-	
+
 	function del_list($id, $list_id)
 	{
 		if(isset($_POST['button2']))
@@ -166,7 +166,7 @@ class Shakha extends Controller
 		}
 		else redirect('shakha/email_lists/'.$id);
 	}
-	
+
 	function add_email_list()
 	{
 		$ers = false;
@@ -174,11 +174,13 @@ class Shakha extends Controller
 
 		foreach($_POST as $key => &$value){
 			if($key == 'members'){
-				foreach($value as $v) 
-					$error['members'][] = $v; }
-			$error[$key] = $value;}
+				foreach($value as $v)
+					$error['members'][] = $v;
+			}
+			$error[$key] = $value;
+		}
 
-		
+
 		if(!isset($error['address']) || $error['address'] == '')
 		{
 			$error['msg'][] = 'You must enter the List Name';
@@ -189,7 +191,7 @@ class Shakha extends Controller
 			$error['msg'][] = 'Your must enter a password.';
 			$ers = true;
 		}
-		if(!is_array($error['members']) || !count($error['members'])) 
+		if(!is_array($error['members']) || !count($error['members']))
 		//Count returns 0 is variable is not set or array is empty
 		{
 			$error['msg'][] = 'You must select at least one member for your list';
@@ -201,7 +203,7 @@ class Shakha extends Controller
 				$error['address'] = '';
 				$ers = true;
 		}
-		
+
 		if($ers)
 		{
 			$this->session->set_userdata('message', 'Please correct the errors.');
@@ -211,7 +213,7 @@ class Shakha extends Controller
 		$this->Shakha_model->add_email_list();
 		$this->session->set_userdata('message', 'Your list '.$this->input->post('address').'@hssusa.org has been requested.');
 		redirect('shakha/email_lists/'.$this->input->post('level_id'));
-		
+
 		//TODO: Add hidden shakha id parameter to from page
 		//$d['level'] = 'sh';
 		//level = 0-Shakha 1-vibhag 2-sambhag
@@ -219,7 +221,7 @@ class Shakha extends Controller
 		//members = 0 All Swayamsevaks | 1 Bala swayamsevaks | 2 Kishor Swayamsevaks | 3 Yuva Swayamsevaks
 		// 4 Tarun Swayamsevaks | 5 Praudh swayamsevaks | 6 All Karyakartas
 	}
-	
+
 	function statistics($id)
 	{
 		$yr = date('Y');
@@ -232,7 +234,7 @@ class Shakha extends Controller
 		$v['families'] = $this->db->select('DISTINCT household_id')->getwhere('swayamsevaks', array('shakha_id' => $id))->num_rows();
 		$v['contacts'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id))->num_rows();
 		$v['swayamsevaks'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id, 'gender' => 'M'))->num_rows();
-		$v['sevikas'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id, 'gender' => 'F'))->num_rows();		
+		$v['sevikas'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id, 'gender' => 'F'))->num_rows();
 		$v['shishu'] = $this->db->getwhere('swayamsevaks', 'birth_year > '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
 		$v['bala'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
 		$v['kishor'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala'].' AND shakha_id =' . $id)->num_rows();
@@ -244,7 +246,7 @@ class Shakha extends Controller
 		$v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
 		$v['sankhyas'] = $this->db->getwhere('sankhyas', array('shakha_id' => $id))->result();
 		$v['pageTitle'] = $v['shakha']->name.' Shakha Statistics';
-		
+
 		$this->layout->view('shakha/statistics', $v);
 	}
 
@@ -254,14 +256,14 @@ class Shakha extends Controller
 		$this->db->where('responsibility', $resp_id);
 		$this->db->where('swayamsevak_id', $ss_id);
 		$this->db->delete('responsibilities');
-		
+
 		//Remove Karyakarta from his gata members.
 		$d['gatanayak'] = '';
 		$this->db->update('swayamsevaks', $d, array('gatanayak' =>  $ss_id));
-		
+
 		$this->session->set_userdata('message', 'Responsibility deleted.');
 		redirect('shakha/responsibilities/' . $shakha_id);
-		
+
 	}
 
 	function responsibilities($id)
@@ -289,7 +291,7 @@ class Shakha extends Controller
 	function add_sankhya($id, $date = '')
 	{
 		$data['dates'] = $this->_getShakhaDate($id);
-		
+
 		if($date == ''){
 			if(sizeof($data['dates']) == 1)
 				$date = $data['dates'][0]['datemysql'];
@@ -301,10 +303,10 @@ class Shakha extends Controller
 
 		$v = $this->db->getwhere('sankhyas', array('shakha_id' => $id, 'date' => $date));
 		if($v->num_rows()) $data['sankhya'] = $v->row();
-			
+
 		$data['shakha'] = $this->db->getwhere('shakhas', array('shakha_id' => $id))->row();
 		$data['pageTitle'] = 'Add Sankhya';
-		
+
 		$this->layout->view('shakha/add-sankhya', $data);
 	}
 
@@ -315,11 +317,11 @@ class Shakha extends Controller
 		$wd = array("Sunday" => 0, "Monday" => 1, "Tuesday" => 2, "Wednesday" => 3, "Thursday" => 4, "Friday" => 5, "Saturday" => 6);
 
 		$day_number = $wd[$shakha->frequency_day];
-		$t=getdate();   
+		$t=getdate();
 		//This Week//
 		$start=$t[0]-(86400*$t['wday']);
 		$time = $start + (86400*$day_number);
-		
+
 		$i = 0;
 		do{
 			$data[$i]['date'] = date('l, F j, o', $time);
@@ -327,7 +329,7 @@ class Shakha extends Controller
 			$data[$i]['selected'] = (date('W',$time) == date('W')) ? true : false;
 			$time -= 604800; //Subtract a week
 		} while(++$i < 5);//Last 5 weeks oonly
-		
+
 		return $data;
 	}
 
@@ -337,7 +339,7 @@ class Shakha extends Controller
 		$this->session->set_userdata('message', 'Sankhya added for your Shakha');
 		redirect('shakha/view/'. $this->input->post('shakha_id'));
 	}
-	
+
 	function edit_shakha($id)
 	{
 		if(isset($_POST['save']))
@@ -349,7 +351,7 @@ class Shakha extends Controller
 		$data['states'] = $this->Shakha_model->getStates();
 		$data['row'] = $this->Shakha_model->getShakhaInfo($id);
 		$data['pageTitle'] = $data['row']->name;
-		$this->db->orderby('short_desc', 'desc'); 
+		$this->db->orderby('short_desc', 'desc');
 		$vibhags = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', array('DOM_ID' => 2))->result();
 		foreach($vibhags as $vibhag)
 			$data['vibhags'][$vibhag->REF_CODE] = $vibhag->short_desc;
@@ -360,56 +362,56 @@ class Shakha extends Controller
 	 	ksort($data['vibhags']);
 		$this->layout->view('shakha/edit_shakha', $data);
 	}
-	
+
 	function karyakarta_csv_out($id)
 	{
 		$this->output->enable_profiler(FALSE);
 		$this->load->dbutil();
-		
+
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
 		$this->db->orderby('responsibilities.responsibility');
 		$this->db->join('responsibilities', "responsibilities.shakha_id = $id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 		$q = $this->db->get();
 		$i = $q->num_rows() - 1;
-		
+
 		$query = $q->result_array();
     	for(; $i > -1 ; $i--)
 			$query[$i]['responsibility'] = $this->Shakha_model->getShortDesc($query[$i]['responsibility']);
-				
+
     	//Set proper parameters for delimineting CSV file
 		$delim = ",";
 		$newline = "\r\n";
-		
+
 		$out = '';
-    	
+
 		//Output CSV File headers (i.e. Name, E-mail etc.)
     	foreach ($q->list_fields() as $name)
 			$out .= ucwords($name).$delim;
-		
+
 		$out = rtrim($out);
 		$out .= $newline;
-		
+
 		// Next blast through the result array and build out the rows
 		foreach ($query as $row)
 		{
 			foreach ($row as $item)
-				$out .= $item.$delim;			
+				$out .= $item.$delim;
 
 			$out = rtrim($out);
 			$out .= $newline;
 		}
-		
+
 		$data['out'] = $out;
-		
+
 		//Set headers so that Browser prompots to download CSV file rather than show.
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=". url_title($this->Shakha_model->getShakhaName($id)) . '-Karyakartas-' . date("M-d_H-i") .".csv");
-		
+
 		//Send data to special View file to print $out contents
 		$this->load->view('shakha/kk_csv', $data);
 	}
-	
+
 	function csv_out($id)
 	{
 		$this->output->enable_profiler(FALSE);
@@ -420,7 +422,7 @@ class Shakha extends Controller
 		$this->output->set_header("Content-disposition: csv; filename=". url_title($this->Shakha_model->getShakhaName($id)) . '-' . date("M-d_H-i") .".csv");
 		$this->load->view('shakha/csv', $data);
 	}
-	
+
 	function browse($id = '', $order = 'name') {
 		if($id == '') $id = $this->session->userdata('shakha_id');
 		$this->load->library('pagination');
@@ -433,16 +435,16 @@ class Shakha extends Controller
 		$config['uri_segment'] = 5;
 //		$config['post_url'] = $data['order'].'/'.$data['orderDir'];
 		$this->pagination->initialize($config);
-		
+
 		$data['results'] = $this->Shakha_model->get_swayamsevaks($config['per_page'], $this->uri->segment(5), $id, $order);
 		$data['pageTitle'] = 'Browse Swayamsevaks';
 		$data['shakha_name'] = $this->Shakha_model->getShakhaName($id);
-	    	
+
 		$this->load->library('table');
     		$this->table->set_heading('Name', 'City', 'Phone', 'E-mail', 'Gana', 'Gatanayak');
 		$this->layout->view('shakha/list_ss', $data);
 	}
-		
+
 	function view($id)
 	{
 
@@ -450,7 +452,7 @@ class Shakha extends Controller
 		$data['pageTitle'] = $data['row']->name;
 		$this->layout->view('shakha/view-shakha', $data);
 	}
-	
+
 	function gata($id)
 	{
 		$data['row'] = $this->Shakha_model->getShakhaInfo($id);
@@ -464,15 +466,15 @@ class Shakha extends Controller
 			$t = $this->db->get('swayamsevaks');
 			$data['gatas'][$kk->contact_id]->gata =($t->num_rows()) ? $t->result() : array();
 		}
-					
+
 		$data['pageTitle'] = $data['row']->name.' Gatas';
 		$this->layout->view('shakha/gata', $data);
 	}
-	
+
 	function gata_csv($id)
 	{
 		$data['shakha'] = $this->Shakha_model->getShakhaInfo($id);
-		
+
     	//Get Gatanayak Information to find Swayamsevaks and populate CSV file
     	$gatanayaks = '';
     	$gataIDs = '';
@@ -480,18 +482,18 @@ class Shakha extends Controller
 		  $gataIDs[] = $k->contact_id;
 		  $gatanayaks[$k->contact_id] = $k->first_name.' '.$k->last_name;
 		}
-    	
+
 		// Create MySQL compatible format to find Swayamsevaks with specific Gatayanayaks only
 	    $g = '('.implode(',',$gataIDs).')';
-    
+
 		$this->db->select('gatanayak, contact_id, household_id, first_name, last_name, gender, birth_year, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, notes');
 		$this->db->orderby('gatanayak, household_id');
 		$this->db->where('gatanayak IN '.$g);
 		$data['ss'] = $this->db->get('swayamsevaks');
-		
+
 		//Replace Gatanayak Contact ID with Full Name in CSV
 		$q = $data['ss']->result_array();
-		
+
 		if($data['ss']->num_rows()){
       		foreach($q as &$y)
         		$y['gatanayak'] = $gatanayaks[$y['gatanayak']];
@@ -501,36 +503,36 @@ class Shakha extends Controller
 		$delim = ",";
 		$newline = "\r\n";
 		$headers = $out = '';
-    
+
 		//Output CSV File header ...
     	foreach ($data['ss']->list_fields() as $name)
 		{
 			$headers .= ucwords($name).$delim;
 		}
-		
+
 		$headers = rtrim($headers);
 		$headers .= $newline;
-		
+
 		// Next blast through the result array and build out the rows
 		foreach ($q as $row)
 		{
 			foreach ($row as $item)
 			{
-				$out .= $item.$delim;			
+				$out .= $item.$delim;
 			}
 			$out = rtrim($out);
 			$out .= $newline;
 		}
 		$data['out'] = $headers.$out;
-		
+
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=". url_title($data['shakha']->name). '-Gatas-' . date("M-d_H-i") .".csv");
 		$this->load->view('shakha/kk_csv', $data);
-		
+
 		/*$data['pageTitle'] = $data['row']->name.' Gatas';
 		$this->layout->view('shakha/gata', $data); */
 	}
-	
+
 	function addss($id, $var = '')
 	{
 		$data['shakha_name'] = $this->Shakha_model->getShakhaName($id);
@@ -545,19 +547,19 @@ class Shakha extends Controller
 		$data['pageTitle'] = 'Add New Contact';
 		$this->layout->view('shakha/add-swayamsevak', $data);
 	}
-	
+
 	function add_family_member($shakha_id, $id)
 	{
 	   $results = $this->db->getwhere('swayamsevaks', array('contact_id' => $id))->row_array();
 	   $this->addss($shakha_id, $results);
   	}
-  
+
 	function add_family($id)
 	{
 		//Redirect back to form if the Name is not set
 		if(isset($_POST) && trim($_POST['name']) == '')
 			redirect('shakha/addss/' . $this->input->post('shakha_id'));
-			
+
 		$hhid = (isset($_POST['household_id'])) ? $_POST['household_id'] : '';
 		$data = $this->Shakha_model->insert_ss();
 		$this->session->set_userdata('message', $this->input->post('name') . ' successfully added to the database.');
@@ -568,7 +570,7 @@ class Shakha extends Controller
 		else
 			redirect('shakha/addss/' . $this->input->post('shakha_id'));
 	}
-	
+
 	function import_contacts($id)
 	{
 		$data['pageTitle'] = 'Import Contacts';
@@ -576,7 +578,7 @@ class Shakha extends Controller
 		$this->layout->view('shakha/upload_contacts', $data);
 		//User session error message to pass form failures
 	}
-	
+
 	//E-mail me the uploaded file
 
 	function _processUpload(&$filename)
@@ -591,34 +593,34 @@ class Shakha extends Controller
 		}*/
 		$userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
 		$userdir = $userdir[2];
-		
+
 		$target_path = "/home/$userdir/uploads/";
 		$filename = time().'_'.$_FILES['contacts']['name'];
-		$target_path = $target_path . basename($filename); 
-		
+		$target_path = $target_path . basename($filename);
+
 		$t = explode('.',trim($filename));
-		if($t[1] != 'csv' && $t[1] != 'xls' && $t[1] != 'xlsx') 
+		if($t[1] != 'csv' && $t[1] != 'xls' && $t[1] != 'xlsx')
 		{
 			$this->session->set_userdata('errs', true);
 			$errors['msg'][] = "Please select a CSV/XLS file to upload.";
 			$this->session->set_userdata('errors', $errors);
 			return false;
 		}
-		
-		if(move_uploaded_file($_FILES['contacts']['tmp_name'], $target_path)) 
+
+		if(move_uploaded_file($_FILES['contacts']['tmp_name'], $target_path))
 		{
 			$filename = $target_path;
 			shell_exec('chmod 0777 '. $filename);
 			return true;//echo "The file ".  basename( $_FILES['uploadedfile']['name']). " has been uploaded";
-		} 
+		}
 		else{
 		    $this->session->set_userdata('errs', true);
 			$errors['msg'][] = "There was an error uploading the file, please try again!";
-			$this->session->set_userdata('errors', $errors);			
+			$this->session->set_userdata('errors', $errors);
 			return false;
 		}
 	}
-	
+
 	function upload_contacts($id)
 	{
 		if(isset($_POST['button']))
@@ -633,23 +635,23 @@ class Shakha extends Controller
 				$subject = 'Uploaded Contacts for '.$shakha->name;
 				$msg = 'Contacts uploaded for '.$shakha->name.' '.$shakha->city.','.$shakha->state.' by '.$this->session->userdata('first_name').' '.$this->session->userdata('last_name');
 				$msg .= "\n\n";
-				
+
 				$message =& new Swift_Message($subject);
 				$message->attach(new Swift_Message_Part($msg));
 				$message->attach(new Swift_Message_Attachment(new Swift_File($file), $file, 'text/csv'));
 				$swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
 			}
 			else redirect('shakha/upload_contacts/'.$id);
-			
+
 			$this->session->set_userdata('message', 'Your File has been uploaded. You will be notified via e-mail when your contacts are added to database.');
 			redirect('shakha/upload_contacts/'.$id);
 		}
-		
+
 		$data['pageTitle'] = 'Import Contacts';
 		$data['shakha'] = $this->Shakha_model->getShakhaInfo($id);
 		$this->layout->view('shakha/email_contacts', $data);
 	}
-	
+
 	function match_columns($id)
 	{
 		//Set status to 0 if notthing set
@@ -660,7 +662,7 @@ class Shakha extends Controller
 		$file = '';
 		if($this->_processUpload($file))
 		{
-			
+
 			$fh = fopen($file, 'r+') or die ("Coundn't open the file $file.");
 			$buffer = fgets($fh);
 			$d['list'] = explode(',',$buffer);
@@ -668,11 +670,11 @@ class Shakha extends Controller
 			$this->session->set_userdata('filename', $file);
 			$this->layout->view('shakha/upload_contacts1', $d);
 		//$this->session->set_userdata('import_st',0);
-			
+
 		}
 		else
 			redirect('shakha/import_contacts/'.$id);
-/*				
+/*
 			case 1:
 				$fh = fopen($this->session->userdata('import_file'), 'r');
 				$d = fgets($fh);
@@ -687,7 +689,7 @@ class Shakha extends Controller
 		foreach($_POST as $key => $val)
 			if($val != '') $data[$key] = $val;
 		if(isset($data['button'])) unset($data['button']);
-			
+
 		$fh = fopen($this->session->userdata('filename'), 'r+') or die("Couldn't open the file .. please try again.");
 		$buffer = '';
 		while(!feof($fh)) $buffer[] = explode(',',fgets($fh));
@@ -706,30 +708,30 @@ class Shakha extends Controller
 		$d['shakha'] = $this->Shakha_model->getShakhaInfo($id);
 		$this->layout->view('shakha/confirm_imports', $d);
 	}
-	
+
 	function finish_import($id)
-	{	
+	{
 		$this->Shakha_model->import_contacts($id);
 		$d['pageTitle'] = 'Contacts Imported';
 		$this->layout->view('shakha/finish_import', $d);
 	}
-	
+
 	function _chart_data($values)
 	{
 	// Port of JavaScript from http://code.google.com/apis/chart/
 	// http://james.cridland.net/code
-	
+
 	// First, find the maximum value from the values given
-	
+
 	$maxValue = max($values);
-	
+
 	// A list of encoding characters to help later, as per Google's example
 	$simpleEncoding = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	
+
 	$chartData = "s:";
 	  for ($i = 0; $i < count($values); $i++) {
 		$currentValue = $values[$i];
-	
+
 		if ($currentValue > -1) {
 		$chartData.=substr($simpleEncoding,61*($currentValue/$maxValue),1);
 		}
@@ -737,7 +739,7 @@ class Shakha extends Controller
 		  $chartData.='_';
 		  }
 	  }
-	
+
 	// Return the chart data - and let the Y axis to show the maximum value
 	//return $chartData."&chxt=y&chxl=1:|0|".$maxValue;
 	return $chartData."&chxl=1:|0|".$maxValue;

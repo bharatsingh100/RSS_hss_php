@@ -93,16 +93,15 @@
          <?php endif; ?>
          <br />
          <?php if($this->permission->is_vibhag_kk($this->uri->segment(3))): ?>
-         <h3>Navigation </h3>
-         <p><?=anchor('vibhag/browse/'.$this->uri->segment(3). '/name/', 'List All Contacts');?></p>
-         <p><?=anchor('vibhag/add_shakha/'.$this->uri->segment(3), 'Add New Shakha');?></p>
-         <p><?=anchor('vibhag/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
-	   	 <p><?=anchor('vibhag/statistics/'.$this->uri->segment(3), 'Statistics');?></p>
-	     <p>&nbsp;</p>
-	     <p><?=anchor('vibhag/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
-	     <p><?=anchor('vibhag/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
-
-      <?php endif; ?>
+             <h3>Navigation </h3>
+             <p><?=anchor('vibhag/browse/'.$this->uri->segment(3). '/name/', 'List All Contacts');?></p>
+             <p><?=anchor('vibhag/add_shakha/'.$this->uri->segment(3), 'Add New Shakha');?></p>
+             <p><?=anchor('vibhag/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
+    	   	 <p><?=anchor('vibhag/statistics/'.$this->uri->segment(3), 'Statistics');?></p>
+    	     <p>&nbsp;</p>
+    	     <p><?=anchor('vibhag/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
+    	     <p><?=anchor('vibhag/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>
+         <?php endif; ?>
          </div>
 
 		 <!-- End Right Column -->

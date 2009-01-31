@@ -10,6 +10,7 @@ class Email extends Controller
 	    $this->output->enable_profiler($this->config->item('debug'));
 		$this->load->helper('file');
 		$this->load->model('Vibhag_model');
+		$this->load->library('email');
 		$this->userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
 		$this->userdir = $this->userdir[2];
     }
@@ -52,7 +53,6 @@ class Email extends Controller
 
 	//Testing E-mail
 	function email_test() {
-	    $this->load->library('email');
 
         $this->email->from('your@example.com', 'Your Name');
         $this->email->to('zzzabhi@gmail.com');
@@ -69,42 +69,33 @@ class Email extends Controller
 
 	function login_log_rss()
 	{
-	//	require_once "Swift.php";
-  //      require_once "Swift/Connection/SMTP.php";
-	//	$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
-
 		$logs = $this->db->getwhere('loginlog', "login >= '".date('o-m-d')." 00:00:00'");
-	//	$subject = 'Login Logs Details';
-	  $message = '<?xml version="1.0" ?>'."\n";
-    $message .= '<rss version="2.0">'."\n";
-    $message .= '<channel>'."\n\n";
-    $message .= '<title>Login Logs for CRM</title>'."\n";
-    $message .= '<description>Time when everyone logs in.</description>'."\n";
-    $message .= '<link>' . base_url() . '</link>'."\n";
-	//	$message = 'Login Logs for '.date("F j, Y").'<br /><br />';
-	//	$message = "Name\t\tIP-Address\t\tTime\t<br />";
-		if($logs->num_rows())
-		{
-			foreach($logs->result() as $log)
-			{
+        $message = '<?xml version="1.0" ?>'."\n";
+        $message .= '<rss version="2.0">'."\n";
+        $message .= '<channel>'."\n\n";
+        $message .= '<title>Login Logs for CRM</title>'."\n";
+        $message .= '<description>Time when everyone logs in.</description>'."\n";
+        $message .= '<link>' . base_url() . '</link>'."\n";
+
+        if($logs->num_rows()){
+			foreach($logs->result() as $log){
 				$message .= "\n".'<item>'."\n";
-        $message .= '<title>'.anchor(site_url('profile/view/'.$log->contact_id), $log->name).'</title>'."\n";
+                $message .= '<title>'.anchor(site_url('profile/view/'.$log->contact_id), $log->name).'</title>'."\n";
 				$message .= '<description>' . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr)."\n";
 				$message .= "$log->login".'</description>'."\n";
 				$message .= '</item>'."\n";
 			}
 
-    $message .= '</channel>'."\n\n";
-    $message .= '</rss>'."\n";
-    echo $message;
-      //$message =& new Swift_Message($subject, $message, "text/html");
-			//$swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
-		}
+            $message .= '</channel>'."\n\n";
+            $message .= '</rss>'."\n";
+            echo $message;
+      	}
 	}
 
 	function login_log()
 	{
-		require_once "Swift.php";
+		return 0;
+	    require_once "Swift.php";
         require_once "Swift/Connection/SMTP.php";
 		$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
 
@@ -125,43 +116,39 @@ class Email extends Controller
 		}
 	}
 
+    //Every evening send emails for lists that need to be created.
 	function email_lists()
 	{
-		require_once "Swift.php";
+		/*require_once "Swift.php";
         require_once "Swift/Connection/SMTP.php";
-		$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
+		$swift =& new Swift(new Swift_Connection_SMTP("localhost"));*/
 
 		$lists = $this->db->getwhere('lists', "modified >= '".date('o-m-d')." 00:00:00'");
-		$subject = 'E-mail list updates';
-		$message = 'E-mail list updates for '.date("F j, Y").'<br /><br />';
-		$message = "Name\t\tStatus\t\tLevel\t\tLevel ID\t<br />";
-		if($lists->num_rows())
-		{
-			foreach($lists->result() as $list)
-			{
-				//$list_type = ($list == 'SH') ? 'shakha' : 'vibhag';
-				$list_type = '';
-				switch($list){
-					case 'SH':
-						$list_type = 'shakha';
-						break;
-					case 'VI':
-						$list_type = 'vibhag';
-						break;
-					case 'SA':
-						$list_type = 'sambhag';
-						break;
-					case 'NT':
-						$list_type = 'national';
-						break;
-				}
-				$message .= anchor(site_url($list_type.'/email_lists/'.$list->level_id), $list->address.'@hssusa.org');
-				//$message .= "\t\t" . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr);
-				$message .="\t\t$list->status\t\t$list->level\t\t".anchor(site_url($list_type.'/view/'.$list->level_id), $list->level_id);
-				$message .= '<br />';
+
+		if($lists->num_rows()){
+			foreach($lists->result() as $list){
+			    if($list->status == 'Creating')
+                    $this->email->subject('Create E-mail List ' . $list->address . '@hssusa.org');
+                elseif ($list->status == 'Deleting')
+                    $this->email->subject('Delete E-mail List ' . $list->address . '@hssusa.org');
+                else
+                    exit(1);
+
+                $ss = $this->db->select('email, first_name, last_name, city, state')->getwhere('swayamsevaks', array('contact_id' => $list->owner))->row();
+
+                $this->email->from($ss->email, $ss->first_name . ' ' . $ss->last_name);
+                $this->email->reply_to($ss->email, $ss->first_name . ' ' . $ss->last_name);
+
+                $message = 'Update E-mail list '. $list->address
+                            . '@hssusa.org for ' . $ss->first_name . ' ' . $ss->last_name
+                            . ' (' . $ss->city . ', ' . $ss->state . ")\n\n";
+
+                $this->email->message($message);
+                $this->email->to('crm_admin@hssusa.org');
+                $this->email->send();
+                //print $this->email->print_debugger();
 			}
-			$message =& new Swift_Message($subject, $message, "text/html");
-			$swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
+
 		}
 	}
 
@@ -217,10 +204,6 @@ class Email extends Controller
 
 	function sankhya_reminder()
 	{
-		//require_once "Swift.php";
-        //require_once "Swift/Connection/SMTP.php";
-		//$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
-        $this->load->library('email');
 
 		$exclude_shakhas = $this->initialize_sankhya();
 
@@ -258,7 +241,7 @@ class Email extends Controller
                             $this->email->message($text);
                             $this->email->subject($subject);
                             $this->email->send();
-                            print $this->email->print_debugger();
+                            //print $this->email->print_debugger();
 						}
 					}
 

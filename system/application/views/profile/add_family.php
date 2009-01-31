@@ -24,3 +24,14 @@
                </tr>
              </table>
            </form>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<strong>Hints:</strong>
+<ul>
+  <li> <strong>To Connect a Person to a Family</strong>: Select any one person from the family that you want to connect to and click Add to Family.</li>
+  <li> <strong>To Separate a Person from a Family</strong>: Select <em>CREATE OWN FAMILY</em>, 1st option, from the list and click Add to Family. </li>
+</ul>
+

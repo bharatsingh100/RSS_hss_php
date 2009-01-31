@@ -83,53 +83,54 @@
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
-      <td colspan="2"><span class="style3">(Moderators receive notifications whenever a message needs approval)</span></td>
+      <td colspan="2"><span class="style3">(Moderators receive e-mail notifications whenever a message needs approval on moderated e-mail lists.)</span></td>
     </tr>
     <tr valign="middle">
       <td align="right"><strong>Moderator Password:</strong></td>
-      <td colspan="2"><label>
-        <input name="mod_pass" type="text" id="mod_pass" onBlur="elistCheck()" size="35" maxlength="50" />
-      </label></td>
+      <td colspan="2">
+        <strong>swayamsevak</strong>
+        <input name="mod_pass" type="hidden" id="mod_pass" value='swayamsevak'/>
+      </td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
-      <td colspan="2"><span class="style3">(Moderators share same password)</span></td>
+      <td colspan="2"><span class="style3">(Moderators share same password for the list)</span></td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
-    <tr valign="middle">
+    <tr valign="top">
       <td align="right"><strong>List Members:</strong></td>
       <td width="203"><label>
         <span class="style2">
         <input name="members[]" type="checkbox" id="checkbox0" onClick="elistCheck()" value="allss" />
         </span></label>
-        <strong>      All Swayamsevaks</strong></td>
+        <strong>All Shakha Swayamsevak </strong><span class="style3">Including All Karyakarta</span></td>
       <td width="276"><label>
         <span class="style1">
         <input name="members[]" type="checkbox" id="checkbox1" onClick="elistCheck()" value="allkk" />
         </span></label>
-        <strong> All Karyakartas</strong></td>
+        <strong> All Shakha Karyakartas</strong></td>
     </tr>
 	<!--
     <tr valign="middle">
       <td align="right">&nbsp;</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox2" onClick="elistCheck()" value="bala" />
-      </label> 
+      </label>
         Bala only</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox3" onClick="elistCheck()" value="gatanayak" />
-      </label> 
+      </label>
         Gatanayaks Only</td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox4" onClick="elistCheck()" value="kishor" />
-      </label> 
+      </label>
         Kishor only</td>
       <td>&nbsp;</td>
     </tr>
@@ -137,7 +138,7 @@
       <td align="right">&nbsp;</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox5" onClick="elistCheck()" value="yuva" />
-      </label> 
+      </label>
         Yuva only</td>
       <td>&nbsp;</td>
     </tr>
@@ -145,7 +146,7 @@
       <td align="right">&nbsp;</td>
       <td><label>
         <input name="members[]" type="checkbox" id="checkbox6" onClick="elistCheck()" value="tarun" />
-      </label> 
+      </label>
         Tarun only</td>
       <td>&nbsp;</td>
     </tr>
