@@ -232,16 +232,16 @@ class Email extends Controller
 			    if(in_array($shakha->shakha_id, $exclude_shakhas)) continue;
 
 				$this->db->where('shakha_id', $shakha->shakha_id);
-				$this->db->where("responsibility IN ('020', '030','031')");
+				$this->db->where("responsibility IN ('020', '030', '031')");
 				$kks = $this->db->select('swayamsevak_id')->get('responsibilities');
 
 				if($kks->num_rows()){
-    				$message    = "Please enter the sankhya of $shakha->name for " . date("F j, Y") . ' at ';
+    				$message    = "Can you please enter the sankhya of $shakha->name for " . date("F j, Y") . ' at ';
                     $message   .= site_url('shakha/add_sankhya/'.$shakha->shakha_id);
-                    $message   .= "\n\nThanks\nHSS Sampark System\n";
+                    $message   .= "\n\n\nThanks\nHSS Sampark System\n";
                     $subject    = "Sankhya reminder for $shakha->name";
 
-                    $this->email->subject($subject);
+
                     $this->email->from('crm_admin@hssusa.org', 'HSS Sampark System');
                     $this->email->reply_to('crm_admin@hssusa.org', 'HSS Sampark System');
     				//$recipients =& new Swift_RecipientList();
@@ -250,14 +250,15 @@ class Email extends Controller
 					foreach ($kks as $k){
 						$t = $this->db->select('first_name, last_name,  email')->getwhere('swayamsevaks', array('contact_id' => $k->swayamsevak_id, 'email_status' => 'Active'));
 						if($t->num_rows() && trim($t->row()->email) != '' ){
-                            $text   = 'Pranam ' . $t->row()->first_name. " Ji\n\n";
+                            $text   = 'Namaste ' . $t->row()->first_name. " Ji\n\n";
                             $text  .= $message;
 
                             $this->email->to($t->row()->email);
-                            $this->email->to('zzzabhi@yahoo.com');
+                            //$this->email->to('zzzabhi@gmail.com');
                             $this->email->message($text);
+                            $this->email->subject($subject);
                             $this->email->send();
-                            $this->email->print_debugger();
+                            print $this->email->print_debugger();
 						}
 					}
 

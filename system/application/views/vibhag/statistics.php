@@ -5,9 +5,9 @@
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
   <tr>
     <td><strong>Shakha</strong></td>
-    <td><strong><?=date('F Y')?></strong></td>
-    <td><strong><?=date('F Y', strtotime('-1 Month', strtotime(date('F Y'))))?></strong></td>
-    <td><strong><?=date('F Y', strtotime('-2 Month', strtotime(date('F Y'))))?></strong></td>
+    <td><strong><?=date('M Y')?></strong></td>
+    <td><strong><?=date('M Y', strtotime('-1 Month', strtotime(date('F Y'))))?></strong></td>
+    <td><strong><?=date('M Y', strtotime('-2 Month', strtotime(date('F Y'))))?></strong></td>
     <td><strong><?=date('Y')?></strong></td>
     <td><strong><?=date('Y', strtotime('-1 Year', strtotime(date('Y'))))?></strong></td>
   </tr>
@@ -30,4 +30,56 @@
     <td><?=(int)$vibhag->sankhya['last_year']['total']?></td>
   </tr>
 
+</table>
+<p>&nbsp;</p>
+<h3>Contact List:</h3>
+<table width="50%" border="1" cellspacing="2" cellpadding="2">
+  <tr>
+    <td width="45%"><div align="right">Total Families</div></td>
+    <td width="18%" align="center"><?=$vibhag->contacts['families']?></td>
+    <td width="21%" align="center" valign="middle">Swayamsevak</td>
+    <td width="16%" align="center" valign="middle">Sevika</td>
+  </tr>
+  <tr>
+    <td><div align="right">Total Contacts</div></td>
+    <td align="center"><?=$vibhag->contacts['contacts']?></td>
+    <td align="center"><?=$vibhag->contacts['swayamsevaks']?></td>
+    <td align="center"><?=$vibhag->contacts['sevikas']?></td>
+  </tr>
+  <tr>
+    <td><div align="right">Shishu ( &lt; 6)</div></td>
+    <td align="center"><?=$vibhag->contacts['shishu']?></td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Bala (6 - 12)</div></td>
+    <td align="center"><?=$vibhag->contacts['bala']?></td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Kishor (13 - 18)</div></td>
+    <td align="center"><?=$vibhag->contacts['kishor']?></td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Yuva(18 - 25)</div></td>
+    <td align="center"><?=$vibhag->contacts['yuva']?></td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Tarun (26 - 50)</div></td>
+    <td align="center"><?=$vibhag->contacts['tarun']?></td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Praudh</div></td>
+    <td align="center"><?=$vibhag->contacts['praudh']?></td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
 </table>

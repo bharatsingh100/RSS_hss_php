@@ -11,13 +11,13 @@ class User extends Controller
 		$this->output->set_header('Pragma: no-cache');
 
     }
-	
+
 	function index()
 	{
 			$data['pageTitle'] = 'User Login';
 			$this->layout->view('user/login', $data);
 	}
-		
+
 	function logout()
 	{
 		$this->session->sess_destroy();
@@ -48,11 +48,11 @@ class User extends Controller
 		        $this->db->where('contact_id', $this->session->userdata('contact_id'));
 		        $this->db->update('swayamsevaks', $p);
 		      }
-		        
+
 		    }
-  			
+
 		    if(isset($redirect_url))
-				  redirect($redirect_url);	
+				  redirect($redirect_url);
 			  else
 				  redirect('shakha/view/' . $this->session->userdata('shakha_id'));
 		}
@@ -64,7 +64,7 @@ class User extends Controller
 		}
 
 	}
-	
+
 	function reset_pass($code = '')
 	{
 		if($this->input->post('password'))
@@ -115,7 +115,7 @@ class User extends Controller
 			redirect('user/forgot_password');
 		}
 	}
-	
+
 	function forgot_password()
 	{
 		if($this->input->post('login'))
@@ -133,23 +133,32 @@ class User extends Controller
 					$t['enc_email'] = sha1($email);
 					$t['ip_addr'] = $this->input->ip_address();
 					$this->db->insert('pass_reset', $t);
-					
-					require_once "Swift.php";
-					require_once "Swift/Connection/SMTP.php";
-					 
+
+					//Removing Swift
+					$this->load->library('email');
+					$this->email->from('crm_admin@hssusa.org', 'HSS Sampark System');
+                    $this->email->reply_to('crm_admin@hssusa.org', 'HSS Sampark System');
+					//require_once "Swift.php";
+					//require_once "Swift/Connection/SMTP.php";
+
 					//Start Swift
-					$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
-					
+					//$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
+
 					$body = "Namaste \n\n";
 					$body .= 'Someone from the IP Address: '.$this->input->ip_address(). " requested to reset your password. \n\n";
 					$body .= 'If you want to reset your password, click here ' . base_url() . 'user/reset_pass/' . sha1($email);
 					$body .= "\n\nOtherwise, just ignore this e-mail.\n";
 					$body .= "\n-----\nWed Admin Team\ncrm_admin@hssusa.org\n\n";
 					//Create the message
-					$message =& new Swift_Message("Password Reset Request for HSS CRM", $body);
-					 
-					//Now check if Swift actually sends it
-					if ($swift->send($message, $email, "crm_admin@hssusa.org"))
+					$this->email->to($email);
+                    $this->email->message($body);
+                    $this->email->subject("Password Reset Request for HSS CRM");
+
+                    //$this->email->print_debugger();
+					//$message =& new Swift_Message("Password Reset Request for HSS CRM", $body);
+
+					//Now check if the mail is sent
+					if ($this->email->send())
 					{
 						$this->session->set_userdata('message', 'Please check your email ' . $email . ' for further instructions.');
 						redirect('user/forgot_password');
@@ -170,7 +179,7 @@ class User extends Controller
 				$this->session->set_userdata('message', 'Please enter a proper e-mail address.');
 				redirect('user/forgot_password');
 			}
-			
+
 		}
 		else
 		{
@@ -178,8 +187,8 @@ class User extends Controller
 			$this->layout->view('user/forgot_password', $t);
 		}
 	}
-			
-			
+
+
 	function _logincheck($user = '', $password = '')
 	{
 		if($user == '' || $password == '')
@@ -187,9 +196,9 @@ class User extends Controller
 			//$this->session->set_flashdata('message', 'Your password or email address field was blank.');
 			$this->session->set_userdata('message', 'Your password or email address field was blank. Try again');
 			return false;
-//		$this->->db->where('email', $user); 
+//		$this->->db->where('email', $user);
 		}
-		
+
 		$query = $this->db->getwhere('swayamsevaks', array('email' => $user));
 		if($query->num_rows() > 0)
 		{
@@ -211,14 +220,14 @@ class User extends Controller
 			{
 				//Destroy old session
 				$this->session->sess_destroy();
-				
+
 				//Create a fresh, brand new session
 				$this->session->sess_create();
-			
+
 				//Remove the password fields
 				unset($row->password);
 				unset($row->passwordmd5);
-			
+
 				//Set session data
 				$this->session->set_userdata($row);
 				if($row->shakha_id != '')
@@ -227,19 +236,19 @@ class User extends Controller
 					if(trim($t->nagar_id) != '')
 						$this->session->set_userdata('nagar_id', $t->nagar_id);
 					$this->session->set_userdata('vibhag_id', $t->vibhag_id);
-					$this->session->set_userdata('sambhag_id', $t->sambhag_id);					
+					$this->session->set_userdata('sambhag_id', $t->sambhag_id);
 				}
-			
+
 				//Set logged_in to true
-				$this->session->set_userdata(array('logged_in' => true));	
-				
+				$this->session->set_userdata(array('logged_in' => true));
+
 				//Store Login Info
 				$v['contact_id'] = $row->contact_id;
 				$v['name'] = $row->first_name . ' ' . $row->last_name;
 				$v['ip_addr'] = $this->input->ip_address();
-				$this->db->insert('loginlog', $v);		
-			
-				//Login was successful			
+				$this->db->insert('loginlog', $v);
+
+				//Login was successful
 				return true;
 			}
 		}
@@ -248,8 +257,8 @@ class User extends Controller
 			$this->session->set_userdata('message', 'Your email address was not found in our database.');
 			return false;
 		}
-			
-			
+
+
 	}
 }
 

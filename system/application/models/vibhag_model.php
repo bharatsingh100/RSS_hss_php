@@ -124,7 +124,7 @@ class Vibhag_model extends Model
 		return $query->row()->name;
 	}
 
-    function getVibhagStats($id) {
+    function getVibhagShakhaStats($id) {
 
         $shakhas = $this->db->select('shakha_id, name, shakha_status')->getwhere('shakhas', array('vibhag_id' => $id, 'shakha_status' => 1));
         //$shakhas = $query->result();
@@ -143,32 +143,36 @@ class Vibhag_model extends Model
                 $shakha['last_last_month']  = $this->getSankhya($shakha['shakha_id'], $last_last_month, $last_month_beg);
                 $shakha['this_year']        = $this->getSankhya($shakha['shakha_id'], $this_year, $today);
                 $shakha['last_year']        = $this->getSankhya($shakha['shakha_id'], $last_year, $this_year);
+                //$shakha['contacts']         = $this->getShakhaContacts($shakha['shakha_id']);
             }
         }
 
         return $shakhas;
         /*
-        $yr = date('Y');
-        $ag['shishu'] = $yr - 6;
-        $ag['bala'] = $yr - 12;
-        $ag['kishor'] = $yr - 19;
-        $ag['yuva'] = $yr - 25;
-        $ag['tarun'] = $yr - 50;
-        $v['shakha'] = $this->db->getwhere('shakhas', array('shakha_id', $id))->row();
-        $v['families'] = $this->db->select('DISTINCT household_id')->getwhere('swayamsevaks', array('shakha_id' => $id))->num_rows();
-        $v['swayamsevaks'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id))->num_rows();
-        $v['shishu'] = $this->db->getwhere('swayamsevaks', 'birth_year > '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
-        $v['bala'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
-        $v['kishor'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala'].' AND shakha_id =' . $id)->num_rows();
-        $v['yuva'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['yuva'].' AND '. $ag['kishor'].' AND shakha_id =' . $id)->num_rows();
-        $v['tarun'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['tarun'].' AND '. $ag['yuva'].' AND shakha_id =' . $id)->num_rows();
-        $v['phone'] = $this->db->getwhere('swayamsevaks', 'ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\' AND shakha_id =' . $id)->num_rows();
-        $v['email'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status = \'Active\' AND shakha_id =' . $id)->num_rows();
-        $v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
+
         $v['sankhya'] = $this->db->getwhere('sankhyas', array('shakha_id' => $id))->result();
         $v['pageTitle'] = 'Vibhag Statistics';*/
     }
 
+/*
+    function getVibhagContacts($id) {
+        $shakha['contacts']     = $this->getShakhaContacts($id);
+        $temp['swayamsevaks']   = $shakha['contacts']['swayamsevaks'];
+        $temp['families']       = $shakha['contacts']['families'];
+        $temp['shishu']         = $shakha['contacts']['shishu'];
+        $temp['bala']           = $shakha['contacts']['bala'];
+        $temp['kishor']         = $shakha['contacts']['kishor'];
+        $temp['yuva']           = $shakha['contacts']['yuva'];
+        $temp['tarun']          = $shakha['contacts']['tarun'];
+        $temp['praudh']         = $shakha['contacts']['praudh'];
+        $temp['phone']          = $shakha['contacts']['phone'];
+        $temp['email']          = $shakha['contacts']['email'];
+        $temp['email_unactive'] = $shakha['contacts']['email_unactive'];
+
+        return $temp;
+    }*/
+
+    //Get Sankhya for Each Shakha based on dates
     function getSankhya($shakha_id, $start, $end, $function = 'avg'){
         $this->db->where("date <= '$end'");
         $this->db->where("date >= '$start'");
@@ -186,23 +190,68 @@ class Vibhag_model extends Model
 
     }
 
-    function getVibhagSankhya($id) {
+    //Sum the Sankhya for Vibhag from Shakhas
+    function getVibhagSankhya($id, $shakhas = '') {
         $temp = '';
-        $shakhas = $this->getVibhagStats($id);
+        if($shakhas == '') $shakhas = $this->getVibhagShakhaStats($id);
         foreach($shakhas as $shakha) {
-            $temp['this_month'][] = $shakha['this_month'];
-            $temp['last_month'][] = $shakha['last_month'];
+            $temp['this_month'][]     = $shakha['this_month'];
+            $temp['last_month'][]     = $shakha['last_month'];
             $temp['last_last_month'][] = $shakha['last_last_month'];
-            $temp['this_year'][] = $shakha['this_year'];
-            $temp['last_year'][] = $shakha['last_year'];
+            $temp['this_year'][]      = $shakha['this_year'];
+            $temp['last_year'][]      = $shakha['last_year'];
         }
 
         foreach($temp as &$t1) {
             $t1['total'] = array_sum($t1);
         }
-
-        return $temp;
     }
+
+    //Get total counts of contacts for Vibhag by Categories
+    function getVibhagContacts($id) {
+
+        $shakhas = $this->db->select('shakha_id, name, shakha_status')->getwhere('shakhas', array('vibhag_id' => $id, 'shakha_status' => 1));
+
+        $v = '';
+        if($shakhas->num_rows()) {
+            $shakhas = $shakhas->result();
+            $sid = array();
+            foreach($shakhas as $shakha)
+                $sid[] = $shakha->shakha_id;
+
+            $sid = implode(', ', $sid);
+
+            //Replace so many queries with Single Query for Vibhag
+            $yr = date('Y');
+
+            $ag['shishu'] = $yr - 6;
+            $ag['bala'] = $yr - 12;
+            $ag['kishor'] = $yr - 19;
+            $ag['yuva'] = $yr - 25;
+            $ag['tarun'] = $yr - 50;
+
+            //$v['shakha'] = $this->db->select('shakha_id')->getwhere('shakhas', "shakha_id IN ($sid)")->row();
+            $this->db->where("shakha_id IN ($sid)");
+            $v['sevikas'] = $this->db->select('contact_id')->getwhere('swayamsevaks', array('gender' => 'F'))->num_rows();
+            $this->db->where("shakha_id IN ($sid)");
+            $v['swayamsevaks'] = $this->db->select('contact_id')->getwhere('swayamsevaks', array('gender' => 'M'))->num_rows();
+            $v['families'] = $this->db->select('DISTINCT household_id')->getwhere('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
+            $v['contacts'] = $this->db->select('contact_id')->getwhere('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
+            $v['shishu'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year > '. $ag['shishu']." AND shakha_id IN ($sid)")->num_rows();
+            $v['bala'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu']." AND shakha_id IN ($sid)")->num_rows();
+            $v['kishor'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala']." AND shakha_id IN ($sid)")->num_rows();
+            $v['yuva'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['yuva'].' AND '. $ag['kishor']." AND shakha_id IN ($sid)")->num_rows();
+            $v['tarun'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['tarun'].' AND '. $ag['yuva']." AND shakha_id IN ($sid)")->num_rows();
+            $v['praudh'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year > '.$ag['tarun'] . " AND shakha_id IN ($sid)")->num_rows();
+            $v['phone'] = $this->db->select('contact_id')->getwhere('swayamsevaks', '(ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\')' . " AND shakha_id IN ($sid)")->num_rows();
+            $v['email'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'email != \'\' AND email_status = \'Active\' ' . " AND shakha_id IN ($sid)")->num_rows();
+            $v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' ' . " AND shakha_id IN ($sid)")->num_rows();
+
+        }
+
+        return $v;
+    }
+
   function getVibhagInfo($id)
 	{
 
@@ -260,7 +309,7 @@ class Vibhag_model extends Model
 				}
 			}
 			$this->db->orderby('date', 'desc');
-			$j = $this->db->getwhere('sankhyas', array('shakha_id' => $id));
+			$j = $this->db->getwhere('sankhyas', array('shakha_id' => $shakha_id));
 			$temp->sankhyas = $j->result();
 		}
 

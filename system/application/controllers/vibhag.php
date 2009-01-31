@@ -21,7 +21,7 @@ class Vibhag extends Controller
 			}
 		}
 
-		//$this->output->enable_profiler(TRUE);
+		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('Vibhag_model');
 		$this->load->library('layout', 'layout_vibhag');
 
@@ -218,9 +218,10 @@ class Vibhag extends Controller
 		$v['sankhya'] = $this->db->getwhere('sankhyas', array('shakha_id' => $id))->result();
 		$v['pageTitle'] = 'Vibhag Statistics'; */
         $data['vibhag'] = $this->Vibhag_model->getVibhagInfo($id);
-        $data['vibhag']->sankhya = $this->Vibhag_model->getVibhagSankhya($id);
 	    $data['pageTitle'] = $data['vibhag']->name . ' Vibhag Statistics';
-		$data['shakhas'] = $this->Vibhag_model->getVibhagStats($id);
+		$data['shakhas'] = $this->Vibhag_model->getVibhagShakhaStats($id);
+		$data['vibhag']->sankhya = $this->Vibhag_model->getVibhagSankhya($id, $data['shakhas']);
+		$data['vibhag']->contacts = $this->Vibhag_model->getVibhagContacts($id);
 
 		$this->layout->view('vibhag/statistics', $data);
 	}
