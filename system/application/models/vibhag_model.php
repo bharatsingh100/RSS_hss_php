@@ -205,6 +205,8 @@ class Vibhag_model extends Model
         foreach($temp as &$t1) {
             $t1['total'] = array_sum($t1);
         }
+
+        return $temp;
     }
 
     //Get total counts of contacts for Vibhag by Categories
