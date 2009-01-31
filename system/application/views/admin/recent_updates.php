@@ -1,5 +1,11 @@
 <h2>Recent Updates</h2>
 <ul>
+  <li><strong>January 30, 2009</strong>
+    <ul>
+        <li>Added Vibhag Statistics Page</li>
+        <li>Enabled Sankhya Reminder E-mails for Mukhya Shikshak / Sah-Mukhya Shikshak / Karyavah</li>
+    </ul>
+  </li>
   <li><strong>January 19, 2009</strong>
     <ul><li>Added Optional Support for Nagas under Vibhags</li>
         <li>Improved Performance by adding Index to DB Table</li>
