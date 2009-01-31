@@ -7,7 +7,7 @@
 		     <h3>Date:
 		     <label>
 		     <select name="date" id="date" onchange="MM_jumpMenu('parent',this,1)">
-			<?php foreach($dates as $date) { 
+			<?php foreach($dates as $date) {
 			echo '<option value="'.$date['datemysql'].'" ';
 			echo (($date['datemysql'] == $this->uri->segment(4)) ? 'selected="selected" ' : '');
 			echo '>'.$date['date']."&nbsp;</option>\n";
@@ -34,25 +34,25 @@
                  <td>&nbsp;</td>
                </tr>
                <tr>
-                 <td><div align="right"><div align="right">Kishor (&lt;19 yrs)</div></td>
+                 <td><div align="right">Kishor (&lt;19 yrs)</div></td>
                  <td><div align="center"><input name="kishor_m" type="text" id="kishor_m" size="4" onblur="totalSankhya()" value="<?php echo (($set) ? $sankhya->kishor_m : '0');?>"   maxlength="3" /></div></td>
                  <td><div align="center"><input name="kishor_f" type="text" id="kishor_f" size="4" onblur="totalSankhya()" value="<?php echo (($set) ? $sankhya->kishor_f : '0');?>"   maxlength="3" /></div></td>
                  <td>&nbsp;</td>
                </tr>
                <tr>
-                 <td><div align="right"><div align="right">Yuva (&lt;26 yrs)</div></td>
+                 <td><div align="right">Yuva (&lt;26 yrs)</div></td>
                  <td><div align="center"><input name="yuva_m" type="text" id="yuva_m" size="4" onblur="totalSankhya()" value="<?php echo (($set) ? $sankhya->yuva_m : '0');?>"  maxlength="3" /></div></td>
                  <td><div align="center"><input name="yuva_f" type="text" id="yuva_f" size="4" onblur="totalSankhya()" value="<?php echo (($set) ? $sankhya->yuva_f : '0');?>"  maxlength="3" /></div></td>
                  <td>&nbsp;</td>
                </tr>
                <tr>
-                 <td><div align="right"><div align="right">Tarun(&lt; 50 yrs)</div></td>
+                 <td><div align="right">Tarun(&lt; 50 yrs)</div></td>
                  <td><div align="center"><input name="tarun_m" type="text" id="tarun_m" size="4" onblur="totalSankhya()"  value="<?php echo (($set) ? $sankhya->tarun_m : '0');?>"  maxlength="3" /></div></td>
                  <td><div align="center"><input name="tarun_f" type="text" id="tarun_f" size="4" onblur="totalSankhya()"  value="<?php echo (($set) ? $sankhya->tarun_f : '0');?>"  maxlength="3" /></div></td>
                  <td>&nbsp;</td>
                </tr>
                <tr>
-                 <td><div align="right"><div align="right">Praudh</div></td>
+                 <td><div align="right">Praudh</div></td>
                  <td><div align="center"><input name="praudh_m" type="text" id="praudh_m" size="4" onblur="totalSankhya()"   value="<?php echo (($set) ? $sankhya->praudh_m : '0');?>" maxlength="3" /></div></td>
                  <td><div align="center"><input name="praudh_f" type="text" id="praudh_f" size="4" onblur="totalSankhya()"   value="<?php echo (($set) ? $sankhya->praudh_f : '0');?>" maxlength="3" /></div></td>
                  <td>&nbsp;</td>
