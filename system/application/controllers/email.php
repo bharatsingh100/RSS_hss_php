@@ -69,6 +69,7 @@ class Email extends Controller
 
 	function login_log_rss()
 	{
+		$this->db->select('contact_id, UNIX_TIMESTAMP(login) as time, name, ip_addr');
 		$logs = $this->db->getwhere('loginlog', "login >= '".date('o-m-d')." 00:00:00'");
         $message = '<?xml version="1.0" ?>'."\n";
         $message .= '<rss version="2.0">'."\n";
@@ -78,11 +79,28 @@ class Email extends Controller
         $message .= '<link>' . base_url() . '</link>'."\n";
 
         if($logs->num_rows()){
-			foreach($logs->result() as $log){
+        	$logs = $logs->result();
+        	
+        	//Get Information on all contacts
+        	$k = array();
+        	foreach($logs as $l)
+        		$k[] = $l->contact_id;
+        	$k = implode(',', $k);
+        	$query = $this->db->select('contact_id, email, city, state')->getwhere('swayamsevaks', "contact_id IN ('$k')")->result();
+        	$contacts = array();
+        	foreach($query as $contact)
+        		$contacts[$contact->contact_id] = $contact;
+        	//print_r($contacts); die();
+			foreach($logs as $log){
 				$message .= "\n".'<item>'."\n";
-                $message .= '<title>'.anchor(site_url('profile/view/'.$log->contact_id), $log->name).'</title>'."\n";
-				$message .= '<description>' . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr)."\n";
-				$message .= "$log->login".'</description>'."\n";
+                $message .= '<title>'.$log->name.'</title>'."\n";
+				$message .= '<description>' 
+							. $contacts[$log->contact_id]->email . ' - ' 
+							. $contacts[$log->contact_id]->city . ', ' . $contacts[$log->contact_id]->state;
+							//. ' ' . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr)."\n";
+				$message .= '</description>'."\n";
+				$message .= '<pubDate>' . date(DATE_RFC2822, $log->time) . '</pubDate>';
+				$message .= "<guid>" . base_url() . 'profile/view/'. $log->contact_id . '</guid>';
 				$message .= '</item>'."\n";
 			}
 
