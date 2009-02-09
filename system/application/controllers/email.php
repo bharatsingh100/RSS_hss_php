@@ -7,7 +7,7 @@ class Email extends Controller
 	function Email()
     {
         parent::Controller();
-	    $this->output->enable_profiler($this->config->item('debug'));
+	    	
 		$this->load->helper('file');
 		$this->load->model('Vibhag_model');
 		$this->load->library('email');
@@ -18,7 +18,8 @@ class Email extends Controller
 	function zip_code_fixes($id)
 	{
 		//$state = $this->db->select('state')->getwhere('shakhas', array('shakha_id' => $id))->row()->state;
-		$ss = $this->db->select('contact_id, city, state')->getwhere('swayamsevaks', array('shakha_id'=>$id, 'zip' => ''));
+		$ss = $this->db->select('contact_id, city, state')->getwhere('swayamsevaks', array('shakha_id'=>$id, 
+'zip' => ''));
 		if($ss->num_rows())
 		{
 			$ss = $ss->result();
@@ -86,18 +87,16 @@ class Email extends Controller
         	foreach($logs as $l)
         		$k[] = $l->contact_id;
         	$k = implode(',', $k);
-        	$query = $this->db->select('contact_id, email, city, state')->getwhere('swayamsevaks', "contact_id IN ('$k')")->result();
+        	$query = $this->db->select('contact_id, email, city, state')->getwhere('swayamsevaks', "contact_id IN ($k)")->result();
         	$contacts = array();
-        	foreach($query as $contact)
-        		$contacts[$contact->contact_id] = $contact;
-        	//print_r($contacts); die();
+        	foreach($query as $contact){
+        		$contacts[$contact->contact_id] = $contact;}
+        		reset($logs);
+		
 			foreach($logs as $log){
 				$message .= "\n".'<item>'."\n";
                 $message .= '<title>'.$log->name.'</title>'."\n";
-				$message .= '<description>' 
-							. $contacts[$log->contact_id]->email . ' - ' 
-							. $contacts[$log->contact_id]->city . ', ' . $contacts[$log->contact_id]->state;
-							//. ' ' . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr)."\n";
+				$message .= '<description>' . $contacts[$log->contact_id]->email . ' - ' . $contacts[$log->contact_id]->city . ', ' . $contacts[$log->contact_id]->state;
 				$message .= '</description>'."\n";
 				$message .= '<pubDate>' . date(DATE_RFC2822, $log->time) . '</pubDate>';
 				$message .= "<guid>" . base_url() . 'profile/view/'. $log->contact_id . '</guid>';
