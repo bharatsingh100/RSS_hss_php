@@ -333,11 +333,16 @@ class Shakha extends Controller
 		return $data;
 	}
 
-	function insert_sankhya()
-	{
-		$this->Shakha_model->insert_sankhya();
-		$this->session->set_userdata('message', 'Sankhya added for your Shakha');
-		redirect('shakha/view/'. $this->input->post('shakha_id'));
+	//Insert or Update Sankhya
+	function insert_sankhya($id) {
+		if($this->input->post('shakha_id') && $this->input->post('shakha_id') != '') {
+			$this->Shakha_model->insert_sankhya();
+			$this->session->set_userdata('message', 'Sankhya added for your Shakha');
+			redirect('shakha/view/'. $this->input->post('shakha_id'));
+		}
+		else {
+			redirect('shakha/add_sankhya/' . $id);
+		}
 	}
 
 	function edit_shakha($id)

@@ -2,7 +2,7 @@
 <?php $set = isset($sankhya) ? true : false ; ?>
 <h2><?=$shakha->name;?> - Report Sankhya</h2>
 <p>&nbsp;</p>
-		   <form id="sankhya" method="post" action="/shakha/insert_sankhya/">
+		   <form id="sankhya" method="post" action="/shakha/insert_sankhya/<?php echo $shakha->shakha_id; ?>">
            <?=form_hidden('shakha_id', $shakha->shakha_id);?>
 		     <h3>Date:
 		     <label>
