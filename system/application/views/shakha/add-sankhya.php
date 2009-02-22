@@ -99,7 +99,7 @@
                </tr>
                <tr>
                  <td valign="top"><div align="right">Notes:</div></td>
-                 <td colspan="3"><textarea name="shakha_info" id="shakha_info" cols="45" rows="5"></textarea></td>
+                 <td colspan="3"><textarea name="shakha_info" id="shakha_info" cols="45" rows="5"><?php echo (($set) ? $sankhya->shakha_info : '');?></textarea></td>
                </tr>
                <tr>
                  <td>&nbsp;</td>
