@@ -67,8 +67,14 @@ class Shakha_model extends Model
 		foreach($_POST as $key => $val)
 			$data[$key] = trim($val);
 		$data['contact_id'] = $this->session->userdata('contact_id');
+		if(empty($data['contact_id']) || $data['contact_id'] == '' ) $data['contact_id'] = 0;
+		if(empty($data['shakha_id']) || $data['shakha_id'] == '' ) $data['shakha_id'] = 0;
+		
 		$data['ip'] = $this->input->ip_address();
-		$data['total'] = $data['shishu_m'] + $data['shishu_f'] + $data['bala_f'] + $data['bala_m'] + $data['kishor_m'] + $data['kishor_f'] + $data['yuva_m'] + $data['yuva_f'] + $data['tarun_m'] + $data['tarun_f'] + $data['praudh_m'] + $data['praudh_f'];
+		$data['total'] = $data['shishu_m'] + $data['shishu_f'] + $data['bala_f'] 
+						+ $data['bala_m'] + $data['kishor_m'] + $data['kishor_f'] 
+						+ $data['yuva_m'] + $data['yuva_f'] + $data['tarun_m'] 
+						+ $data['tarun_f'] + $data['praudh_m'] + $data['praudh_f'];
 		unset($data['button']);
 		$exists = $this->db->getwhere('sankhyas', array('date' => $data['date'], 'shakha_id' => $data['shakha_id']));
 		if($exists->num_rows()) { //If sankhya for that week already exists then update

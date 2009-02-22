@@ -7,11 +7,24 @@
 		     <h3>Date:
 		     <label>
 		     <select name="date" id="date" onchange="MM_jumpMenu('parent',this,1)">
-			<?php foreach($dates as $date) {
-			echo '<option value="'.$date['datemysql'].'" ';
-			echo (($date['datemysql'] == $this->uri->segment(4)) ? 'selected="selected" ' : '');
-			echo '>'.$date['date']."&nbsp;</option>\n";
-			} ?>
+		     
+			<?php 
+				//Output the Dates ... If the date in URL doesn't exists, add it.
+				$match = false;
+				$ops = '';
+				foreach($dates as $date) {
+					$ops .= '<option value="'.$date['datemysql'].'" ';
+					$ops .= (($date['datemysql'] == $this->uri->segment(4)) ? 'selected="selected" ' : '');
+					$ops .= '>'.$date['date']."&nbsp;</option>\n";
+					if($date['datemysql'] == $this->uri->segment(4)) $match = true;
+				}
+				
+				if(false == $match) {
+					$ops .= '<option value="'.$this->uri->segment(4).'" ';
+					$ops .= 'selected="selected" >' . date('l, F j, o', strtotime($this->uri->segment(4))) . "&nbsp;</option>\n";
+				}
+				echo $ops;
+			?>
 	         </select>
 		     </label></h3><br />
 		     <table border="0" cellspacing="2" cellpadding="2">
