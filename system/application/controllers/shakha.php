@@ -302,9 +302,13 @@ class Shakha extends Controller
 		}
 
 		$v = $this->db->getwhere('sankhyas', array('shakha_id' => $id, 'date' => $date));
-		if($v->num_rows()) $data['sankhya'] = $v->row();
+		if($v->num_rows()){
+			$data['sankhya'] = $v->row();
+			$data['contact'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $data['sankhya']->contact_id))->row();
+		}
 
 		$data['shakha'] = $this->db->getwhere('shakhas', array('shakha_id' => $id))->row();
+
 		$data['pageTitle'] = 'Add Sankhya';
 
 		$this->layout->view('shakha/add-sankhya', $data);

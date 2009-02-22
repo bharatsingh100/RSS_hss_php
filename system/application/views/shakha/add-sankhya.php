@@ -26,7 +26,13 @@
 				echo $ops;
 			?>
 	         </select>
-		     </label></h3><br />
+		     </label></h3>
+		     <?php if($set && $contact->contact_id != 0) {
+		     			echo '<strong>Last Updated By: </strong>';
+		     			echo anchor('profile/view/'.$contact->contact_id, $contact->first_name . ' ' . $contact->last_name);
+		     			echo '<br /><br />';
+		     }
+		     ?>
 		     <table border="0" cellspacing="2" cellpadding="2">
                <tr>
                  <td width="102">&nbsp;</td>
