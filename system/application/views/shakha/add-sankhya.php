@@ -98,7 +98,7 @@
                  <td>&nbsp;</td>
                </tr>
                <tr>
-                 <td valign="top"><div align="right">Notes:</div></td>
+                 <td valign="top"><div align="right">Shakha Notes:</div></td>
                  <td colspan="3"><textarea name="shakha_info" id="shakha_info" cols="45" rows="5"><?php echo (($set) ? $sankhya->shakha_info : '');?></textarea></td>
                </tr>
                <tr>

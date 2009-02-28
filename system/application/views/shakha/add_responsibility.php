@@ -59,3 +59,10 @@ if(isset($row->kk))
                </tr>
              </table>
            </form>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<p>&nbsp;</p>
+			<strong>Hints:</strong>
+			<ul>
+			  <li> If a swayamsevak has any responsibility, they are also assumed to be a gatanayak. Therefore, you don't need to assign <strong>Gatanayak</strong> responsibility to an existing karyakarta.</li>
+			</ul>

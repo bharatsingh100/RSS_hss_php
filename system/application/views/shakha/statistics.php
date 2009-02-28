@@ -66,7 +66,7 @@
   </tr>
   <?php $i = 0; foreach($sankhyas as $sankhya): ?>
   <tr>
-    <td><?=$sankhya->date?></td>
+    <td><?php echo anchor('shakha/add_sankhya/'.$shakha->shakha_id.'/'.$sankhya->date, $sankhya->date);?></td>
     <td><?=$sankhya->total?></td>
     <td><?=($sankhya->shishu_m + $sankhya->shishu_f)?></td>
     <td><?=($sankhya->bala_m + $sankhya->bala_f)?></td>
