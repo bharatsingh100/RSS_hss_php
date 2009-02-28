@@ -27,7 +27,7 @@
 			?>
 	         </select>
 		     </label></h3>
-		     <?php if($set && $contact->contact_id != 0) {
+		     <?php if($set && $contact) {
 		     			echo '<strong>Last Updated By: </strong>';
 		     			echo anchor('profile/view/'.$contact->contact_id, $contact->first_name . ' ' . $contact->last_name);
 		     			echo '<br /><br />';
