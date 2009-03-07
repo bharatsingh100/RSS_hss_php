@@ -1,9 +1,9 @@
 <?php
 class Email extends Controller
 {
-
 	var $userdir;
-
+	var $docpath;
+	
 	function Email()
     {
         parent::Controller();
@@ -13,6 +13,7 @@ class Email extends Controller
 		$this->load->library('email');
 		$this->userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
 		$this->userdir = $this->userdir[2];
+		$this->docpath = '/var/www/web2/web/';
     }
 
 	function zip_code_fixes($id)
@@ -92,7 +93,7 @@ class Email extends Controller
         	foreach($query as $contact){
         		$contacts[$contact->contact_id] = $contact;}
         		reset($logs);
-		
+
 			foreach($logs as $log){
 				$message .= "\n".'<item>'."\n";
                 $message .= '<title>'.$log->name.'</title>'."\n";
@@ -140,6 +141,7 @@ class Email extends Controller
         require_once "Swift/Connection/SMTP.php";
 		$swift =& new Swift(new Swift_Connection_SMTP("localhost"));*/
 
+		return 0;
 		$lists = $this->db->getwhere('lists', "modified >= '".date('o-m-d')." 00:00:00'");
 
 		if($lists->num_rows()){
@@ -208,7 +210,7 @@ class Email extends Controller
 			    $data['bala_f'] = $data['bala_m'] = $data['kishor_m'] = 0;
 			    $data['kishor_f'] = $data['yuva_m'] = $data['yuva_f'] = 0;
 			    $data['tarun_m'] = $data['tarun_f'] = $data['praudh_m'] = $data['praudh_f'] = 0;
-				$data['contact_id'] = $this->session->userdata('0');
+				$data['contact_id'] = 0;//$this->session->userdata('0');
 				$data['ip'] = $this->input->ip_address();
 				$data['date'] = date('Y-m-d');
 				$data['shakha_id'] = $shakha->shakha_id;
@@ -304,8 +306,8 @@ class Email extends Controller
 	{
 
 	    // Define the full path to your folder from root
-	    $path = "/home/$this->userdir/www/emails/bounced/";
-
+	    //$path = "/home/$this->userdir/www/emails/bounced/";
+		$path = $this->docpath . 'emails/bounced/';
 	    // Open the folder
 	    $dir_handle = @opendir($path) or die("Unable to open $path");
 	    // Loop through the files
@@ -333,12 +335,44 @@ class Email extends Controller
 	    closedir($dir_handle);
 	}
 
+	//Create file for adding and removing lists
+	function edit_lists()
+	{
+		//List Lists
+		//$host = '_hssusa.org';
+		$host = '@hssusa.org';
+		
+		//Mark Old Lists as Active
+		$this->db->where('status','Creating');
+		$this->db->where('modified < ', date('Y-m-d H:i:s', strtotime('1 hour ago')));
+		$this->db->update('lists', array('status' => 'Active'));
+		
+		$lists = $this->db->getwhere('lists', array('status' => 'Creating'));
+		//$p = '/home/'.$this->userdir.'/www/emails/';
+		$p = $this->docpath . 'emails/';
+		if($lists->num_rows())
+		{
+			$lists = $lists->result();
+			foreach($lists as $list)
+			{
+				$new_lists[] = strtolower($list->address.$host);
+				$new_email_lists = implode("\n",$new_lists);
+				$file = $p.'create-lists.txt';
+				$fh = fopen($file, 'w') or die("Can't open file");
+				fwrite($fh, $new_email_lists);
+				fclose($fh);
+				shell_exec('chmod 0666 '.$file);
+			}
+		}
+	}
 	function config_files()
 	{
 		//List Lists
-		$host = '_hssusa.org';
+		//$host = '_hssusa.org';
+		$host = '';
 		$lists = $this->db->getwhere('lists', array('status' => 'Active'));
-		$p = '/home/'.$this->userdir.'/www/emails/';
+		//$p = '/home/'.$this->userdir.'/www/emails/';
+		$p = $this->docpath . 'emails/';
 		if($lists->num_rows())
 		{
 			$lists = $lists->result();
@@ -388,7 +422,9 @@ class Email extends Controller
 
 	function shakha_lists()
 	{
-		$host = '_hssusa.org';
+		//$host = '_hssusa.org';
+		$host = '';
+		$path = $this->docpath . 'emails/';
 		$lists = $this->db->getwhere('lists', array('level' => 'SH', 'status' => 'Active'));
 		if($lists->num_rows())
 		{
@@ -398,13 +434,15 @@ class Email extends Controller
 			{
 				$l .= $list->address . $host . "\n";
 			}
-			echo write_file('/home/'.$this->userdir.'/www/emails/elists.txt', $l);
-			echo shell_exec("chmod 0666 /home/$this->userdir/www/emails/elists.txt");
+			//echo write_file('/home/'.$this->userdir.'/www/emails/elists.txt', $l);
+			echo write_file($path.'elists.txt', $l);
+			echo shell_exec('chmod 0666 ' . $path . 'elists.txt');
 
 			foreach($lists as $list)
 			{
 				$list_name = $list->address . $host;
-				$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
+				//$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
+				$file = $path . 'synch/' . $list_name;
 				$members = unserialize($list->members);
 				$emails = '';
 				echo $list_name . '<br />';
@@ -444,7 +482,9 @@ class Email extends Controller
 
 	function vibhag_lists()
 	{
-		$host = '_hssusa.org';
+		//$host = '_hssusa.org';
+		$host = '';
+		$path = $this->docpath . 'emails/';
 		$lists = $this->db->getwhere('lists', array('level' => 'VI', 'status' => 'Active'));
 		if($lists->num_rows())
 		{
@@ -453,7 +493,8 @@ class Email extends Controller
 			foreach($lists as $list)
 			{
 				$list_name = $list->address . $host;
-				$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
+				//$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
+				$file = $path . 'synch/' . $list_name;
 				$members = unserialize($list->members);
 				$emails = '';
 //				echo $list_name . '<br />';
@@ -499,7 +540,9 @@ class Email extends Controller
 
 	function sambhag_lists()
 	{
-		$host = '_hssusa.org';
+		//$host = '_hssusa.org';
+		$host = '';
+		$path = $this->docpath . 'emails/';
 		$lists = $this->db->getwhere('lists', array('level' => 'SA', 'status' => 'Active'));
 		if($lists->num_rows())
 		{
@@ -508,7 +551,8 @@ class Email extends Controller
 			foreach($lists as $list)
 			{
 				$list_name = $list->address . $host;
-				$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
+				//$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
+				$file = $path . 'synch/' . $list_name;
 				$members = unserialize($list->members);
 				$emails = '';
 //				echo $list_name . '<br />';
@@ -554,7 +598,9 @@ class Email extends Controller
 
 	function national_lists()
 	{
-		$host = '_hssusa.org';
+		//$host = '_hssusa.org';
+		$host = '';
+		$path = $this->docpath . 'emails/';
 		$lists = $this->db->getwhere('lists', array('level' => 'NT', 'status' => 'Active'));
 		if($lists->num_rows())
 		{
@@ -563,7 +609,8 @@ class Email extends Controller
 			foreach($lists as $list)
 			{
 				$list_name = $list->address . $host;
-				$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
+				//$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
+				$file = $path . 'synch/' . $list_name;
 				$members = unserialize($list->members);
 				$emails = '';
 
