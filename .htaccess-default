@@ -4,8 +4,8 @@ RedirectMatch 403 /\.svn.*$
     RewriteEngine On
     RewriteBase /
 
-    RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^(.*) https://%{SERVER_NAME}/$1 [L,R]
+    #RewriteCond %{SERVER_PORT} !^443$
+    #RewriteRule ^(.*) https://%{SERVER_NAME}/$1 [L,R]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -20,9 +20,9 @@ RedirectMatch 403 /\.svn.*$
     ErrorDocument 404 /index.php
 </IfModule> 
 
-<ifmodule mod_expires.c>
+<IfModule mod_expires.c>
   <filesmatch "\.(jpg|gif|png|css|js)$">
        ExpiresActive on
        ExpiresDefault "access plus 1 year"
    </filesmatch>
-</ifmodule>
+</IfModule>

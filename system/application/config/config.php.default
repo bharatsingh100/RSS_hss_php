@@ -11,7 +11,7 @@
 |	http://www.your-site.com/
 |
 */
-$config['base_url']	= "https://crm.hssusa.org/";
+$config['base_url']	= "http://sampark.hssusa.org/";
 
 /*
 |--------------------------------------------------------------------------
@@ -173,7 +173,7 @@ $config['function_trigger'] = 'm';
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 2;
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -247,7 +247,7 @@ $config['sess_timeout']             = 36000;
 $config['sess_destroy_on_timeout']  = TRUE; 
 $config['sess_update_interval']     = 180; 
 $config['sess_gc_probability']      = 100;
-$config['sess_http_only']           = TRUE; // PHP 5.2+ or better only!
+$config['sess_http_only']           = FALSE; // PHP 5.2+ or better only!
 $config['sess_forwarded_ip']        = FALSE;
 $config['sess_secure']              = FALSE;
 
