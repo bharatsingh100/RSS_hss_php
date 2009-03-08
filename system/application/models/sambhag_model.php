@@ -14,6 +14,7 @@ class Sambhag_model extends Model
 		foreach($_POST as $key => $value)
 			$d[$key] = $value;
 		unset($d['button']);
+		$d['address'] = strtolower($d['address']);
         $d['members'] = serialize($d['members']);
         $d['status'] = 'Creating';
         $d['owner'] = $this->session->userdata('contact_id');
