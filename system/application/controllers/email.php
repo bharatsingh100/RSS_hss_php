@@ -452,14 +452,14 @@ class Email extends Controller
 					{
 						case 'allss' :
 							$t = $this->db->select('email')->getwhere('swayamsevaks', array('shakha_id' => $list->level_id, 'email_status' => 'Active'))->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'allkk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
 							$this->db->join('responsibilities', "responsibilities.shakha_id = $list->level_id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 					}
 				}
@@ -509,14 +509,14 @@ class Email extends Controller
 							$this->db->where('shakha_id IN ' . $shakha_ids);
 							$this->db->where('email_status', 'Active');
 							$t = $this->db->select('email')->get('swayamsevaks')->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'allkk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
 							$this->db->join('responsibilities', "responsibilities.shakha_id IN $shakha_ids AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 					}
 
@@ -567,14 +567,14 @@ class Email extends Controller
 							$this->db->where('shakha_id IN ' . $shakha_ids);
 							$this->db->where('email_status', 'Active');
 							$t = $this->db->select('email')->get('swayamsevaks')->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'allkk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
 							$this->db->join('responsibilities', "responsibilities.shakha_id IN $shakha_ids AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 					}
 
@@ -622,35 +622,35 @@ class Email extends Controller
 						//	$this->db->where('shakha_id IN ' . $shakha_ids);
 							$this->db->where('email_status', 'Active');
 							$t = $this->db->select('email')->get('swayamsevaks')->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'allkk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
 							$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'ntkk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
 							$this->db->join('responsibilities', "responsibilities.level = 'NT' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'sakk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
 							$this->db->join('responsibilities', "responsibilities.level = 'SA' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'vikk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
 							$this->db->join('responsibilities', "responsibilities.level = 'VI' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
-							foreach($t as $j) $emails .= $j->email . "\n";
+							foreach($t as $j) if(isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 					}
 
@@ -671,6 +671,11 @@ class Email extends Controller
 		}
 		else echo '=======No Lists Found=======';
 	}
+	
+	function isValidEmail($email){
+		return eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email);
+	}
+
 }
 
 ?>
