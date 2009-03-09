@@ -70,7 +70,7 @@ class Shakha extends Controller
 
         foreach ($d['lists'] as &$list)
         {
-			$list['address'] .= '@hssusa.org';
+			$list['address'] .= '@lists.hssusa.org';
             if($list['mod1'])
             {
                 $this->db->select('contact_id,first_name,last_name');
