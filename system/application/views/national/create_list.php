@@ -16,7 +16,7 @@
       <td width="139" align="right"><strong>List Name:<font color="#FF0000">*</font></strong></td>
       <td colspan="2"><label>
         <input name="address" type="text" id="address" size="35" maxlength="50" onBlur="elistCheck()" value="<?php if($ers) echo $d['address'];?>"/>
-        <strong>@hssusa.org</strong></label></td>
+        <strong>@lists.hssusa.org</strong></label></td>
     </tr>
         <tr valign="middle">
       <td align="right">&nbsp;</td>

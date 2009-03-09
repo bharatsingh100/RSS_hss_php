@@ -18,7 +18,7 @@
     <tr valign="middle">
       <td width="139" align="right"><strong>List Name:</strong></td>
       <td colspan="2"><label>
-        <strong><?=$lists->address?>@hssusa.org</strong></label></td>
+        <strong><?=$lists->address?>@lists.hssusa.org</strong></label></td>
     </tr>
     <tr valign="middle">
       <td align="right" valign="top"><strong>List Style:</strong></td>

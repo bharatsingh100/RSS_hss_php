@@ -19,7 +19,7 @@
       <td width="139" align="right"><strong>List Name:</strong></td>
       <td colspan="2"><label>
         <!--<input name="address" type="text" id="address" size="35" maxlength="50" value=""/>-->
-        <strong><?=$lists->address?>@hssusa.org</strong></label></td>
+        <strong><?=$lists->address?>@lists.hssusa.org</strong></label></td>
     </tr>
 
     <tr valign="middle">
