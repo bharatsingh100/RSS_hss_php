@@ -340,7 +340,7 @@ class Email extends Controller
 	{
 		//List Lists
 		//$host = '_hssusa.org';
-		$host = '@hssusa.org';
+		$host = '@lists.hssusa.org';
 		
 		//Mark Old Lists as Active
 		$this->db->where('status','Creating');
