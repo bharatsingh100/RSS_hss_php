@@ -14,6 +14,7 @@ class Email extends Controller
 		$this->userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
 		$this->userdir = $this->userdir[2];
 		$this->docpath = '/var/www/web2/web/';
+		$this->output->enable_profiler($this->config->item('debug'));
     }
 
 	function zip_code_fixes($id)
@@ -514,7 +515,7 @@ class Email extends Controller
 						case 'allkk' :
 							$this->db->select('distinct(swayamsevaks.email)');
 							$this->db->from('swayamsevaks');
-							$this->db->join('responsibilities', "responsibilities.vibhag_id = {$list->level_id} AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+							$this->db->join('responsibilities', "responsibilities.vibhag_id = '{$list->level_id}' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
 							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
