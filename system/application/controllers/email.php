@@ -508,13 +508,13 @@ class Email extends Controller
 						case 'allss' :
 							$this->db->where('shakha_id IN ' . $shakha_ids);
 							$this->db->where('email_status', 'Active');
-							$t = $this->db->select('email')->get('swayamsevaks')->result();
+							$t = $this->db->select('distinct(email)')->get('swayamsevaks')->result();
 							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'allkk' :
-							$this->db->select('swayamsevaks.email');
+							$this->db->select('distinct(swayamsevaks.email)');
 							$this->db->from('swayamsevaks');
-							$this->db->join('responsibilities', "responsibilities.shakha_id IN $shakha_ids AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+							$this->db->join('responsibilities', "responsibilities.vibhag_id = {$list->level_id} AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 							$t = $this->db->get()->result();
 							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
