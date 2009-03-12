@@ -50,7 +50,7 @@ class Admin extends Controller
 				$d['status'] = 'Pending';
 				$this->db->insert('tickets',$d);
 
-				$headers = 'From: HSS Sampark System <crm_admin@hssusa.org>'."\r\n";
+				$headers = 'From: HSS Sampark System <abhi@hssus.org>'."\r\n";
 				$message = "We have received your message and we will reply to you shortly. If you do hear back from us soon. Please contact us at crm_admin@hssusa.org\r\n\r\n";
 				$message .= "Your Message:\r\n".$d['message'];
 				$message .= "\r\n\r\n--\r\nHSS Sampark System Team\r\n";
@@ -58,7 +58,7 @@ class Admin extends Controller
 				mail($d['email'],$subject,$message,$headers);
 			}
 			else
-				$this->session->set_userdata('message', 'Your E-mail wasn\'t sent. Please contact us at crm_admin@hssusa.org&nbsp;');
+				$this->session->set_userdata('message', 'Your E-mail wasn\'t sent. Please contact us at abhi@hssus.org&nbsp;');
 			redirect('admin/contact');
 		}
 		$d['pageTitle'] = 'Contact System Admin';
