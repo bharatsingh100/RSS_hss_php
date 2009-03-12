@@ -43,7 +43,7 @@ class Admin extends Controller
 			$message = "IP Address: http://www.melissadata.com/lookups/iplocation.asp?ipaddress=".$this->session->userdata('session_ip_address')."\r\n\n";
 			$message .= $d['message'];
 			$subject = 'Message from HSS CRM';
-			if(mail('crm_admin@hssusa.org',$subject,$message,$headers)){
+			if(mail('abhi@hssus.org',$subject,$message,$headers)){
 				$this->session->set_userdata('message', 'Your E-mail has been sent to System Admin. Thanks!&nbsp;');
 				unset($d['button']);
 				$d['ip_add'] = $this->session->userdata('session_ip_address');
