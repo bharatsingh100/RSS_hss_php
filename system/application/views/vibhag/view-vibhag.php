@@ -49,10 +49,47 @@ if(isset($row->kk))
     <th>Karyavah</th>
     <th>Mukhya Shikshak</th>
   </tr>
-<?php $i = 1; foreach($row->shakhas as $shakha) { ?>
+<?php 
+	$i = 1; 
+	foreach($row->shakhas as $shakha) {
+		if($shakha->shakha_status == 0) continue;
+?>
   <tr>
   	<td valign="top"><?=$i++?></td>
     <td valign="top"><?=anchor('shakha/view/'.$shakha->shakha_id, $shakha->name)?><?php echo ($shakha->shakha_status == 0) ? '<font color="red"> (Inactive)</font>': '';?></td>
+    <?php 	if(isset($shakha->kk)) 
+	{
+		echo '<td valign="top">';
+		foreach($shakha->kk as $kk)
+			if($kk->responsibility == '020') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
+		echo '</td><td valign="top">';
+		foreach($shakha->kk as $kk)
+			if($kk->responsibility == '030') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
+		echo '</td>';
+	}
+	else { ?>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <?php } }?>
+  </tr>
+</table>
+<p>&nbsp; </p>
+<h3>Sampark Kendras: (Inactive Shakhas)</h3>
+<table id="tb">
+  <tr align="left">
+  	<th>&nbsp;</th>
+    <th>Shakha</th>
+    <th>Karyavah</th>
+    <th>Mukhya Shikshak</th>
+  </tr>
+<?php 
+	$i = 1; 
+	foreach($row->shakhas as $shakha) {
+		if($shakha->shakha_status == 1) continue;
+?>
+  <tr>
+  	<td valign="top"><?=$i++?></td>
+    <td valign="top"><?=anchor('shakha/view/'.$shakha->shakha_id, $shakha->name)?></td>
     <?php 	if(isset($shakha->kk)) 
 	{
 		echo '<td valign="top">';
