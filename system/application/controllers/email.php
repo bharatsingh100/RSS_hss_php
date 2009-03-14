@@ -705,18 +705,13 @@ class Email extends Controller
 				$file = $path . 'synch/' . $list_name;
 				$emails = $this->Email_model->get_email_addresses($list->id);
 				
-				var_dump($list);
 				sort($emails);
-				//$comp = gzcompress(serialize($emails), 1);
-				//print_r($comp);
-				//var_dump(gzuncompress($comp));
-				//continue;
-				//Update Database with list count
+
 				$q['size'] = count($emails);
 				$q['emails'] = gzcompress(serialize($emails), 1);
 				$this->db->where('id',$list->id);
 				$this->db->update('lists',$q);
-				continue;
+				//continue;
 				//Write to the file list of email addresses
 				if(count($emails) && write_file($file, implode('\n',$emails)))
 					shell_exec("chmod 0666 $file");
