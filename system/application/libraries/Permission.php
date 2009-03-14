@@ -80,7 +80,9 @@ class Permission
 		//030 - Mukhya Shikshak
 		//031 - Sah-Mukhya Shikshak
 		//170 - Palak
-		$a = array('020','021','030','031','170');
+		//150 - Sampark Pramukh
+		//151 - Sah-Sampark Pramukh
+		$a = array('020','021','030','031','170','150','151');
 		if (in_array($this->sh_resp, $a) && $this->shakha_id == $id){
 			$this->is_shakha_kkh = true;
 		}
@@ -106,7 +108,7 @@ class Permission
 		$a = array('040','050','051','060','061','070','071','080','081','010',
 		'011','090','091','100','101','110','120','130','131','140', '150', '151', '160', '180', '190' '999','140');
 		*/
-		$a = array('020','021','030','031','170');
+		$a = array('020','021','030','031','170', '150', '151');
 		$this->is_shakha_kkl = (((!in_array($this->sh_resp, $a) && $this->shakha_id == $id) || $this->is_shakha_kkh($id)) ? true : false);
 		return $this->is_shakha_kkl;
 	}
