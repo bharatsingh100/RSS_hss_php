@@ -22,7 +22,7 @@ class Email_model extends Model
 			case 'SA':
 				return $this->get_sambhag_emails($list['level_id'], $list['members']);
 			case 'NT':
-				return $this->get_national_emails($list['level_id'], $list['members']);
+				return $this->get_national_emails($list['members']);
 		}
 	}
 	
@@ -92,7 +92,7 @@ class Email_model extends Model
 		if(in_array('allkk', $members)) {
 			$this->get_email_addresses_common_sql();
 			$this->db->from('responsibilities r');
-			$this->db->where("r.nagar_id = $lid AND r.swayamsevak_id = s.contact_id");
+			$this->db->where("r.nagar_id = '$lid' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
 			if($t) $temp = array_merge($temp, $t);	
 		}
@@ -131,7 +131,7 @@ class Email_model extends Model
 		if(in_array('allkk', $members)) {
 			$this->get_email_addresses_common_sql();
 			$this->db->from('responsibilities r');
-			$this->db->where("r.vibhag_id = $lid AND r.swayamsevak_id = s.contact_id");
+			$this->db->where("r.vibhag_id = '$lid' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
 			if($t) $temp = array_merge($temp, $t);	
 		}
@@ -160,7 +160,7 @@ class Email_model extends Model
 		if(in_array('allkk', $members)) {
 			$this->get_email_addresses_common_sql();
 			$this->db->from('responsibilities r');
-			$this->db->where("r.sambhag_id = $lid AND r.swayamsevak_id = s.contact_id");
+			$this->db->where("r.sambhag_id = '$lid' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
 			if($t) $temp = array_merge($temp, $t);	
 		}
@@ -168,7 +168,7 @@ class Email_model extends Model
 		return array_unique($temp);
 	}
 	
-	function get_national_emails($lid, $group){
+	function get_national_emails($group){
 		
 		$members = unserialize($group);
 		$temp = array();

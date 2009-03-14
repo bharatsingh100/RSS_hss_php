@@ -689,7 +689,7 @@ class Email extends Controller
 		if($lists->num_rows())
 		{
 			$lists = $lists->result();
-			
+			//print_r($lists);
 			//Create a List of E-mail Lists
 			$l = '';
 			foreach($lists as $list)
@@ -718,6 +718,10 @@ class Email extends Controller
 
 			}
 		}
+	}
+	
+	function get_email_addresses($lid) {
+		var_dump($this->Email_model->get_email_addresses($lid));
 	}
 }
 
