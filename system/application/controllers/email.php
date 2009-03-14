@@ -713,7 +713,7 @@ class Email extends Controller
 				$this->db->update('lists',$q);
 				//continue;
 				//Write to the file list of email addresses
-				if(count($emails) && write_file($file, implode('\n',$emails)))
+				if(count($emails) && write_file($file, implode("\n",$emails)))
 					shell_exec("chmod 0666 $file");
 
 			}
