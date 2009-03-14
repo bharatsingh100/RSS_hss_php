@@ -1,3 +1,8 @@
+#Add emails to the lists
+ALTER TABLE `lists`  ADD `emails` TEXT NOT NULL AFTER `members`
+
+
+
 #Set Nagar ID to Null for Permissions
 UPDATE shakhas SET nagar_id = NULL;
 #Adding Nagar to RefCode
