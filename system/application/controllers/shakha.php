@@ -141,6 +141,7 @@ class Shakha extends Controller
 
 
 		$c['lists'] = $this->db->getwhere('lists', array('id' => $list_id))->row();
+		$c['emails'] = $this->Shakha_model->list_members($list_id);
 		$c['shakha'] = $this->Shakha_model->getShakhaInfo($c['lists']->level_id);
 		$c['pageTitle'] = 'Edit E-mail list';
 		$this->layout->view('shakha/edit_list', $c);

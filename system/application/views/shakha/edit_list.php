@@ -189,3 +189,41 @@ Praudh only</td>
       <td>&nbsp;</td>
     </tr><?php endif; ?>
   </table>
+  <p>&nbsp;</p>
+  <table>
+  	<tr><th>List Members</th></tr>
+  	<?php 
+  		$count = count($emails);
+  		$j = 0;
+  		$max = ceil($count / 3);
+  		for($i = 0; $i < $max; $i++): ?>
+  	<tr><td>
+  		<?php
+  			 if($j == $count): 
+  		 		echo ''; 
+  		 	else:
+  				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
+  				$j++;
+  			endif; ?>
+  		</td>
+  		<td>
+  		<?php
+  			 if($j == $count): 
+  		 		echo ''; 
+  		 	else:
+  				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
+  				$j++;
+  			endif; ?>
+  		</td>
+  		<td>
+  		<?php
+  			 if($j == $count): 
+  		 		echo ''; 
+  		 	else:
+  				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
+  				$j++;
+  			endif; ?>
+  		</td>
+  	</tr>
+  	<?php endfor; ?>
+  	</table>

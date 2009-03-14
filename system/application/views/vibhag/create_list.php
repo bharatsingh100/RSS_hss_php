@@ -106,7 +106,7 @@
         <span class="style2">
         <input name="members[]" type="checkbox" id="checkbox0" onClick="elistCheck()" value="allss" />
         </span></label>
-        <strong>      All Swayamsevaks</strong></td>
+        <strong>      All Contacts</strong></td>
       <td width="276"><label>
         <span class="style1">
         <input name="members[]" type="checkbox" id="checkbox1" onClick="elistCheck()" value="allkk" />

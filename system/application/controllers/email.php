@@ -9,6 +9,7 @@ class Email extends Controller
         parent::Controller();
 	    	
 		$this->load->helper('file');
+		$this->load->model('Email_model');
 		$this->load->model('Vibhag_model');
 		$this->load->library('email');
 		$this->userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
@@ -676,7 +677,53 @@ class Email extends Controller
 	function isValidEmail($email){
 		return eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $email);
 	}
+	
+	//Return E-mail addresses
+	
+	function all_email_lists()
+	{
+		//$host = '_hssusa.org';
+		$host = '';
+		$path = $this->docpath . 'emails/';
+		$lists = $this->db->getwhere('lists', array('status' => 'Active'));
+		if($lists->num_rows())
+		{
+			$lists = $lists->result();
+			
+			//Create a List of E-mail Lists
+			$l = '';
+			foreach($lists as $list)
+				$l .= $list->address . $host . "\n";
+			echo write_file($path.'elists.txt', $l);
+			echo shell_exec('chmod 0666 ' . $path . 'elists.txt');
 
+			foreach($lists as $list)
+			{
+				
+				$list_name = $list->address . $host;
+				
+				$file = $path . 'synch/' . $list_name;
+				$emails = $this->Email_model->get_email_addresses($list->id);
+				
+				var_dump($list);
+				sort($emails);
+				//$comp = gzcompress(serialize($emails), 1);
+				//print_r($comp);
+				//var_dump(gzuncompress($comp));
+				//continue;
+				//Update Database with list count
+				$q['size'] = count($emails);
+				$q['emails'] = gzcompress(serialize($emails), 1);
+				$this->db->where('id',$list->id);
+				$this->db->update('lists',$q);
+				continue;
+				//Write to the file list of email addresses
+				if(count($emails) && write_file($file, implode('\n',$emails)))
+					shell_exec("chmod 0666 $file");
+
+			}
+		}
+	}
 }
 
 ?>

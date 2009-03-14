@@ -107,7 +107,7 @@
         <span class="style2">
         <input name="members[]" type="checkbox" id="checkbox0" onClick="elistCheck()" value="allss" />
         </span></label>
-        <strong>All Shakha Swayamsevak </strong><span class="style3">Including All Karyakarta</span></td>
+        <strong>All Contacts </strong><span class="style3">Including All Karyakarta</span></td>
       <td width="276"><label>
         <span class="style1">
         <input name="members[]" type="checkbox" id="checkbox1" onClick="elistCheck()" value="allkk" />
