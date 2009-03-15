@@ -112,67 +112,6 @@ class Email extends Controller
       	}
 	}
 
-	function login_log()
-	{
-		return 0;
-	    require_once "Swift.php";
-        require_once "Swift/Connection/SMTP.php";
-		$swift =& new Swift(new Swift_Connection_SMTP("localhost"));
-
-		$logs = $this->db->getwhere('loginlog', "login >= '".date('o-m-d')." 00:00:00'");
-		$subject = 'Login Logs Details';
-		$message = 'Login Logs for '.date("F j, Y").'<br /><br />';
-		$message = "Name\t\tIP-Address\t\tTime\t<br />";
-		if($logs->num_rows())
-		{
-			foreach($logs->result() as $log)
-			{
-				$message .= anchor(site_url('profile/view/'.$log->contact_id), $log->name);
-				$message .= "\t\t" . anchor('http://www.melissadata.com/lookups/iplocation.asp?ipaddress='.$log->ip_addr, $log->ip_addr);
-				$message .="\t\t$log->login\t<br />";
-			}
-			$message =& new Swift_Message($subject, $message, "text/html");
-			$swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
-		}
-	}
-
-    //Every evening send emails for lists that need to be created.
-	function email_lists()
-	{
-		/*require_once "Swift.php";
-        require_once "Swift/Connection/SMTP.php";
-		$swift =& new Swift(new Swift_Connection_SMTP("localhost"));*/
-
-		return 0;
-		$lists = $this->db->getwhere('lists', "modified >= '".date('o-m-d')." 00:00:00'");
-
-		if($lists->num_rows()){
-			foreach($lists->result() as $list){
-			    if($list->status == 'Creating')
-                    $this->email->subject('Create E-mail List ' . $list->address . '@hssusa.org');
-                elseif ($list->status == 'Deleting')
-                    $this->email->subject('Delete E-mail List ' . $list->address . '@hssusa.org');
-                else
-                    exit(1);
-
-                $ss = $this->db->select('email, first_name, last_name, city, state')->getwhere('swayamsevaks', array('contact_id' => $list->owner))->row();
-
-                $this->email->from($ss->email, $ss->first_name . ' ' . $ss->last_name);
-                $this->email->reply_to($ss->email, $ss->first_name . ' ' . $ss->last_name);
-
-                $message = 'Update E-mail list '. $list->address
-                            . '@hssusa.org for ' . $ss->first_name . ' ' . $ss->last_name
-                            . ' (' . $ss->city . ', ' . $ss->state . ")\n\n";
-
-                $this->email->message($message);
-                $this->email->to('crm_admin@hssusa.org');
-                $this->email->send();
-                //print $this->email->print_debugger();
-			}
-
-		}
-	}
-
 	//Set Shakha sankhya to 0 if there isn't sankhya entered for the Shakha
 	function initialize_sankhya()
 	{
@@ -230,11 +169,13 @@ class Email extends Controller
 
 		$shakhas = $this->db->getwhere('shakhas', array('frequency_day' => date('l'), 'frequency' => 'WK', 'shakha_status' => 1));
 		if($shakhas->num_rows()){
+			$this->load->model('helper_model');
 			$shakhas = $shakhas->result();
 			foreach($shakhas as $shakha){
-
-			    if(in_array($shakha->shakha_id, $exclude_shakhas)) continue;
-
+    			
+			    if(in_array($shakha->shakha_id, $exclude_shakhas) 
+			    	|| $this->helper_model->variable_get($shakha->vibhag_id . ':sankhya-notify') == 'false') continue;
+				echo $shakha->vibhag_id,':sankhya-notify','<br />'; continue;
 				$this->db->where('shakha_id', $shakha->shakha_id);
 				$this->db->where("responsibility IN ('020', '030', '031')");
 				$kks = $this->db->select('swayamsevak_id')->get('responsibilities');
@@ -420,182 +361,6 @@ class Email extends Controller
 				fclose($fh);
 			}
 		}
-	}
-
-	function shakha_lists()
-	{
-		//$host = '_hssusa.org';
-		$host = '';
-		$path = $this->docpath . 'emails/';
-		$lists = $this->db->getwhere('lists', array('level' => 'SH', 'status' => 'Active'));
-		if($lists->num_rows())
-		{
-			$lists = $lists->result();
-			$l = '';
-			foreach($lists as $list)
-			{
-				$l .= $list->address . $host . "\n";
-			}
-			//echo write_file('/home/'.$this->userdir.'/www/emails/elists.txt', $l);
-			echo write_file($path.'elists.txt', $l);
-			echo shell_exec('chmod 0666 ' . $path . 'elists.txt');
-
-			foreach($lists as $list)
-			{
-				$list_name = $list->address . $host;
-				//$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
-				$file = $path . 'synch/' . $list_name;
-				$members = unserialize($list->members);
-				$emails = '';
-				echo $list_name . '<br />';
-				foreach($members as $member)
-				{
-					switch($member)
-					{
-						case 'allss' :
-							$t = $this->db->select('email')->getwhere('swayamsevaks', array('shakha_id' => $list->level_id, 'email_status' => 'Active'))->result();
-							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
-							break;
-						case 'allkk' :
-							$this->db->select('swayamsevaks.email');
-							$this->db->from('swayamsevaks');
-							$this->db->join('responsibilities', "responsibilities.shakha_id = $list->level_id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
-							$t = $this->db->get()->result();
-							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
-							break;
-					}
-				}
-				$e_arr = explode("\n",$emails);
-				$q['size'] = count(array_unique($e_arr));
-				$this->db->where('id',$list->id);
-				$this->db->update('lists',$q);
-
-				if($emails != '' && write_file($file, $emails))
-				{
-					echo $file . '<br />';
-					echo $emails;
-					shell_exec("chmod 0666 $file");
-				}
-				echo '<br />' . '==============================';
-			}
-		}
-		else echo '=======No Lists Found=======';
-	}
-
-	function vibhag_lists()
-	{
-		//$host = '_hssusa.org';
-		$host = '';
-		$path = $this->docpath . 'emails/';
-		$lists = $this->db->getwhere('lists', array('level' => 'VI', 'status' => 'Active'));
-		if($lists->num_rows())
-		{
-			$lists = $lists->result();
-
-			foreach($lists as $list)
-			{
-				$list_name = $list->address . $host;
-				//$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
-				$file = $path . 'synch/' . $list_name;
-				$members = unserialize($list->members);
-				$emails = '';
-//				echo $list_name . '<br />';
-
-				$shakha_ids = $this->Vibhag_model->get_shakhas($list->level_id);
-				$shakha_ids = '('.implode(',',$shakha_ids).')';
-				foreach($members as $member)
-				{
-					switch($member)
-					{
-						case 'allss' :
-							$this->db->where('shakha_id IN ' . $shakha_ids);
-							$this->db->where('email_status', 'Active');
-							$t = $this->db->select('distinct(email)')->get('swayamsevaks')->result();
-							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
-							break;
-						case 'allkk' :
-							$this->db->select('distinct(swayamsevaks.email)');
-							$this->db->from('swayamsevaks');
-							$this->db->join('responsibilities', "responsibilities.vibhag_id = '{$list->level_id}' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
-							$t = $this->db->get()->result();
-							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
-							break;
-					}
-
-				}
-				$e_arr = explode("\n",$emails);
-				$q['size'] = count(array_unique($e_arr));
-				$this->db->where('id',$list->id);
-				$this->db->update('lists',$q);
-
-				if($emails != '' && write_file($file, $emails))
-				{
-					echo $file . '<br />';
-					echo $emails;
-					shell_exec("chmod 0666 $file");
-				}
-				echo '<br />' . '==============================';
-			}
-		}
-		else echo '=======No Lists Found=======';
-	}
-
-	function sambhag_lists()
-	{
-		//$host = '_hssusa.org';
-		$host = '';
-		$path = $this->docpath . 'emails/';
-		$lists = $this->db->getwhere('lists', array('level' => 'SA', 'status' => 'Active'));
-		if($lists->num_rows())
-		{
-			$lists = $lists->result();
-
-			foreach($lists as $list)
-			{
-				$list_name = $list->address . $host;
-				//$file = '/home/'.$this->userdir.'/www/emails/synch/' . $list_name;
-				$file = $path . 'synch/' . $list_name;
-				$members = unserialize($list->members);
-				$emails = '';
-//				echo $list_name . '<br />';
-
-				$shakha_ids = $this->Sambhag_model->get_shakhas($list->level_id);
-				$shakha_ids = '('.implode(',',$shakha_ids).')';
-				foreach($members as $member)
-				{
-					switch($member)
-					{
-						case 'allss' :
-							$this->db->where('shakha_id IN ' . $shakha_ids);
-							$this->db->where('email_status', 'Active');
-							$t = $this->db->select('email')->get('swayamsevaks')->result();
-							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
-							break;
-						case 'allkk' :
-							$this->db->select('swayamsevaks.email');
-							$this->db->from('swayamsevaks');
-							$this->db->join('responsibilities', "responsibilities.shakha_id IN $shakha_ids AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
-							$t = $this->db->get()->result();
-							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
-							break;
-					}
-
-				}
-				$e_arr = explode("\n",$emails);
-				$q['size'] = count(array_unique($e_arr));
-				$this->db->where('id',$list->id);
-				$this->db->update('lists',$q);
-
-				if($emails != '' && write_file($file, $emails))
-				{
-					echo $file . '<br />';
-					echo $emails;
-					shell_exec("chmod 0666 $file");
-				}
-				echo '<br />' . '==============================';
-			}
-		}
-		else echo '=======No Lists Found=======';
 	}
 
 	function national_lists()

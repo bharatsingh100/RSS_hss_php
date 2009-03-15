@@ -324,6 +324,24 @@ class Vibhag extends Controller
 		$data['pageTitle'] = $data['row']->name;
 		$this->layout->view('vibhag/view-vibhag', $data);
 	}
+	
+	function settings($id)
+	{
+		$this->load->model('helper_model');
+		if($this->input->post('name') && trim($this->input->post('name')) != '') {
+			if(strlen($id) == 4) {
+				$name = ucwords(strtolower($this->input->post('name')));
+				$this->db->update('ref_code', array('short_desc' => $name),
+											array('DOM_ID' => 2, 'REF_CODE' => $id));
+			}
+			$this->helper_model->variable_set("{$id}:sankhya-notify", $this->input->post('notify'));
+			$this->session->set_userdata('message', 'Vibhag Settings were successfully updated.&nbsp;');
+		}
+		$data['vibhag'] = $this->Vibhag_model->getVibhagInfo($id);
+		$data['notify'] = $this->helper_model->variable_get("{$id}:sankhya-notify", true);
+		$data['pageTitle'] = $data['vibhag']->name;
+		$this->layout->view('vibhag/vibhag-details', $data);
+	}
 
 	function add_shakha($id)
 	{
