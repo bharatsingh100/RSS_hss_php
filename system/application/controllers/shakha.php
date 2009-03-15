@@ -13,8 +13,8 @@ class Shakha extends Controller
 			$this->session->set_userdata('redirect', $this->uri->uri_string());
 			redirect('user');
 		}
-
-		//$this->output->enable_profiler(TRUE);
+		
+		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('Shakha_model');
 		$this->load->library('layout', 'layout_shakha');
 
@@ -64,8 +64,11 @@ class Shakha extends Controller
 
 	function email_lists($id)
 	{
+		
         $this->db->select('id,address,level_id,status,style,size,mod1,mod2,mod3');
         //$this->db->where('level_id = '.$id.' AND status = \'Active\' OR status = \'Creating'\');
+        //Hide the Deleted E-mail Lists after 2 Days
+        $this->db->where("modified > " . date('o-m-d', strtotime('-2 Days')));
         $d['lists'] = $this->db->getwhere('lists', array('level_id' => $id))->result_array();
 
         foreach ($d['lists'] as &$list)
@@ -139,7 +142,7 @@ class Shakha extends Controller
 
 		}
 
-
+		
 		$c['lists'] = $this->db->getwhere('lists', array('id' => $list_id))->row();
 		$c['emails'] = $this->Shakha_model->list_members($list_id);
 		$c['shakha'] = $this->Shakha_model->getShakhaInfo($c['lists']->level_id);

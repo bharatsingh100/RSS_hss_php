@@ -331,7 +331,7 @@ class Vibhag extends Controller
 		if($this->input->post('name') && trim($this->input->post('name')) != '') {
 			if(strlen($id) == 4) {
 				$name = ucwords(strtolower($this->input->post('name')));
-				$this->db->update('ref_code', array('short_desc' => $name),
+				$this->db->update('Ref_Code', array('short_desc' => $name),
 											array('DOM_ID' => 2, 'REF_CODE' => $id));
 			}
 			$this->helper_model->variable_set("{$id}:sankhya-notify", $this->input->post('notify'));

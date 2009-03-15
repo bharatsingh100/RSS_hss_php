@@ -78,7 +78,7 @@ class Email extends Controller
         $message = '<?xml version="1.0" ?>'."\n";
         $message .= '<rss version="2.0">'."\n";
         $message .= '<channel>'."\n\n";
-        $message .= '<title>Login Logs for CRM</title>'."\n";
+        $message .= '<title>Login Logs for Sampark System</title>'."\n";
         $message .= '<description>Time when everyone logs in.</description>'."\n";
         $message .= '<link>' . base_url() . '</link>'."\n";
 
