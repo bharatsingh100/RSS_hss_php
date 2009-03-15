@@ -1,5 +1,6 @@
 #Add emails to the lists
-ALTER TABLE `lists`  ADD `emails` TEXT NOT NULL AFTER `members`
+ALTER TABLE `lists`  ADD `emails` BLOB AFTER `members`
+ALTER TABLE `lists` CHANGE `emails` `emails` BINARY NOT NULL
 
 
 
