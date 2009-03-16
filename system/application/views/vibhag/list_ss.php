@@ -31,9 +31,9 @@ for($i = 0; $i < $total_rows; $i++)
 {
     //Link each name to their profile, if no name then insert N/A
 		if(strlen(trim($vars[$i]['name'])))
-	     $vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], $vars[$i]['name']);
+			$vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], $vars[$i]['name']);
 		else 
-    	$vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], 'N/A');
+    		$vars[$i]['name'] = anchor('profile/view/' . $vars[$i]['contact_id'], 'N/A');
 	
 	//Create e-mail link
 	$vars[$i]['email'] = mailto($vars[$i]['email'], $vars[$i]['email']);
@@ -65,6 +65,7 @@ for($i = 0; $i < $total_rows; $i++)
 	}
 	//Unset Unnecessary Variables before displaying them on the list
 	unset($vars[$i]['contact_id']);
+	unset($vars[$i]['household_id']);
 	unset($vars[$i]['ph_home']);
 	unset($vars[$i]['ph_mobile']);
 	unset($vars[$i]['ph_work']);
@@ -78,7 +79,7 @@ for($i = 0; $i < $total_rows; $i++)
     <tr>
       <td width="100" align="right" "nowrap"><h3>Sort by:</h3></td>
       <td width="80" align="left"><select name="jumpMenu" id="jumpMenu" onchange="MM_jumpMenu('parent',this,1)">
-  	<?php $val = array('name' => 'Name&nbsp;', 'city' => 'City&nbsp;', 'email' => 'E-mail&nbsp;', 'shakha_id' => 'Shakha&nbsp;');
+  	<?php $val = array('household_id' => 'Family', 'name' => 'Name&nbsp;', 'city' => 'City&nbsp;', 'email' => 'E-mail&nbsp;', 'shakha_id' => 'Shakha&nbsp;');
 	foreach($val as $var => $value){
      echo '<option value="/' . $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3)."/$var\" ";
 	 echo (($this->uri->segment(4) == $var) ? ' selected="selected" ' : '');

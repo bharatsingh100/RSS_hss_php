@@ -105,7 +105,7 @@ class Vibhag_model extends Model
 		$shakha_ids = $this->get_shakhas($vibhag_id);
 		$shakha_ids = '('.implode(',',$shakha_ids).')';
 
-		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->orderby($sort_by, 'asc')->getwhere('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
+		$query = $this->db->select('household_id, contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->orderby($sort_by, 'asc')->getwhere('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
 
 		return $query;
 	}

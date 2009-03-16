@@ -292,7 +292,7 @@ class Vibhag extends Controller
 		$this->load->view('vibhag/csv', $data);
 	}
 
-	function browse($id = '', $order = 'name') {
+	function browse($id = '', $order = 'household_id') {
 		//if($id == '') $id = $this->session->userdata('vibhag_id');
 
 		$shakha_ids = $this->Vibhag_model->get_shakhas($id);

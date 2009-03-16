@@ -70,6 +70,7 @@ for($i = 0; $i < $total_rows; $i++)
 	unset($vars[$i]['ph_mobile']);
 	unset($vars[$i]['ph_work']);
 	unset($vars[$i]['isnull']);
+	unset($vars[$i]['household_id']);
 }
 //print_r($results);
 ?>
@@ -80,11 +81,14 @@ for($i = 0; $i < $total_rows; $i++)
     <tr>
       <td width="100" align="right" "nowrap"><h3>Sort by:</h3></td>
       <td width="80" align="left"><select name="jumpMenu" id="jumpMenu" onchange="MM_jumpMenu('parent',this,0)">
-  	<?php $val = array("name", "city", "email", "gana", "gatanayak");
-	foreach($val as $var){
+  	<?php //$val = array("name", "city", "email", "gana", "gatanayak");
+  			$val = array('household_id' => 'Family', 'name' => 'Name&nbsp;', 
+  						'city' => 'City&nbsp;', 'email' => 'E-mail&nbsp;', 
+  						'gana' => 'Gana&nbsp;', 'gatanayak' => 'Gatanayak&nbsp;');
+	foreach($val as $var => $value){
      echo '<option value="/' . $this->uri->segment(1).'/'.$this->uri->segment(2).'/'.$this->uri->segment(3)."/$var\" ";
 	 echo (($this->uri->segment(4) == $var) ? ' selected="selected" ' : '');
-	 echo '>'. ucwords($var) . "</option>/n";
+	 echo '>'. $value . "</option>/n";
 	 }?>
   </select></td>
       <!--<td width="102"><input type="button" name="go_button" id= "go_button" value="Go" onclick="MM_jumpMenuGo('jumpMenu','parent',0)" /></td>-->
