@@ -53,17 +53,7 @@ for($i = 0; $i < $total_rows; $i++)
         $r = $this->db->select('contact_id, first_name')->getwhere('swayamsevaks', array('contact_id'=> $vars[$i]['gatanayak']))->row();
         $vars[$i]['gatanayak'] = anchor('profile/view/'.$r->contact_id, $r->first_name);
     }
-	
-/*	if($vars[$i]['birth_year'] != '')
-	{
-		$by = $vars[$i]['birth_year'];
-		if($by >= $ag['shishu']) $vars[$i]['birth_year'] = 'Shishu';
-		elseif($by >= $ag['bala'] && $by < $ag['shishu']) $vars[$i]['birth_year'] = 'Bala';
-		elseif($by >= $ag['kishor'] && $by < $ag['bala']) $vars[$i]['birth_year'] = 'Kishor';
-		elseif($by >= $ag['yuva'] && $by < $ag['kishor']) $vars[$i]['birth_year'] = 'Yuva';
-		elseif($by >= $ag['tarun'] && $by < $ag['yuva']) $vars[$i]['birth_year'] = 'Tarun';
-		elseif($by < $ag['tarun']) $vars[$i]['birth_year'] = 'Praudh';
-	}*/
+
 	unset($vars[$i]['birth_year']);
 	unset($vars[$i]['contact_id']);
 	unset($vars[$i]['ph_home']);

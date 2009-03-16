@@ -40,7 +40,11 @@ if(isset($row->kk))
   </tr>
 </table>
 <?php endif; ?>
+<?php $shakha_count = $sp_count = 0;
+		foreach($row->shakhas as $shakha):
+			if($shakha->shakha_status == 0) $sp_count++; else $shakha_count++; endforeach; ?>
 <p>&nbsp;</p>
+<?php if($shakha_count > 0): ?>
 <h3>Shakhas:</h3>
 <table id="tb">
   <tr align="left">
@@ -73,12 +77,13 @@ if(isset($row->kk))
     <?php } }?>
   </tr>
 </table>
+<?php endif; if($sp_count > 0): ?>
 <p>&nbsp; </p>
 <h3>Sampark Kendras: (Inactive Shakhas)</h3>
 <table id="tb">
   <tr align="left">
   	<th>&nbsp;</th>
-    <th>Shakha</th>
+    <th>Name</th>
     <th>Karyavah</th>
     <th>Mukhya Shikshak</th>
   </tr>
@@ -107,3 +112,4 @@ if(isset($row->kk))
   </tr>
 </table>
 <p>&nbsp; </p>
+<?php endif; ?>
