@@ -1,11 +1,14 @@
 <h2>Recent Updates</h2>
 <ul>
-  <li><strong>March 14, 2009</strong>
+  <li><strong>March 15, 2009</strong>
     <ul>
         <li><strong>Enhancement: </strong>Separating inactive shakhas into Samparka Kendra on Vibhag Home Page i.e.  </li>
         <li><strong>Enhancement: </strong>Gave Sampark Pramukhs same permissiosn as Mukhya Shiskhas / Karyavahs etc.</li>
         <li><strong>Enhancement: </strong>Show E-mail List Members on Edit List Page.</li>
-        <li><strong>Enhancement: </strong>Automatically add Nagar/Vibhag Team to Shakha All Contacts List.</li>
+        <li><strong>Enhancement: </strong>Automatically add Nagar/Vibhag Team to Shakha's All Contacts E-Mail Lists.</li>
+        <li><strong>Enhancement: </strong>Added option to Sort Contact Lists by Family. So that Family members show up together.</li>
+        <li><strong>Enhancement: </strong>Allowed Vibhag's to Change their Name.</li>
+        <li><strong>Enhancement: </strong>Allowed Vibhag Team to Control if the Mukhya Shikshak and Karyavah's should receive weekly Sankhya Reminders</li>
     </ul>
   </li>
   <li><strong>March 9, 2009</strong>
