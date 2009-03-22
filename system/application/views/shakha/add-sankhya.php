@@ -111,7 +111,7 @@
                  <td>&nbsp;</td>
                  <td colspan="3"><label>
                    <div align="center">
-                     <input type="submit" name="button" id="button" value="Sumbit Sankhya" />
+                     <input type="submit" name="button" id="button" value="Submit Sankhya" />
                      </div>
                  </label></td>
                </tr>
