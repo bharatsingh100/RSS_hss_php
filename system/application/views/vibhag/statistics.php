@@ -1,5 +1,8 @@
-<?php //print_r($vibhag);//echo '<pre>' . print_r($shakha) . '</pre>';/* ?>
+<?php //print_r($shakhas);//echo '<pre>' . print_r($shakha) . '</pre>';/* ?>
 <h2><?=$vibhag->name?> Vibhag - Statistics</h2>
+<p>&nbsp;</p>
+<h3>Downloadable Reports</h3>
+<ul><li><?php echo anchor('vibhag/all_vibhag_karyakarta_csv/'.$this->uri->segment(3), 'All Karyakartas in Vibhag'); ?> (MS Excel)</li></ul>
 <p>&nbsp;</p>
 <h3>Average Sankhya:</h3>
 <table width="100%" border="0" cellspacing="2" cellpadding="2">

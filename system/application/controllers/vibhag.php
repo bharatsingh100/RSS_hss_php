@@ -272,6 +272,38 @@ class Vibhag extends Controller
 		$this->load->view('vibhag/csv', $data);
 	}
 
+	function all_vibhag_karyakarta_csv($id)
+	{
+		$this->load->dbutil();
+
+		//Get list of Shakhas in the Vibhag
+		//$shakha_ids = $this->Vibhag_model->get_shakhas($id);
+		//$shakha_ids = '('.implode(',',$shakha_ids).')';
+
+		$data['query'] = $this->db->query("SELECT s.first_name as FirstName, s.last_name as LastName, s.email Email,
+											s.city as City, s.state as State, sh.name as Shakha,
+											rc.short_desc as Nagar, rc0.short_desc as Vibhag, rc1.short_desc as Sambhag, rc2.short_desc as Responsibility
+											FROM swayamsevaks s, responsibilities r 
+											LEFT JOIN shakhas sh ON r.shakha_id = sh.shakha_id
+											LEFT JOIN Ref_Code rc ON r.nagar_id = rc.REF_CODE AND rc.DOM_ID = 3
+											LEFT JOIN Ref_Code rc0 ON r.vibhag_id = rc0.REF_CODE AND rc0.DOM_ID = 2
+											LEFT JOIN Ref_Code rc1 ON r.sambhag_id = rc1.REF_CODE AND rc1.DOM_ID = 1
+											LEFT JOIN Ref_Code rc2 ON r.responsibility = rc2.REF_CODE AND rc2.DOM_ID = 4
+											WHERE s.shakha_id IN (SELECT shakha_id FROM shakhas WHERE vibhag_id LIKE '{$id}') 
+											AND r.swayamsevak_id = s.contact_id
+											ORDER BY Shakha, Nagar, Vibhag, Sambhag ASC;");
+		//Get the database of Swayamsevaks of this Vibhag
+		/*$this->db->select('swayamsevaks.contact_id, swayamsevaks.household_id, shakhas.name as shakhka, Ref_Code.short_desc as contact_type, swayamsevaks.first_name, swayamsevaks.last_name, swayamsevaks.gender, birth_year, swayamsevaks.company, swayamsevaks.position, swayamsevaks.email, swayamsevaks.email_status, swayamsevaks.ph_mobile, swayamsevaks.ph_home, swayamsevaks.ph_work, swayamsevaks.street_add1, swayamsevaks.street_add2, swayamsevaks.city, swayamsevaks.state, swayamsevaks.zip, swayamsevaks.ssv_completed, swayamsevaks.notes');
+		$this->db->from('swayamsevaks, shakhas, Ref_Code');
+		$this->db->where('swayamsevaks.shakha_id IN ' . $shakha_ids. ' AND shakhas.shakha_id = swayamsevaks.shakha_id AND Ref_Code.DOM_ID = 11 AND Ref_Code.REF_CODE = swayamsevaks.contact_type');
+		$this->db->orderby('shakhas.name, swayamsevaks.household_id');
+		$data['query'] = $this->db->get();*/
+
+		$this->output->set_header("Content-type: application/vnd.ms-excel");
+		$this->output->set_header("Content-disposition: csv; filename=All-Karyakartas-". date("M-d_H-i") .".csv");
+		$this->load->view('vibhag/csv', $data);
+	}
+	
 	function csv_out($id)
 	{
 		$this->load->dbutil();
