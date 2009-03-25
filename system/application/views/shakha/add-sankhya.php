@@ -77,6 +77,11 @@
                  <td>&nbsp;</td>
                </tr>
                <tr>
+                 <td><div align="right">Families</div></td>
+                 <td colspan="2"><div align="center"><input name="families" type="text" id="families" size="4" onblur="totalSankhya()"   value="<?php echo (($set) ? $sankhya->families : '0');?>" maxlength="3" /></div></td>
+                 <td>&nbsp;</td>
+               </tr>
+               <tr>
                  <td><div align="right">
                      <h3>Sub-Total</h3>
                  </div></td>

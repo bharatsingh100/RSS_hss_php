@@ -155,6 +155,7 @@ class Email extends Controller
 				$data['ip'] = $this->input->ip_address();
 				$data['date'] = date('Y-m-d');
 				$data['shakha_id'] = $shakha->shakha_id;
+				$data['families'] = 0;
 				$this->db->insert('sankhyas', $data);
 			}
 		}

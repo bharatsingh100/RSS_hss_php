@@ -63,6 +63,7 @@
     <td><strong>Yuva</strong></td>
     <td><strong>Tarun</strong></td>
     <td><strong>Praudh</strong></td>
+    <td><strong>Families</strong></td>
   </tr>
   <?php $i = 0; foreach($sankhyas as $sankhya): ?>
   <tr>
@@ -74,6 +75,7 @@
     <td><?=($sankhya->yuva_m + $sankhya->yuva_f)?></td>
     <td><?=($sankhya->tarun_m + $sankhya->tarun_f)?></td>
     <td><?=($sankhya->praudh_m + $sankhya->praudh_f)?></td>
+    <td><?=($sankhya->families)?></td>
   </tr>
   <?php if($sankhya->shakha_info != ''): ?>
   	<tr><td colspan="8"><?=$sankhya->shakha_info?></td></tr>
