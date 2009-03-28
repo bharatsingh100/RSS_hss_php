@@ -252,7 +252,7 @@ class Sambhag extends Controller
 	
 	function statistics($id)
 	{
-		$yr = date('Y');
+		/*$yr = date('Y');
 		$ag['shishu'] = $yr - 6;
 		$ag['bala'] = $yr - 12;
 		$ag['kishor'] = $yr - 19;
@@ -269,9 +269,15 @@ class Sambhag extends Controller
 		$v['phone'] = $this->db->getwhere('swayamsevaks', 'ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\' AND shakha_id =' . $id)->num_rows();
 		$v['email'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status = \'Active\' AND shakha_id =' . $id)->num_rows();
 		$v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
-		$v['sankhya'] = $this->db->getwhere('sankhyas', array('shakha_id' => $id))->result();
-		$v['pageTitle'] = 'Shakha Statistics';
-		$this->layout->view('shakha/statistics', $v);
+		$v['sankhya'] = $this->db->getwhere('sankhyas', array('shakha_id' => $id))->result();*/
+		$data['sambhag'] = $this->Sambhag_model->getSambhagInfo($id);
+	    $data['pageTitle'] = $data['sambhag']->name . ' Sambhag Statistics';
+		//$data['vibhag'] = $this->Sambhag_model->getSambhagShakhaStats($id);
+		//$data['sambhag']->sankhya = $this->Sambhag_model->getSambhagSankhya($id, $data['shakhas']);
+		$data['sambhag']->contacts = $this->Sambhag_model->getSambhagContacts($id);
+		$data['stats'] = $this->Sambhag_model->getSambhagStatistics($id);
+
+		$this->layout->view('sambhag/statistics', $data);
 	}
 
 	function del_responsibility($sambhag_id, $ss_id, $resp_id)
@@ -362,6 +368,38 @@ class Sambhag extends Controller
 		$data['row'] = $this->Sambhag_model->getSambhagInfo($id);
 		$data['pageTitle'] = $data['row']->name.' Sambhag';
 		$this->layout->view('sambhag/view-sambhag', $data);
+	}
+	
+	function all_sambhag_karyakarta_csv($id)
+	{
+		$this->load->dbutil();
+
+		//Get list of Shakhas in the Vibhag
+		//$shakha_ids = $this->Vibhag_model->get_shakhas($id);
+		//$shakha_ids = '('.implode(',',$shakha_ids).')';
+
+		$data['query'] = $this->db->query("SELECT s.first_name as FirstName, s.last_name as LastName, s.email Email,
+											s.city as City, s.state as State, sh.name as Shakha,
+											rc.short_desc as Nagar, rc0.short_desc as Vibhag, rc1.short_desc as Sambhag, rc2.short_desc as Responsibility
+											FROM swayamsevaks s, responsibilities r 
+											LEFT JOIN shakhas sh ON r.shakha_id = sh.shakha_id
+											LEFT JOIN Ref_Code rc ON r.nagar_id = rc.REF_CODE AND rc.DOM_ID = 3
+											LEFT JOIN Ref_Code rc0 ON r.vibhag_id = rc0.REF_CODE AND rc0.DOM_ID = 2
+											LEFT JOIN Ref_Code rc1 ON r.sambhag_id = rc1.REF_CODE AND rc1.DOM_ID = 1
+											LEFT JOIN Ref_Code rc2 ON r.responsibility = rc2.REF_CODE AND rc2.DOM_ID = 4
+											WHERE s.shakha_id IN (SELECT shakha_id FROM shakhas WHERE sambhag_id LIKE '{$id}') 
+											AND r.swayamsevak_id = s.contact_id
+											ORDER BY Shakha, Nagar, Vibhag, Sambhag ASC;");
+		//Get the database of Swayamsevaks of this Vibhag
+		/*$this->db->select('swayamsevaks.contact_id, swayamsevaks.household_id, shakhas.name as shakhka, Ref_Code.short_desc as contact_type, swayamsevaks.first_name, swayamsevaks.last_name, swayamsevaks.gender, birth_year, swayamsevaks.company, swayamsevaks.position, swayamsevaks.email, swayamsevaks.email_status, swayamsevaks.ph_mobile, swayamsevaks.ph_home, swayamsevaks.ph_work, swayamsevaks.street_add1, swayamsevaks.street_add2, swayamsevaks.city, swayamsevaks.state, swayamsevaks.zip, swayamsevaks.ssv_completed, swayamsevaks.notes');
+		$this->db->from('swayamsevaks, shakhas, Ref_Code');
+		$this->db->where('swayamsevaks.shakha_id IN ' . $shakha_ids. ' AND shakhas.shakha_id = swayamsevaks.shakha_id AND Ref_Code.DOM_ID = 11 AND Ref_Code.REF_CODE = swayamsevaks.contact_type');
+		$this->db->orderby('shakhas.name, swayamsevaks.household_id');
+		$data['query'] = $this->db->get();*/
+
+		$this->output->set_header("Content-type: application/vnd.ms-excel");
+		$this->output->set_header("Content-disposition: csv; filename=All-Karyakartas-{$id}-". date("M-d_H-i") .".csv");
+		$this->load->view('vibhag/csv', $data);
 	}
 	
 /*	function add_shakha($id)

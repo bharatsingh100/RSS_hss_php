@@ -84,9 +84,8 @@
          <?php if($this->permission->is_sambhag_kk($this->uri->segment(3))): ?>
          <h3>Navigation </h3>
          <p><?php //anchor('vibhag/browse/'.$this->uri->segment(3). '/name/', 'List Swayamsevaks');?></p>
-         <p><?=anchor('sambhag/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
-         <p>Sambhag Statistics</p>
-	   	 <p><?php //anchor('sambhag/statistics/'.$this->uri->segment(3), 'Vibhag Statistics');?></p>
+         <p><?php echo anchor('sambhag/responsibilities/'.$this->uri->segment(3), 'Manage Responsibilities');?></p>
+	   	 <p><?php echo anchor('sambhag/statistics/'.$this->uri->segment(3), 'Reports & Statistics');?></p>
 	  <p>&nbsp;</p>
 	  <p><?=anchor('sambhag/email_lists/'.$this->uri->segment(3), 'View Email Lists');?></p>
 	  <p><?=anchor('sambhag/create_list/'.$this->uri->segment(3), 'Request E-mail List');?></p>

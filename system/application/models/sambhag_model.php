@@ -73,9 +73,10 @@ class Sambhag_model extends Model
 		return $query;
 	}
 	
-	function get_shakhas($sambhag_id)
+	function get_shakhas($sambhag_id, $active = false)
 	{
-		$shakhas = $this->db->get('shakhas', array('sambhag_id' => $sambhag_id))->result();
+		if($active) $this->db->where('shakha_status', 1);
+		$shakhas = $this->db->getwhere('shakhas', array('sambhag_id' => $sambhag_id))->result();
 		$shakha_ids = '';
 		foreach($shakhas as $shakha)
 			$shakha_ids[] = "$shakha->shakha_id";
@@ -86,6 +87,37 @@ class Sambhag_model extends Model
 	{
 		$query = $this->db->select('name')->getwhere('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
+	}
+	
+	function getSambhagStatistics($id)
+	{
+		//Get Vibhag Information
+		$this->db->where('DOM_ID', 2);
+		$this->db->like('REF_CODE', $id);
+		$this->db->orderby('short_desc', 'asc'); 
+		$vibhags = $this->db->select('REF_CODE as vibhag_id, short_desc as name')->get('Ref_Code')->result();
+		
+		
+		foreach($vibhags as &$vibhag) {
+			$vibhag->active_shakhas = $this->db->select('COUNT(shakha_id) as count')
+												->getwhere('shakhas', array('shakha_status' => 1, 'vibhag_id' => $vibhag->vibhag_id))
+												->row()->count;
+			$vibhag->sampark_kendras = $this->db->select('COUNT(shakha_id) as count')
+												->getwhere('shakhas', array('shakha_status' => 0, 'vibhag_id' => $vibhag->vibhag_id))
+												->row()->count;
+			$vibhag->weekly_shakhas = $this->db->select('COUNT(shakha_id) as count')
+												->getwhere('shakhas', array('shakha_status' => 1, 'vibhag_id' => $vibhag->vibhag_id, 'frequency' => 'WK'))
+												->row()->count;
+												
+		}
+		//$data['total_shakhas'] = count($this->get_shakhas($id));
+		//$data['active_shakhas'] = count($this->get_shakhas($id, true));
+		//$data['sampark_kendras'] = $data['total_shakhas'] - $data['active_shakhas'];
+		
+		//$this->db->where(array('shakha_status' => 1, 'frequency' => 'WK', 'sambhag_id' => $id));
+		//$data['weekly_shakhas'] = $this->db->select('COUNT(shakha_id) as count')->get('shakhas')->row()->count;
+		
+		return $vibhags;
 	}
 	
 	function getSambhagInfo($id)
@@ -137,6 +169,7 @@ class Sambhag_model extends Model
 				$i++;
 			}
 		}
+		
 		return $v;
 	}
 	
@@ -152,7 +185,51 @@ class Sambhag_model extends Model
 	{
 		return $this->db->getwhere('Ref_Code', array('DOM_ID' => $var1));
 	}
+	
+    //Get total counts of contacts for Vibhag by Categories
+    function getSambhagContacts($id) {
 
+        $shakhas = $this->db->select('shakha_id, name, shakha_status')->getwhere('shakhas', array('sambhag_id' => $id, 'shakha_status' => 1));
+
+        $v = '';
+        if($shakhas->num_rows()) {
+            $shakhas = $shakhas->result();
+            $sid = array();
+            foreach($shakhas as $shakha)
+                $sid[] = $shakha->shakha_id;
+
+            $sid = implode(', ', $sid);
+
+            //Replace so many queries with Single Query for Vibhag
+            $yr = date('Y');
+
+            $ag['shishu'] = $yr - 6;
+            $ag['bala'] = $yr - 12;
+            $ag['kishor'] = $yr - 19;
+            $ag['yuva'] = $yr - 25;
+            $ag['tarun'] = $yr - 50;
+
+            //$v['shakha'] = $this->db->select('shakha_id')->getwhere('shakhas', "shakha_id IN ($sid)")->row();
+            $this->db->where("shakha_id IN ($sid)");
+            $v['sevikas'] = $this->db->select('contact_id')->getwhere('swayamsevaks', array('gender' => 'F'))->num_rows();
+            $this->db->where("shakha_id IN ($sid)");
+            $v['swayamsevaks'] = $this->db->select('contact_id')->getwhere('swayamsevaks', array('gender' => 'M'))->num_rows();
+            $v['families'] = $this->db->select('DISTINCT household_id')->getwhere('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
+            $v['contacts'] = $this->db->select('contact_id')->getwhere('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
+            $v['shishu'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year > '. $ag['shishu']." AND shakha_id IN ($sid)")->num_rows();
+            $v['bala'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu']." AND shakha_id IN ($sid)")->num_rows();
+            $v['kishor'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala']." AND shakha_id IN ($sid)")->num_rows();
+            $v['yuva'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['yuva'].' AND '. $ag['kishor']." AND shakha_id IN ($sid)")->num_rows();
+            $v['tarun'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['tarun'].' AND '. $ag['yuva']." AND shakha_id IN ($sid)")->num_rows();
+            $v['praudh'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year > '.$ag['tarun'] . " AND shakha_id IN ($sid)")->num_rows();
+            $v['phone'] = $this->db->select('contact_id')->getwhere('swayamsevaks', '(ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\')' . " AND shakha_id IN ($sid)")->num_rows();
+            $v['email'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'email != \'\' AND email_status = \'Active\' ' . " AND shakha_id IN ($sid)")->num_rows();
+            $v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' ' . " AND shakha_id IN ($sid)")->num_rows();
+
+        }
+
+        return $v;
+    }
 }
 
 ?>

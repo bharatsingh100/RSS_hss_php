@@ -185,3 +185,5 @@ select {
 	/*background-color: #FCFBDC;*/
 	padding: 1px;
 }
+
+.sambhags th { text-align: left; }
