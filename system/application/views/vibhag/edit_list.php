@@ -100,16 +100,51 @@
     <tr valign="middle">
       <td align="right"><strong>List Members:</strong></td>
       <td width="203"><label>
-            <?php $members = unserialize($lists->members); ?>
+        <?php $members = unserialize($lists->members); ?>
         <span class="style2">
-        <input name="members[]" type="checkbox" id="checkbox" value="allss" <?php if(in_array('allss', $members)) echo 'checked="checked"';?>/>
+        <input name="members[]" type="checkbox" id="checkbox0" onClick="elistCheck()" value="allss" <?php if(in_array('allss', $members)) echo 'checked="checked"';?>/>
         </span></label>
-        <strong>      All Swayamsevaks</strong></td>
+        <strong>All Contacts in Vibhag</strong></td>
       <td width="276"><label>
         <span class="style1">
-        <input name="members[]" type="checkbox" id="checkbox2" value="allkk" <?php if(in_array('allkk', $members)) echo 'checked="checked"';?>/>
+        <input name="members[]" type="checkbox" id="checkbox1" onClick="elistCheck()" value="allgc" <?php if(in_array('allgc', $members)) echo 'checked="checked"';?>/>
         </span></label>
-        <strong> All Karyakartas</strong></td>
+        <strong>All General Contacts in Vibhag</strong></td>
+    </tr>
+    <tr valign="middle">
+      <td align="right">&nbsp;</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox2" onClick="elistCheck()" value="shakhaTeamVI" <?php if(in_array('shakhaTeamVI', $members)) echo 'checked="checked"';?>/>
+      </label> 
+        All Shakha Karyakarta</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox3" onClick="elistCheck()" value="shakhaKaryakartaVI" <?php if(in_array('shakhaKaryakartaVI', $members)) echo 'checked="checked"';?>/>
+      </label> 
+        All Mukhya Shikshaks + Karyavahs</td>
+    </tr>
+    <tr valign="middle">
+      <td align="right">&nbsp;</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox4" onClick="elistCheck()" value="allkk" <?php if(in_array('allkk', $members)) echo 'checked="checked"';?>/>
+      </label> 
+        Complete Vibhag Team</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox5" onClick="elistCheck()" value="sambhagTeamAll" <?php if(in_array('sambhagTeamAll', $members)) echo 'checked="checked"';?>/>
+      </label> 
+        Complete Sambhag Team</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr valign="middle">
+      <td align="right">&nbsp;</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox6" onClick="elistCheck()" value="sambhagTeamVI" <?php if(in_array('sambhagTeamVI', $members)) echo 'checked="checked"';?>/>
+      </label> 
+        All Sambhag Karyakarta in Vibhag</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox7" onClick="elistCheck()" value="nationalTeamVI" <?php if(in_array('nationalTeamVI', $members)) echo 'checked="checked"';?>/>
+      </label>
+		All National Karyakarta in Vibhag</td>
+      <td>&nbsp;</td>
     </tr>
     <!--<tr valign="middle">
       <td align="right">&nbsp;</td>
@@ -182,3 +217,41 @@ Praudh only</td>
       <td>&nbsp;</td>
     </tr><?php endif; ?>
   </table>
+  <p>&nbsp;</p>
+  <table>
+  	<tr><th>List Members</th></tr>
+  	<?php 
+  		$count = count($emails);
+  		$j = 0;
+  		$max = ceil($count / 3);
+  		for($i = 0; $i < $max; $i++): ?>
+  	<tr><td>
+  		<?php
+  			 if($j == $count): 
+  		 		echo ''; 
+  		 	else:
+  				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
+  				$j++;
+  			endif; ?>
+  		</td>
+  		<td>
+  		<?php
+  			 if($j == $count): 
+  		 		echo ''; 
+  		 	else:
+  				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
+  				$j++;
+  			endif; ?>
+  		</td>
+  		<td>
+  		<?php
+  			 if($j == $count): 
+  		 		echo ''; 
+  		 	else:
+  				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
+  				$j++;
+  			endif; ?>
+  		</td>
+  	</tr>
+  	<?php endfor; ?>
+  	</table>

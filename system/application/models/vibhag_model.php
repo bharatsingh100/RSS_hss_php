@@ -418,6 +418,18 @@ class Vibhag_model extends Model
 		}
 		return $result->result();
 	}
+	function list_members($list_id) {
+		$l = $this->db->getwhere('lists', array('id' => $list_id))->row();
+		$emails = unserialize(gzuncompress($l->emails));
+		//var_dump($emails);
+		$emails = '(\'' . implode("','", $emails) . "')";
+		$this->db->select('contact_id, first_name, last_name');
+		$this->db->order_by('first_name');
+		$result = $this->db->getwhere('swayamsevaks', 'email IN ' . $emails)->result_array();
+		return $result;
+		//var_dump($result);
+		//die();
+	}
 }
 
 ?>

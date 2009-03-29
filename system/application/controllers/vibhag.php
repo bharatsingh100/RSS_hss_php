@@ -116,6 +116,7 @@ class Vibhag extends Controller
 
 
 		$c['lists'] = $this->db->getwhere('lists', array('id' => $list_id))->row();
+		$c['emails'] = $this->Vibhag_model->list_members($list_id);
 		$c['vibhag'] = $this->Vibhag_model->getVibhagInfo($c['lists']->level_id);
 		$c['pageTitle'] = 'Edit E-mail list';
 		$this->layout->view('vibhag/edit_list', $c);

@@ -465,7 +465,7 @@ class Email extends Controller
 
 			foreach($lists as $list)
 			{
-				
+				//print_r($list);
 				$list_name = $list->address . $host;
 				
 				$file = $path . 'synch/' . $list_name;
@@ -477,6 +477,7 @@ class Email extends Controller
 				$q['emails'] = gzcompress(serialize($emails), 1);
 				$this->db->where('id',$list->id);
 				$this->db->update('lists',$q);
+				//print_r($emails);
 				//continue;
 				//Write to the file list of email addresses
 				if(count($emails) && write_file($file, implode("\n",$emails)))

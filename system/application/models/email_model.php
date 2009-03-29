@@ -114,13 +114,36 @@ class Email_model extends Model
 		$members = unserialize($group);
 		$temp = array();
 		
+		//All Contacts
 		if(in_array('allss', $members)) {
 			$this->get_email_addresses_common_sql();
 			$this->db->where('s.shakha_id IN ' . $shakha_ids);
 			$t = $this->clean_email_array($this->db->get());
 			if(is_array($t)) $temp = array_merge($temp, $t);
-			
-			//Include Sambhag Team
+			//Add Sambhag Team
+			$members[] = 'sambhagTeamAll';
+		}
+
+		//General Contacts
+		if(in_array('allgc', $members)) {
+			$this->get_email_addresses_common_sql();
+			$this->db->where('s.shakha_id IN ' . $shakha_ids);
+			$this->db->where('s.contact_type', 'GC');
+			$t = $this->clean_email_array($this->db->get());
+			if(is_array($t)) $temp = array_merge($temp, $t);
+		}
+		
+		//Vibhag Team
+		if(in_array('allkk', $members)) {
+			$this->get_email_addresses_common_sql();
+			$this->db->from('responsibilities r');
+			$this->db->where("r.vibhag_id = '$lid' AND r.swayamsevak_id = s.contact_id");
+			$t = $this->clean_email_array($this->db->get());
+			if($t) $temp = array_merge($temp, $t);	
+		}
+		
+		//Complete Sambhag Team
+		if(in_array('sambhagTeamAll', $members)) {
 			$this->get_email_addresses_common_sql();
 			$this->db->from('responsibilities r');
 			$this->db->where("r.sambhag_id = '{$sambhag_id}' AND r.swayamsevak_id = s.contact_id");
@@ -128,12 +151,44 @@ class Email_model extends Model
 			if(is_array($t)) $temp = array_merge($temp, $t);
 		}
 
-		if(in_array('allkk', $members)) {
+		//National Team in Vibhag
+		if(in_array('nationalTeamVI', $members)) {
 			$this->get_email_addresses_common_sql();
+			$this->db->where('s.shakha_id IN ' . $shakha_ids);
 			$this->db->from('responsibilities r');
-			$this->db->where("r.vibhag_id = '$lid' AND r.swayamsevak_id = s.contact_id");
+			$this->db->where("r.level = 'NT' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
-			if($t) $temp = array_merge($temp, $t);	
+			if(is_array($t)) $temp = array_merge($temp, $t);
+		}
+		
+		//Sambhag Team in Vibhag
+		if(in_array('sambhagTeamVI', $members)) {
+			$this->get_email_addresses_common_sql();
+			$this->db->where('s.shakha_id IN ' . $shakha_ids);
+			$this->db->from('responsibilities r');
+			$this->db->where("r.level = 'SA' AND r.swayamsevak_id = s.contact_id");
+			$t = $this->clean_email_array($this->db->get());
+			if(is_array($t)) $temp = array_merge($temp, $t);
+		}
+		
+		//All Shakha Karyakartas in Vibhag
+		if(in_array('shakhaTeamVI', $members)) {
+			$this->get_email_addresses_common_sql();
+			$this->db->where('s.shakha_id IN ' . $shakha_ids);
+			$this->db->from('responsibilities r');
+			$this->db->where("r.level = 'SH' AND r.swayamsevak_id = s.contact_id");
+			$t = $this->clean_email_array($this->db->get());
+			if(is_array($t)) $temp = array_merge($temp, $t);
+		}
+		
+		//All Mukhya Shikshaks and Karyavahs in Vibhag
+		if(in_array('shakhaKaryakartaVI', $members)) {
+			$this->get_email_addresses_common_sql();
+			$this->db->where('s.shakha_id IN ' . $shakha_ids);
+			$this->db->from('responsibilities r');
+			$this->db->where("r.level = 'SH' AND r.swayamsevak_id = s.contact_id AND r.responsibility IN (020,021,030,031)");
+			$t = $this->clean_email_array($this->db->get());
+			if(is_array($t)) $temp = array_merge($temp, $t);
 		}
 		
 		return array_unique($temp);

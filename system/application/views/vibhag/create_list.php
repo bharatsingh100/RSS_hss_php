@@ -106,57 +106,48 @@
         <span class="style2">
         <input name="members[]" type="checkbox" id="checkbox0" onClick="elistCheck()" value="allss" />
         </span></label>
-        <strong>      All Contacts</strong></td>
+        <strong>All Contacts in Vibhag</strong></td>
       <td width="276"><label>
         <span class="style1">
-        <input name="members[]" type="checkbox" id="checkbox1" onClick="elistCheck()" value="allkk" />
+        <input name="members[]" type="checkbox" id="checkbox1" onClick="elistCheck()" value="allgc" />
         </span></label>
-        <strong> All Karyakartas</strong></td>
-    </tr>
-	<!--
-    <tr valign="middle">
-      <td align="right">&nbsp;</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox2" onClick="elistCheck()" value="bala" />
-      </label> 
-        Bala only</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox3" onClick="elistCheck()" value="gatanayak" />
-      </label> 
-        Gatanayaks Only</td>
+        <strong>All General Contacts in Vibhag</strong></td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
       <td><label>
-        <input name="members[]" type="checkbox" id="checkbox4" onClick="elistCheck()" value="kishor" />
+        <input name="members[]" type="checkbox" id="checkbox2" onClick="elistCheck()" value="shakhaTeamVI" />
       </label> 
-        Kishor only</td>
+        All Shakha Karyakarta</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox3" onClick="elistCheck()" value="shakhaKaryakartaVI" />
+      </label> 
+        All Mukhya Shikshaks + Karyavahs</td>
+    </tr>
+    <tr valign="middle">
+      <td align="right">&nbsp;</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox4" onClick="elistCheck()" value="allkk" />
+      </label> 
+        Complete Vibhag Team</td>
+      <td><label>
+        <input name="members[]" type="checkbox" id="checkbox5" onClick="elistCheck()" value="sambhagTeamAll" />
+      </label> 
+        Complete Sambhag Team</td>
       <td>&nbsp;</td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
       <td><label>
-        <input name="members[]" type="checkbox" id="checkbox5" onClick="elistCheck()" value="yuva" />
+        <input name="members[]" type="checkbox" id="checkbox6" onClick="elistCheck()" value="sambhagTeamVI" />
       </label> 
-        Yuva only</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr valign="middle">
-      <td align="right">&nbsp;</td>
+        All Sambhag Karyakarta in Vibhag</td>
       <td><label>
-        <input name="members[]" type="checkbox" id="checkbox6" onClick="elistCheck()" value="tarun" />
-      </label> 
-        Tarun only</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr valign="middle">
-      <td align="right">&nbsp;</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox7" onClick="elistCheck()" value="praudh" />
+        <input name="members[]" type="checkbox" id="checkbox7" onClick="elistCheck()" value="nationalTeamVI" />
       </label>
-Praudh only</td>
+		All National Karyakarta in Vibhag</td>
       <td>&nbsp;</td>
-    </tr> -->
+    </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
       <td>&nbsp;</td>
@@ -164,7 +155,7 @@ Praudh only</td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
-      <td colspan="2"><span class="style3">It may take up to 2-3 days to process your request. You will be notified via e-mail once your list has been created.</span></td>
+      <td colspan="2"><span class="style3">It may take up to few hours for your changes to process.</span></td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
