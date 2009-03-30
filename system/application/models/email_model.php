@@ -35,6 +35,7 @@ class Email_model extends Model
 		
 		$members = unserialize($group);
 		$temp = array();
+		//$this->add_owners_moderators($lid, $temp);
 		
 		if(in_array('allss', $members)) {
 			$this->get_email_addresses_common_sql();
@@ -74,6 +75,7 @@ class Email_model extends Model
 		$vibhag_id = substr($lid, 0, 4);
 		$members = unserialize($group);
 		$temp = array();
+		//$this->add_owners_moderators($lid, $temp);
 		
 		if(in_array('allss', $members)) {
 			$this->get_email_addresses_common_sql();
@@ -113,6 +115,7 @@ class Email_model extends Model
 		
 		$members = unserialize($group);
 		$temp = array();
+		//$this->add_owners_moderators($lid, $temp);
 		
 		//All Contacts
 		if(in_array('allss', $members)) {
@@ -205,6 +208,8 @@ class Email_model extends Model
 		$members = unserialize($group);
 		$temp = array();
 		
+		//$this->add_owners_moderators($lid, $temp);
+		
 		if(in_array('allss', $members)) {
 			$this->get_email_addresses_common_sql();
 			$this->db->where('s.shakha_id IN ' . $shakha_ids);
@@ -244,6 +249,30 @@ class Email_model extends Model
 		return array_unique($temp);
 	}
 
+	function add_owners_moderators($lid, &$emails) {
+		
+		//Get List Info
+		$list = $this->db->getwhere('lists', array('id' => $lid))->row();
+		print_r($list); print_r($lid); die();
+		$contact_ids = array();
+		if($list->owner > 0) $contact_ids[] = $list->owner;
+		if($list->mod1 > 0) $contact_ids[] = $list->mod1;
+		if($list->mod2 > 0) $contact_ids[] = $list->mod2;
+		if($list->mod3 > 0) $contact_ids[] = $list->mod3;
+		
+		if(count($contact_ids) > 0):
+			//Get E-mails of Owners & Moderators
+			$contact_ids = '(' . implode(',',$contact_ids) . ')';
+			$this->get_email_addresses_common_sql();
+			$this->db->where('s.shakha_id IN ' . $contact_ids);
+			$result = $this->db->get();
+			
+			//Return if ther are results
+			$email = clean_email_array($result);
+			if($email) return array_merge($emails, $email);
+		endif;
+	}
+	
 	function get_email_addresses_common_sql() {
 		$this->db->distinct();
 		$this->db->select('s.email');

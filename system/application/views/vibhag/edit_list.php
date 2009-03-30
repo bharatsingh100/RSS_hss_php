@@ -85,8 +85,14 @@
     <tr valign="middle">
       <td align="right"><strong>Moderator Password:</strong></td>
       <td colspan="2"><label>
-        <input name="mod_pass" type="text" id="pass1" size="35" maxlength="50" value="<?=$lists->mod_pass?>"/>
-      </label></td>
+        <?php if($lists->mod_pass == 'swayamsevak') : ?>
+            <strong>swayamsevak</strong>
+            <input name="mod_pass" type="hidden" id="mod_pass" value='swayamsevak'/>
+        <?php else: ?>
+            <input name="mod_pass" type="text" id="pass1" size="35" maxlength="50" value="<?=$lists->mod_pass?>"/>
+        <?php endif; ?>
+        <!--<input name="mod_pass" type="text" id="pass1" size="35" maxlength="50" value="<?=$lists->mod_pass?>"/>
+      --></label></td>
     </tr>
     <tr valign="middle">
       <td align="right">&nbsp;</td>
@@ -146,49 +152,6 @@
 		All National Karyakarta in Vibhag</td>
       <td>&nbsp;</td>
     </tr>
-    <!--<tr valign="middle">
-      <td align="right">&nbsp;</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox3" value="bala" />
-      </label> 
-        Bala only</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox8" value="gatanayak" />
-      </label> 
-        Gatanayaks Only</td>
-    </tr>
-    <tr valign="middle">
-      <td align="right">&nbsp;</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox4" value="kishor" />
-      </label> 
-        Kishor only</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr valign="middle">
-      <td align="right">&nbsp;</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox5" value="yuva" />
-      </label> 
-        Yuva only</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr valign="middle">
-      <td align="right">&nbsp;</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox6" value="tarun" />
-      </label> 
-        Tarun only</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr valign="middle">
-      <td align="right">&nbsp;</td>
-      <td><label>
-        <input name="members[]" type="checkbox" id="checkbox7" value="praudh" />
-      </label>
-Praudh only</td>
-      <td>&nbsp;</td>
-    </tr>-->
     <tr valign="middle">
       <td align="right">&nbsp;</td>
       <td>&nbsp;</td>

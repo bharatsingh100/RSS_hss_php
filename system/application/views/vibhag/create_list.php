@@ -88,7 +88,8 @@
     <tr valign="middle">
       <td align="right"><strong>Moderator Password:</strong></td>
       <td colspan="2"><label>
-        <input name="mod_pass" type="text" id="mod_pass" onBlur="elistCheck()" size="35" maxlength="50" />
+        <strong>swayamsevak</strong>
+        <input name="mod_pass" type="hidden" id="mod_pass" value='swayamsevak'/>
       </label></td>
     </tr>
     <tr valign="middle">

@@ -604,10 +604,11 @@ class Shakha extends Controller
 			$this->session->set_userdata('errors', $errors);
 			return false;
 		}*/
-		$userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
-		$userdir = $userdir[2];
-
-		$target_path = "/home/$userdir/uploads/";
+		//$userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
+		//$userdir = $userdir[2];
+		$target_path = '/var/www/web2/uploads/';
+		
+		//$target_path = "/home/$userdir/uploads/";
 		$filename = time().'_'.$_FILES['contacts']['name'];
 		$target_path = $target_path . basename($filename);
 
