@@ -248,7 +248,7 @@ class Shakha extends Controller
 		$v['phone'] = $this->db->getwhere('swayamsevaks', '(ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\') AND shakha_id =' . $id)->num_rows();
 		$v['email'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status = \'Active\' AND shakha_id =' . $id)->num_rows();
 		$v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
-		$v['sankhyas'] = $this->db->getwhere('sankhyas', array('shakha_id' => $id))->result();
+		$v['sankhyas'] = $this->db->orderby('date', 'desc')->getwhere('sankhyas', array('shakha_id' => $id))->result();
 		$v['pageTitle'] = $v['shakha']->name.' Shakha Statistics';
 
 		$this->layout->view('shakha/statistics', $v);
