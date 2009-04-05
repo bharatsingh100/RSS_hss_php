@@ -21,8 +21,7 @@ class Email extends Controller
 	function zip_code_fixes($id)
 	{
 		//$state = $this->db->select('state')->getwhere('shakhas', array('shakha_id' => $id))->row()->state;
-		$ss = $this->db->select('contact_id, city, state')->getwhere('swayamsevaks', array('shakha_id'=>$id, 
-'zip' => ''));
+		$ss = $this->db->select('contact_id, city, state')->getwhere('swayamsevaks', array('shakha_id'=>$id, 'zip' => ''));
 		if($ss->num_rows())
 		{
 			$ss = $ss->result();
@@ -163,6 +162,7 @@ class Email extends Controller
 		return $exists;
 	}
 
+	//Send Individual e-mails to Shakha Karyakartas who haven't submitted their Sankhya
 	function sankhya_reminder()
 	{
 
@@ -176,31 +176,34 @@ class Email extends Controller
     			
 			    if(in_array($shakha->shakha_id, $exclude_shakhas) 
 			    	|| $this->helper_model->variable_get($shakha->vibhag_id . ':sankhya-notify') == 'false') continue;
-				echo $shakha->vibhag_id,':sankhya-notify','<br />'; continue;
+				//echo $shakha->vibhag_id,':sankhya-notify','<br />'; continue;
 				$this->db->where('shakha_id', $shakha->shakha_id);
 				$this->db->where("responsibility IN ('020', '030', '031')");
 				$kks = $this->db->select('swayamsevak_id')->get('responsibilities');
 
 				if($kks->num_rows()){
     				$message    = "Can you please enter the sankhya of $shakha->name for " . date("F j, Y") . ' at ';
-                    $message   .= site_url('shakha/add_sankhya/'.$shakha->shakha_id);
+                    $message   .= site_url('shakha/add_sankhya/'.$shakha->shakha_id) . '?';
                     $message   .= "\n\n\nThanks\nHSS Sampark System\n";
+                    $message   .= "\nP.S. If you can't login, try using your e-mail as both username and password. ";
+                    $message   .= "Otherwise request a password reset here  " . site_url('user/forgot_password') . ".\n";
                     $subject    = "Sankhya reminder for $shakha->name";
 
 
-                    $this->email->from('crm_admin@hssusa.org', 'HSS Sampark System');
-                    $this->email->reply_to('crm_admin@hssusa.org', 'HSS Sampark System');
+                    $this->email->from('sampark@hssusa.org', 'HSS Sampark System');
+                    $this->email->reply_to('sampark@hssusa.org', 'HSS Sampark System');
     				//$recipients =& new Swift_RecipientList();
 
 					$kks = $kks->result();
 					foreach ($kks as $k){
 						$t = $this->db->select('first_name, last_name,  email')->getwhere('swayamsevaks', array('contact_id' => $k->swayamsevak_id, 'email_status' => 'Active'));
 						if($t->num_rows() && trim($t->row()->email) != '' ){
-                            $text   = 'Namaste ' . $t->row()->first_name. " Ji\n\n";
+                            $text   = 'Namaste ' . $t->row()->first_name. " Ji,\n\n";
                             $text  .= $message;
 
                             $this->email->to($t->row()->email);
                             //$this->email->to('zzzabhi@gmail.com');
+                            //$this->email->cc('zzzabhi@yahoo.com');
                             $this->email->message($text);
                             $this->email->subject($subject);
                             $this->email->send();
