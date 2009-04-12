@@ -73,12 +73,14 @@ class Email extends Controller
 	function login_log_rss()
 	{
 		$this->db->select('contact_id, UNIX_TIMESTAMP(login) as time, name, ip_addr');
-		$logs = $this->db->getwhere('loginlog', "login >= '".date('o-m-d')." 00:00:00'");
+		$logs = $this->db->order_by('login', 'desc')->get('loginlog', 25);
+		//$logs = $this->db->getwhere('loginlog', "login >= '".date('o-m-d')." 00:00:00'");
         $message = '<?xml version="1.0" ?>'."\n";
-        $message .= '<rss version="2.0">'."\n";
+        $message .= '<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">'."\n";
         $message .= '<channel>'."\n\n";
         $message .= '<title>Login Logs for Sampark System</title>'."\n";
         $message .= '<description>Time when everyone logs in.</description>'."\n";
+        $message .= '<lastBuildDate>' . date(DATE_RFC2822, $logs->row(0)->time) . '</lastBuildDate>' . "\n";
         $message .= '<link>' . base_url() . '</link>'."\n";
 
         if($logs->num_rows()){
@@ -100,13 +102,16 @@ class Email extends Controller
                 $message .= '<title>'.$log->name.'</title>'."\n";
 				$message .= '<description>' . $contacts[$log->contact_id]->email . ' - ' . $contacts[$log->contact_id]->city . ', ' . $contacts[$log->contact_id]->state;
 				$message .= '</description>'."\n";
-				$message .= '<pubDate>' . date(DATE_RFC2822, $log->time) . '</pubDate>';
-				$message .= "<guid>" . base_url() . 'profile/view/'. $log->contact_id . '</guid>';
+				//$date = substr(date("Y-m-dTh:i:sO", $log->time),0,22).":".substr(date("O", $log->time),3);
+				$message .= '<dc:date>' . date('c',$log->time)  . '</dc:date>' . "\n";
+				$message .= "<link>" . base_url() . 'profile/view/'. $log->contact_id . '</link>' . "\n";
+				//$message .= "<guid>$log->name @ $log->time</guid>\n";
 				$message .= '</item>'."\n";
 			}
 
             $message .= '</channel>'."\n\n";
             $message .= '</rss>'."\n";
+            header("Content-Type: application/rss+xml");
             echo $message;
       	}
 	}
