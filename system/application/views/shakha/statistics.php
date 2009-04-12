@@ -82,6 +82,18 @@
   <?php endif; if(++$i == 10) break; endforeach; ?>
 </table>
 <p>&nbsp;</p>
+<h3>Bouncing or Unsubscribed E-mail Addresses:</h3>
+<?php 
+	$out = '<ol>';
+	foreach($invalid as $contact): 
+		$out .= '<li>' . anchor('profile/view/'.$contact->contact_id, "{$contact->first_name} {$contact->last_name} ({$contact->email})") . '</li>';
+	endforeach;
+	$out .= '</ol>';
+	echo $out;
+?>
+
+
+<p>&nbsp;</p>
 <h3>Other:</h3>
 <p>Swayamsevaks with at least 1 phone # : <?=$phone;?></p>
 <p>Swayamsevaks with active e-mail: <?=$email?></p>

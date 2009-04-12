@@ -250,6 +250,8 @@ class Shakha extends Controller
 		$v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
 		$v['sankhyas'] = $this->db->orderby('date', 'desc')->getwhere('sankhyas', array('shakha_id' => $id))->result();
 		$v['pageTitle'] = $v['shakha']->name.' Shakha Statistics';
+		$v['invalid'] = $this->db->select('contact_id,first_name,last_name,email')->where('shakha_id', $id)
+								->getwhere('swayamsevaks', "email_status IN ('Unsubscribed','Bounced')")->result();
 
 		$this->layout->view('shakha/statistics', $v);
 	}
