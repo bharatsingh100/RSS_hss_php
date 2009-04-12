@@ -4,6 +4,9 @@ class User extends Controller
     function User()
     {
         parent::Controller();
+    	if ($this->session->userdata('logged_in')) {
+			redirect('profile/view/'.$this->session->userdata('contact_id'));
+		}
 		$this->load->library('layout', 'layout_user');
 		$this->load->helper('security');
 		//$this->output->enable_profiler(TRUE);
