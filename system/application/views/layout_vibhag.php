@@ -7,6 +7,8 @@
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
 <script type="text/javascript" src="/css/all.js"></script>
+<script type="text/javascript" src="/css/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/css/jq_js.js"></script>
 </head>
 
 <body>

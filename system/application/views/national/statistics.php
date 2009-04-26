@@ -5,6 +5,7 @@
 <ul><li><?php echo anchor('national/all_karyakarta_csv/', 'All Karyakartas in HSS'); ?> (MS Excel)</li></ul>
 <p>&nbsp;</p>
 <?php //print_r($stats); ?>
+<div id="bar1"></div>
 <h3>Sambhag Statistics:</h3>
 <table width="100%" border="0" cellspacing="2" cellpadding="2" class="sambhags">
 	<tr>
@@ -34,6 +35,56 @@
 	    <td><?php echo $karyakartas;?></td>
 	</tr>
 </table>
+<p>&nbsp;</p>
+<div id="shakhas_chart"></div>
+<script type="text/javascript">
+<!--
+<?php
+$data = <<<EOT
+var opt = {	data : [[{$stats[0]->active_shakhas}, {$stats[0]->sampark_kendras}, {$stats[0]->weekly_shakhas}], 
+					[{$stats[1]->active_shakhas}, {$stats[1]->sampark_kendras}, {$stats[1]->weekly_shakhas}], 
+					[{$stats[2]->active_shakhas}, {$stats[2]->sampark_kendras}, {$stats[2]->weekly_shakhas}], 
+					[{$stats[3]->active_shakhas}, {$stats[3]->sampark_kendras}, {$stats[3]->weekly_shakhas}],
+					[{$stats[4]->active_shakhas}, {$stats[4]->sampark_kendras}, {$stats[4]->weekly_shakhas}]], 
+			axis_labels : ['{$stats[0]->name}','{$stats[1]->name}','{$stats[2]->name}','{$stats[3]->name}','{$stats[4]->name}'],
+			bar_width : 20,
+			size: '678x250',
+			legend: ['Active Shakhas','Sampark Kendras','Weekly Shkhas']};
+EOT;
+echo $data,"\n";
+$data1 = <<<EOT
+var opt = {	data : [[{$stats[0]->active_shakhas}], 
+					[{$stats[1]->active_shakhas}], 
+					[{$stats[2]->active_shakhas}], 
+					[{$stats[3]->active_shakhas}],
+					[{$stats[4]->active_shakhas}]], 
+			axis_labels : ['{$stats[0]->name}','{$stats[1]->name}','{$stats[2]->name}','{$stats[3]->name}','{$stats[4]->name}'],
+			type: 'p',
+			size: '310x200',
+			title: 'Active Shakhas'};
+EOT;
+//echo $data1 . "\n";
+$data2 = <<<EOT
+var opt1 = {data : [[{$stats[0]->sampark_kendras}], 
+					[{$stats[1]->sampark_kendras}], 
+					[{$stats[2]->sampark_kendras}], 
+					[{$stats[3]->sampark_kendras}],
+					[{$stats[4]->sampark_kendras}]], 
+			axis_labels : ['{$stats[0]->name}','{$stats[1]->name}','{$stats[2]->name}','{$stats[3]->name}','{$stats[4]->name}'],
+			type: 'p',
+			size: '310x200',
+			title: 'Sampark Shakhas'};
+EOT;
+//echo $data2 . "\n";
+?>
+$(document).ready(function() {
+var api = new jGCharts.Api(); 
+jQuery('<img>') 
+.attr('src', api.make(opt)) 
+.appendTo("#shakhas_chart");
+});
+//-->
+</script>
 <p>&nbsp;</p>
 <h4>Karyakarta = Swayamsevak with a responsibility.</h4>
 <p>&nbsp;</p>

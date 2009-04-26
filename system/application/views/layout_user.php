@@ -2,11 +2,15 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" 
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
 />
 <title><?=$pageTitle?> - Swayamsevak Information Management - HSS</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+<script type="text/javascript" src="/css/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="/css/jq_js.js"></script>
+
 </head>
 
 <body>
@@ -31,14 +35,14 @@
 		 <!-- Begin Left Column -->
 		 <div id="leftcolumn"> <?=$content_for_layout?> </div>
 		 <!-- End Left Column -->
-		 
+
 		 <!-- Begin Right Column -->
-		 <div id="rightcolumn"> 
-         <p><?=anchor('user/forgot_password', 'Forgot Password')?></p> 
+		 <div id="rightcolumn">
+         <p><?=anchor('user/forgot_password', 'Forgot Password')?></p>
          </div>
 
 		 <!-- End Right Column -->
-		 
+
 		 <!-- Begin Footer -->
 		 <div id="footer">
 		   <div align="center">
@@ -48,9 +52,9 @@
 	       </div>
 	 </div>
 	 <!-- End Footer -->
-		 
+
    </div>
    <!-- End Wrapper -->
-   
+
 </body>
 </html>
