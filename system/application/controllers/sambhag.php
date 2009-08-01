@@ -67,7 +67,7 @@ class Sambhag extends Controller
             }
 			else $list['mod3'] = '';
             $list['moderators'] = $list['mod1'] . $list['mod2'] . $list['mod3'];
-            $list['details'] = anchor('sambhag/edit_list/'.$list['level_id'].'/'.$list['id'], 'Details/Edit');
+            $list['details'] = ($list['status'] == 'Active') ? anchor('sambhag/edit_list/'.$list['level_id'].'/'.$list['id'], 'Details/Edit') : '';
 			$list['style'] = ($list['style']) ? 'Un-Moderated' : 'Moderated';
             unset($list['id']);
             unset($list['mod1']);

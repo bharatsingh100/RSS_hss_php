@@ -59,6 +59,7 @@ class Vibhag extends Controller
                 $list['mod2'] = anchor('profile/view/'.$t->contact_id,$t->first_name.' '.$t->last_name) . '<br \>';
             }
 			else $list['mod2'] = '';
+			
             if($list['mod3'])
             {
                 $this->db->select('contact_id,first_name,last_name');
@@ -66,8 +67,12 @@ class Vibhag extends Controller
                 $list['mod3'] = anchor('profile/view/'.$t->contact_id,$t->first_name.' '.$t->last_name) . '<br \>';
             }
 			else $list['mod3'] = '';
+			
             $list['moderators'] = $list['mod1'] . $list['mod2'] . $list['mod3'];
-            $list['details'] = anchor('vibhag/edit_list/'.$list['level_id'].'/'.$list['id'], 'Details/Edit');
+            
+            //Hide Email List Details/Edit link if the list is not active
+            $list['details'] = ($list['status'] == 'Active') ? anchor('vibhag/edit_list/'.$list['level_id'].'/'.$list['id'], 'Details/Edit') : '';
+            
 			$list['style'] = ($list['style']) ? 'Un-Moderated' : 'Moderated';
             unset($list['id']);
             unset($list['mod1']);
