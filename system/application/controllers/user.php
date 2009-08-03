@@ -4,6 +4,7 @@ class User extends Controller
     function User()
     {
         parent::Controller();
+        $this->output->enable_profiler($this->config->item('debug'));
 		$this->load->library('layout', 'layout_user');
 		$this->load->helper('security');
 		//$this->output->enable_profiler(TRUE);

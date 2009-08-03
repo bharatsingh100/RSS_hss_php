@@ -18,7 +18,7 @@ class Search extends Controller
     				redirect('profile/view/'.$this->session->userdata('contact_id'));
     		}
 			
-		//$this->output->enable_profiler(TRUE);
+		$this->output->enable_profiler($this->config->item('debug'));
 //		$this->load->model('Profile_model');
 		    $this->load->library('layout', 'layout_search');
 		//$this->load->scaffolding('swayamsevaks');

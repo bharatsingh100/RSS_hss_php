@@ -21,7 +21,7 @@ class Nagar extends Controller
 			}
 		}
 		
-		//$this->output->enable_profiler(TRUE);
+		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('Nagar_model');
 		$this->load->library('layout', 'layout_nagar');
 

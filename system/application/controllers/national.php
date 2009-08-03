@@ -21,7 +21,7 @@ class National extends Controller
 			}
 		}
 		
-		//$this->output->enable_profiler(TRUE);
+		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('National_model');
 		$this->load->library('layout', 'layout_national');
 

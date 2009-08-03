@@ -250,6 +250,7 @@ $config['sess_gc_probability']      = 100;
 $config['sess_http_only']           = FALSE; // PHP 5.2+ or better only!
 $config['sess_forwarded_ip']        = FALSE;
 $config['sess_secure']              = FALSE;
+$config['sess_time_to_update'] 		= 300;
 
 /*
 |--------------------------------------------------------------------------
@@ -321,5 +322,7 @@ $config['time_reference'] = 'local';
 */
 $config['rewrite_short_tags'] = FALSE;
 
+//Trun Profiler On/Off
+$config['debug'] = FALSE;
 
 ?>

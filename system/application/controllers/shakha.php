@@ -42,7 +42,7 @@ class Shakha extends Controller
 		$exception = array('add_email_list', 'insert_sankhya', 'add_family');
 		if(!in_array( $this->uri->segment(2), $exception))
 		{
-			$rs = $this->db->getwhere('shakhas', array('shakha_id' => $this->uri->segment(3)))->row();
+			$rs = $this->db->get_where('shakhas', array('shakha_id' => $this->uri->segment(3)))->row();
 			$this->session->set_userdata('bc_shakha', $rs->name);
 			$this->session->set_userdata('bc_shakha_id', $rs->shakha_id);
 

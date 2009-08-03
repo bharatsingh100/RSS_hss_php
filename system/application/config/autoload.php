@@ -38,7 +38,7 @@
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session', 'URI', 'Permission');
+$autoload['libraries'] = array('database', 'session', 'Permission');
 
 
 /*
@@ -106,5 +106,15 @@ $autoload['language'] = array();
 */
 // $autoload['core'] = array();
 
+/*
+| -------------------------------------------------------------------
+| Auto-load Model files
+| -------------------------------------------------------------------
+| Prototype:
+|
+| $autoload['model'] = array('my_model');
+|
+*/
 
+$autoload['model'] = array();
 ?>
