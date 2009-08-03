@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : Inflector Helper</title>
+<title>CodeIgniter User Guide : Upgrading from 1.5.4 to 1.6.0</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -42,7 +42,7 @@
 <td id="breadcrumb">
 <a href="http://codeigniter.com/">CodeIgniter Home</a> &nbsp;&#8250;&nbsp;
 <a href="../index.html">User Guide Home</a> &nbsp;&#8250;&nbsp;
-Inflector Helper
+Upgrading from 1.5.4 to 1.6.0
 </td>
 <td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.com/user_guide/" />Search User Guide&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
 </tr>
@@ -55,82 +55,44 @@ Inflector Helper
 <!-- START CONTENT -->
 <div id="content">
 
+<h1>Upgrading from 1.5.4 to 1.6.0</h1>
 
-<h1>Inflector Helper</h1>
-
-<p>The Inflector Helper file contains functions that permits you to change words to plural, singular, camel case, etc.</p>
-
-
-<h2>Loading this Helper</h2>
-
-<p>This helper is loaded using the following code:</p>
-<code>$this->load->helper('inflector');</code>
-
-<p>The following functions are available:</p>
-
-
-<h2>singular()</h2>
-
-<p>Changes a plural word to singular.  Example:</p>
-
-<code>
-$word = "dogs";<br />
-echo singular($word); // Returns "dog"
-</code>
-
-
-<h2>plural()</h2>
-
-<p>Changes a singular word to plural.  Example:</p>
-
-<code>
-$word = "dog";<br />
-echo plural($word); // Returns "dogs"
-</code>
-
-
-<p>To force a word to end with &quot;es&quot; use a second &quot;true&quot; argument. </p>
-<code> $word = &quot;pass&quot;;<br />
-echo plural($word, TRUE); // Returns &quot;passes&quot; </code>
-
-<h2>camelize()</h2>
-<p>Changes a string of words separated by spaces or underscores to camel case.  Example:</p>
-
-<code>
-$word = "my_dog_spot";<br />
-echo camelize($word); // Returns "myDogSpot"
-</code>
-
-
-<h2>underscore()</h2>
-
-<p>Takes multiple words separated by spaces and underscores them.  Example:</p>
-
-<code>
-$word = "my dog spot";<br />
-echo underscore($word); // Returns "my_dog_spot"
-</code>
-
-
-<h2>humanize()</h2>
-
-<p>Takes multiple words separated by underscores and adds spaces between them.  Each word is capitalized. Example:</p>
-
-<code>
-$word = "my_dog_spot";<br />
-echo humanize($word); // Returns "My Dog Spot"
-</code>
+<p>Before performing an update you should take your site offline by replacing the index.php file with a static one.</p>
 
 
 
+<h2>Step 1: Update your CodeIgniter files</h2>
 
+<p>Replace these files and directories in your "system" folder with the new versions:</p>
 
+<ul>
 
+<li><dfn>system/codeigniter</dfn></li>
+<li><dfn>system/database</dfn></li>
+<li><dfn>system/helpers</dfn></li>
+<li><dfn>system/libraries</dfn></li>
+<li><dfn>system/plugins</dfn></li>
+<li><dfn>system/language</dfn></li>
+</ul>
 
+<p class="important"><strong>Note:</strong> If you have any custom developed files in these folders please make copies of them first.</p>
 
+<h2>Step 2: Add time_to_update to your config.php </h2>
+<p>Add the following to system/application/config/config.php with the other session configuration options</p>
+<p><code>$config['sess_time_to_update'] 		= 300;</code></p>
 
+<h2>Step 3: Add  to your database.php </h2>
+<p>Make the following changes to your system/application/config/database.php file:</p>
+<p>Add the following variable above the database configuration options, with <dfn>$active_group</dfn></p>
+<p><code>$active_record = TRUE;</code></p>
+<p>Remove the following from your database configuration options</p>
+<p><code>$db['default']['active_r'] = TRUE;</code></p>
+<p>Add the following to your database configuration options</p>
+<p><code>$db['default']['char_set'] = &quot;utf8&quot;;<br />
+$db['default']['dbcollat'] = &quot;utf8_general_ci&quot;;</code></p>
 
-
+<h2>Step 4: Update your user guide</h2>
+<p>Please also replace your local copy of the user guide with the new version.</p>
 
 </div>
 <!-- END CONTENT -->
@@ -138,11 +100,11 @@ echo humanize($word); // Returns "My Dog Spot"
 
 <div id="footer">
 <p>
-Previous Topic:&nbsp;&nbsp;<a href="html_helper.html"> HTML Helper</a>
+Previous Topic:&nbsp;&nbsp;<a href="index.html">Installation Instructions</a>
 &nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-Next Topic:&nbsp;&nbsp;<a href="security_helper.html">Security Helper</a>
+Next Topic:&nbsp;&nbsp;<a href="../overview/at_a_glance.html">CodeIgniter at a Glance</a>
 </p>
 <p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
