@@ -1,3 +1,6 @@
+#Upgrading CodeIgniter to 
+ALTER TABLE `ci_sessions` ADD `user_data` text NOT NULL
+
 #Add emails to the lists
 ALTER TABLE `lists`  ADD `emails` BLOB AFTER `members`
 ALTER TABLE `lists` CHANGE `emails` `emails` BINARY NOT NULL
