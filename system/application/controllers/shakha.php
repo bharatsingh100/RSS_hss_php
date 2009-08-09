@@ -16,7 +16,8 @@ class Shakha extends Controller
 		
 		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('Shakha_model');
-		$this->load->library('layout', 'layout_shakha');
+		$this->load->library('layout');
+		$this->layout->setLayout("layout_shakha");
 
 
 	  	//Check Permissions
@@ -235,7 +236,7 @@ class Shakha extends Controller
 		$ag['yuva'] = $yr - 25;
 		$ag['tarun'] = $yr - 50;
 		$v['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
-		$v['families'] = $this->db->select('DISTINCT household_id')->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
+		$v['families'] = $this->db->select('DISTINCT household_id', FALSE)->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
 		$v['contacts'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
 		$v['swayamsevaks'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id, 'gender' => 'M'))->num_rows();
 		$v['sevikas'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id, 'gender' => 'F'))->num_rows();
@@ -386,7 +387,8 @@ class Shakha extends Controller
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
 		$this->db->order_by('responsibilities.responsibility');
-		$this->db->join('responsibilities', "responsibilities.shakha_id = $id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->where("responsibilities.shakha_id = $id");
 		$q = $this->db->get();
 		$i = $q->num_rows() - 1;
 

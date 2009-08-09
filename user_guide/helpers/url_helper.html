@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : URL Helper</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URL Helper : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,23 +13,21 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
 <meta name='author' content='ExpressionEngine Dev Team' />
 <meta name='description' content='CodeIgniter User Guide' />
-
 </head>
 <body>
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -80,7 +79,7 @@ in the event your URL changes.</p>
 
 <code>echo site_url("news/local/123");</code>
 
-<p>The above example would return something like: http://www.your-site.com/index.php/news/local/123</p>
+<p>The above example would return something like: http://example.com/index.php/news/local/123</p>
 
 <p>Here is an example of segments passed as an array:</p>
 
@@ -95,6 +94,18 @@ echo site_url($segments);</code>
 <code>echo base_url();</code>
 
 
+<h2>current_url()</h2>
+<p>Returns the full URL (including segments) of the page being currently viewed.</p>
+
+
+<h2>uri_string()</h2>
+<p>Returns the URI segments of any page that contains this function.  For example, if your URL was this:</p>
+<code>http://some-site.com/blog/comments/123</code>
+
+<p>The function would return:</p>
+<code>blog/comments/123</code>
+
+
 <h2>index_page()</h2>
 <p>Returns your site "index" page, as specified in your config file.  Example:</p>
 <code>echo index_page();</code>
@@ -105,7 +116,7 @@ echo site_url($segments);</code>
 
 <p>Creates a standard HTML anchor link based on your local site URL:</p>
 
-<code>&lt;a href="http://www.your-site.com">Click Here&lt;/a></code>
+<code>&lt;a href="http://example.com">Click Here&lt;/a></code>
 
 <p>The tag has three optional parameters:</p>
 
@@ -125,11 +136,11 @@ will be added automatically from the information specified in your config file. 
 
 <code>echo anchor('news/local/123', 'My News');</code>
 
-<p>Would produce: &lt;a href="http://www.your-site.com/index.php/news/local/123" title="My News">My News&lt;/a></p>
+<p>Would produce: &lt;a href="http://example.com/index.php/news/local/123" title="My News">My News&lt;/a></p>
 
 <code>echo anchor('news/local/123', 'My News', array('title' => 'The best news!'));</code>
 
-<p>Would produce: &lt;a href="http://www.your-site.com/index.php/news/local/123" title="The best news!">My News&lt;/a></p>
+<p>Would produce: &lt;a href="http://example.com/index.php/news/local/123" title="The best news!">My News&lt;/a></p>
 
 
 <h2>anchor_popup()</h2>
@@ -152,7 +163,7 @@ $atts = array(<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'screeny'&nbsp;&nbsp;&nbsp;&nbsp;=> '0'<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
 <br />
-echo anchor_popup(news/local/123, 'Click Me!', $atts);</code>
+echo anchor_popup('news/local/123', 'Click Me!', $atts);</code>
 
 <p>Note: The above attributes are the function defaults so you only need to set the ones that are different from what you need.
 If you want the function to use all of its defaults simply pass an empty array in the third parameter:</p>
@@ -182,7 +193,7 @@ written with JavaScript to help prevent the email address from being harvested b
 <code>$string = auto_link($string);</code>
 
 <p>The second parameter determines whether URLs and emails are converted or just one or the other.  Default behavior is both
-if the parameter is not specified</p>
+if the parameter is not specified.  Email links are encoded as safe_mailto() as shown above.</p>
 
 <p>Converts only URLs:</p>
 <code>$string = auto_link($string, 'url');</code>
@@ -190,7 +201,7 @@ if the parameter is not specified</p>
 <p>Converts only Email addresses:</p>
 <code>$string = auto_link($string, 'email');</code>
 
-</p>The third parameter determines whether links are shown in a new window.  The value can be TRUE or FALSE (boolean):</p>
+<p>The third parameter determines whether links are shown in a new window.  The value can be TRUE or FALSE (boolean):</p>
 <code>$string = auto_link($string, 'both', TRUE);</code>
 
 
@@ -212,14 +223,22 @@ $url_title = url_title($title);<br />
 <br />
 $url_title = url_title($title, 'underscore');<br />
 <br />
-// Produces:  whats_wrong_with_css
+// Produces:  Whats_wrong_with_CSS
 </code>
 
+<p>The third parameter determines whether or not lowercase characters are forced.  By default they are not.  Options are boolean <dfn>TRUE</dfn>/<dfn>FALSE</dfn>:</p>
+
+<code>$title = "What's wrong with CSS?";<br />
+<br />
+$url_title = url_title($title, 'underscore', TRUE);<br />
+<br />
+// Produces:  whats_wrong_with_css
+</code>
 
 <h3>prep_url()</h3>
 <p>This function will add <kbd>http://</kbd> in the event it is missing from a URL.  Pass the URL string to the function like this:</p>
 <code>
-$url = "www.example.com";<br /><br />
+$url = "example.com";<br /><br />
 $url = prep_url($url);</code>
 
 
@@ -231,16 +250,20 @@ $url = prep_url($url);</code>
 to redirect to a local URL within your site.  You will <strong>not</strong> specify the full site URL, but rather simply the URI segments
 to the controller you want to direct to. The function will build the URL based on your config file values.</p>
 
-<p>The second parameter allows you to choose between the "location"
-method (default) or the "refresh" method.  Location is faster, but on Windows servers it can sometimes be a problem.  Example:</p>
+<p>The optional second parameter allows you to choose between the "location"
+method (default) or the "refresh" method.  Location is faster, but on Windows servers it can sometimes be a problem.  The optional third parameter allows you to send a specific HTTP Response Code - this could be used for example to create 301 redirects for search engine purposes. The default Response Code is 302. The third parameter is <em>only</em> available with 'location' redirects, and not 'refresh'. Examples:</p>
 
 <code>if ($logged_in == FALSE)<br />
 {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redirect('/login/form/', 'refresh');<br />
-}</code>
+}<br />
+<br />
+// with 301 redirect<br />
+redirect('/article/13', 'location', 301);</code>
 
 <p class="important"><strong>Note:</strong> In order for this function to work it must be used before anything is outputted
-to the browser since it utilizes server headers.</p>
+to the browser since it utilizes server headers.<br />
+<strong>Note:</strong> For  very fine grained control over headers, you should use the <a href="../libraries/output.html">Output  Library</a>'s set_header() function.</p>
 
 
 
@@ -259,7 +282,7 @@ Previous Topic:&nbsp;&nbsp;<a href="typography_helper.html">Typography Helper</a
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="xml_helper.html">XML Helper</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

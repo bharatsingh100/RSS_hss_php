@@ -410,21 +410,24 @@ class Email extends Controller
 						case 'ntkk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
-							$this->db->join('responsibilities', "responsibilities.level = 'NT' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+							$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+							$this->db->where("responsibilities.level = 'NT'");
 							$t = $this->db->get()->result();
 							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'sakk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
-							$this->db->join('responsibilities', "responsibilities.level = 'SA' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+							$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+							$this->db->where("responsibilities.level = 'SA'");
 							$t = $this->db->get()->result();
 							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;
 						case 'vikk' :
 							$this->db->select('swayamsevaks.email');
 							$this->db->from('swayamsevaks');
-							$this->db->join('responsibilities', "responsibilities.level = 'VI' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+							$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+							$this->db->where("responsibilities.level = 'VI'");
 							$t = $this->db->get()->result();
 							foreach($t as $j) if($this->isValidEmail($j->email)) $emails .= $j->email . "\n";
 							break;

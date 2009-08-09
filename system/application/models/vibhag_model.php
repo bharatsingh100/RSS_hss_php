@@ -13,6 +13,7 @@ class Vibhag_model extends Model
 	{
 		foreach($_POST as $key => $value)
 			$d[$key] = $value;
+			
 		unset($d['button']);
 		$d['address'] = strtolower($d['address']);
         $d['members'] = serialize($d['members']);
@@ -105,7 +106,7 @@ class Vibhag_model extends Model
 		$shakha_ids = $this->get_shakhas($vibhag_id);
 		$shakha_ids = '('.implode(',',$shakha_ids).')';
 
-		$query = $this->db->select('household_id, contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->order_by($sort_by, 'asc')->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
+		$query = $this->db->select('household_id, contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id', FALSE)->order_by($sort_by, 'asc')->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
 
 		return $query;
 	}
@@ -238,7 +239,7 @@ class Vibhag_model extends Model
             $v['sevikas'] = $this->db->select('contact_id')->get_where('swayamsevaks', array('gender' => 'F'))->num_rows();
             $this->db->where("shakha_id IN ($sid)");
             $v['swayamsevaks'] = $this->db->select('contact_id')->get_where('swayamsevaks', array('gender' => 'M'))->num_rows();
-            $v['families'] = $this->db->select('DISTINCT household_id')->get_where('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
+            $v['families'] = $this->db->select('DISTINCT household_id', FALSE)->get_where('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
             $v['contacts'] = $this->db->select('contact_id')->get_where('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
             $v['shishu'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year > '. $ag['shishu']." AND shakha_id IN ($sid)")->num_rows();
             $v['bala'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu']." AND shakha_id IN ($sid)")->num_rows();
@@ -273,7 +274,8 @@ class Vibhag_model extends Model
 				$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 				$this->db->from('swayamsevaks');
 				$this->db->order_by('responsibilities.responsibility');
-				$this->db->join('responsibilities', "responsibilities.nagar_id = '$nagar_id' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+				$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+				$this->db->where("responsibilities.nagar_id = '$nagar_id'");
 				$query = $this->db->get();
 
 				if($query->num_rows())
@@ -298,7 +300,8 @@ class Vibhag_model extends Model
 			$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 			$this->db->from('swayamsevaks');
 			$this->db->order_by('responsibilities.responsibility');
-			$this->db->join('responsibilities', "responsibilities.shakha_id = $shakha_id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+			$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+			$this->db->where("responsibilities.shakha_id = $shakha_id");
 			$query = $this->db->get();
 			if($query->num_rows())
 			{
@@ -325,7 +328,8 @@ class Vibhag_model extends Model
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
 		$this->db->order_by('responsibilities.responsibility');
-		$this->db->join('responsibilities', "responsibilities.vibhag_id = '$id' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->where("responsibilities.vibhag_id = '$id'");
 		$query = $this->db->get();
 		if($query->num_rows())
 		{
@@ -406,7 +410,8 @@ class Vibhag_model extends Model
 	{
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name');
 		$this->db->from('swayamsevaks');
-		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id AND responsibilities.shakha_id = '.$id);
+		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id');
+		$this->db->where('responsibilities.shakha_id = '.$id);
 		//.' AND responsibilities.responsibility = 140');
 		$result = $this->db->get();
 		//Task: Fix Gatanayak Query

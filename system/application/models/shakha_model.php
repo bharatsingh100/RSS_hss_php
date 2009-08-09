@@ -106,9 +106,10 @@ class Shakha_model extends Model
 	
 	function get_swayamsevaks($num, $offset, $shakha_id, $sort_by)
 	{
-		//$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak')->order_by($sort_by, 'asc')->get_where('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
 		$sort_by = ($sort_by === 'name') ? 'first_name' : $sort_by;
-		$query = $this->db->select('household_id, contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak')->order_by($sort_by, 'asc')->get_where('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
+		
+		$query = $this->db->select('household_id, contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak', FALSE)->order_by($sort_by, 'asc')->get_where('swayamsevaks', array('shakha_id' => (int)$shakha_id), $num, $offset);
+		
 		return $query;
 	}
 	function getShakhaName($id)
@@ -120,13 +121,14 @@ class Shakha_model extends Model
 	{
 		$query = $this->db->get_where('shakhas', array('shakha_id' => $id));
 		$temp = $query->row();
-		//if($temp->shakha_id = '') { $temp->shakha_id = 0;}
-		//$temp->shakha_id = 0;
+
 		$shakha_id = $temp->shakha_id;
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
 		$this->db->order_by('responsibilities.responsibility');
-		$this->db->join('responsibilities', "responsibilities.shakha_id = $shakha_id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->join('responsibilities','responsibilities.swayamsevak_id = swayamsevaks.contact_id');
+		$this->db->where("responsibilities.shakha_id = $shakha_id");
+	
 		$query = $this->db->get();
 		if($query->num_rows())
 		{
@@ -154,7 +156,8 @@ class Shakha_model extends Model
 		//Split Name into First and Last
 		$name = str_word_count(trim($data['name']), 2);
 		unset($data['name']);
-			//If there is Last Name then set it otherwise set it to none.
+		
+		//If there is Last Name then set it otherwise set it to none.
 		if(count($name) > 1)
 		{
 			$data['last_name'] = ucwords(strtolower(array_pop($name)));
@@ -313,8 +316,8 @@ class Shakha_model extends Model
 	{
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name');
 		$this->db->from('swayamsevaks');
-		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id AND responsibilities.shakha_id = '.$id);
-		//.' AND responsibilities.responsibility = 140');
+		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id')->where('responsibilities.shakha_id = '.$id);
+		
 		$result = $this->db->get();
 		//Task: Fix Gatanayak Query
 		if($result->num_rows())

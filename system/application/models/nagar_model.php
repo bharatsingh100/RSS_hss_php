@@ -119,7 +119,7 @@ class Nagar_model extends Model
 		
 		$shakha_ids = '('.implode(',',$shakha_ids).')';
 
-		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->order_by($sort_by, 'asc')->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
+		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id', FALSE)->order_by($sort_by, 'asc')->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
 
 		return $query;
 	}
@@ -153,7 +153,8 @@ class Nagar_model extends Model
 			$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 			$this->db->from('swayamsevaks');
 			$this->db->order_by('responsibilities.responsibility');
-			$this->db->join('responsibilities', "responsibilities.shakha_id = $shakha_id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+			$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+			$this->db->where("responsibilities.shakha_id = $shakha_id");
 			$query = $this->db->get();
 			if($query->num_rows())
 			{
@@ -178,7 +179,8 @@ class Nagar_model extends Model
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
 		$this->db->order_by('responsibilities.responsibility');
-		$this->db->join('responsibilities', "responsibilities.nagar_id = '$id' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->where("responsibilities.nagar_id = '$id'")
 		$query = $this->db->get();
 		if($query->num_rows())
 		{
@@ -261,7 +263,8 @@ class Nagar_model extends Model
 	{
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name');
 		$this->db->from('swayamsevaks');
-		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id AND responsibilities.shakha_id = '.$id);
+		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id');
+		$this->db->where('responsibilities.shakha_id = '.$id);
 		//.' AND responsibilities.responsibility = 140');
 		$result = $this->db->get();
 		//Task: Fix Gatanayak Query

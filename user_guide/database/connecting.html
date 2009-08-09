@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : Connecting to your Database</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Connecting to your Database : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -24,11 +24,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -65,7 +65,7 @@ Connecting
 <h2>Automatically Connecting</h2>
 
 <p>The "auto connect" feature will load and instantiate the database class with every page load.
-To enable "auto connecting", add the word <var>database</var> to the core array, as indicated in the following file:</p>
+To enable "auto connecting", add the word <var>database</var> to the library array, as indicated in the following file:</p>
 
 <p><kbd>application/config/autoload.php</kbd></p>
 
@@ -80,6 +80,16 @@ available globally in that class.</p>
 <p class="important">If the above function does <strong>not</strong> contain any information in the first parameter it will connect
 to the group specified in your database config file. For most people, this is the preferred method of use.</p>
 
+<h3>Available Parameters</h3>
+
+<ol>
+	<li>The database connection values, passed either as an array or a DSN string.</li>
+	<li>TRUE/FALSE (boolean).  Whether to return the connection ID (see Connecting to Multiple Databases below).</li>
+	<li>TRUE/FALSE (boolean).  Whether to enable the Active Record class.  Set to TRUE by default.</li>
+</ol>
+
+
+<h3>Manually Connecting to a Database</h3>
 
 <p>The first parameter of this function can <strong>optionally</strong> be used to specify a particular database group
 from your config file, or you can even submit connection values for a database that is not specified in your config file.
@@ -102,6 +112,10 @@ $config['dbdriver'] = "mysql";<br />
 $config['dbprefix'] = "";<br />
 $config['pconnect'] = FALSE;<br />
 $config['db_debug'] = TRUE;<br />
+$config['cache_on'] = FALSE;<br />
+$config['cachedir'] = "";<br />
+$config['char_set'] = "utf8";<br />
+$config['dbcollat'] = "utf8_general_ci";<br />
 <br />
 $this->load->database(<samp>$config</samp>);</code>
 
@@ -111,10 +125,13 @@ $this->load->database(<samp>$config</samp>);</code>
 
 <code>$dsn = 'dbdriver://username:password@hostname/database';<br />
 <br />
-$this->load->database('<samp>$dsn</samp>');</code>
+$this->load->database(<samp>$dsn</samp>);</code>
 
-<p>Note that if you use a DSN you will not be able to specify some of the default values like you can if you use a connection array.</p>
+<p>To override default config values when connecting with a DSN string, add the config variables as a query string.</p>
 
+<code>$dsn = 'dbdriver://username:password@hostname/database?char_set=utf8&amp;dbcollat=utf8_general_ci&amp;cache_on=true&amp;cachedir=/path/to/cache';<br />
+<br />
+$this->load->database(<samp>$dsn</samp>);</code>
 
 <h2>Connecting to Multiple Databases</h2>
 
@@ -157,7 +174,7 @@ Previous Topic:&nbsp;&nbsp;<a href="configuration.html">Database Configuration</
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="queries.html">Queries</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

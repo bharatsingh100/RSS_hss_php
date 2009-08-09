@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : Security</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Security : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -24,11 +24,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -99,13 +99,12 @@ retrieving data from your database.</p>
 XML-RPC data, or even data from the SERVER array, you are encouraged to practice this three step approach:</p>
 
 <ol>
-
 <li>Filter the data as if it were tainted.</li>
 <li>Validate the data to ensure it conforms to the correct  type, length, size, etc. (sometimes this step can replace step one)</li>
 <li>Escape the data before submitting it into your database.</li>
 </ol>
 
-CodeIgniter provides the following functions to assist in this process:</p>
+<p>CodeIgniter provides the following functions to assist in this process:</p>
 
 <ul>
 
@@ -119,7 +118,7 @@ or do other malicious things. The XSS Filter is described <a href="../libraries/
 
 <li><h2>Validate the data</h2>
 
-<p>CodeIgniter has a <a href="../libraries/validation.html">Validation Class</a> that assists you in validating, filtering, and prepping
+<p>CodeIgniter has a <a href="../libraries/form_validation.html">Form Validation Class</a> that assists you in validating, filtering, and prepping
 your data.</p>
 </li>
 
@@ -145,9 +144,9 @@ Previous Topic:&nbsp;&nbsp;<a href="alternative_php.html">Alternative PHP</a>
 &nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-Next Topic:&nbsp;&nbsp;<a href="../libraries/benchmark.html">Benchmarking Class</a>
+Next Topic:&nbsp;&nbsp;<a href="styleguide.html">PHP Style Guide</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

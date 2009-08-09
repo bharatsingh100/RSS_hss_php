@@ -29,20 +29,22 @@ function create_menu(basepath)
 		
 		'<h3>Introduction</h3>' +
 		'<ul>' +
+			'<li><a href="'+base+'overview/getting_started.html">Getting Started</a></li>' +
 			'<li><a href="'+base+'overview/at_a_glance.html">CodeIgniter at a Glance</a></li>' +
 			'<li><a href="'+base+'overview/features.html">Supported Features</a></li>' +
 			'<li><a href="'+base+'overview/appflow.html">Application Flow Chart</a></li>' +
 			'<li><a href="'+base+'overview/mvc.html">Model-View-Controller</a></li>' +
 			'<li><a href="'+base+'overview/goals.html">Architectural Goals</a></li>' +
 		'</ul>' +	
+
 				
 		'</td><td class="td_sep" valign="top">' +
 
 		'<h3>General Topics</h3>' +
 		'<ul>' +
-			'<li><a href="'+base+'general/index.html">Getting Started</a></li>' +
 			'<li><a href="'+base+'general/urls.html">CodeIgniter URLs</a></li>' +
 			'<li><a href="'+base+'general/controllers.html">Controllers</a></li>' +
+			'<li><a href="'+base+'general/reserved_names.html">Reserved Names</a></li>' +
 			'<li><a href="'+base+'general/views.html">Views</a></li>' +
 			'<li><a href="'+base+'general/models.html">Models</a></li>' +
 			'<li><a href="'+base+'general/helpers.html">Helpers</a></li>' +
@@ -52,6 +54,7 @@ function create_menu(basepath)
 			'<li><a href="'+base+'general/core_classes.html">Creating Core Classes</a></li>' +
 			'<li><a href="'+base+'general/hooks.html">Hooks - Extending the Core</a></li>' +
 			'<li><a href="'+base+'general/autoloader.html">Auto-loading Resources</a></li>' +
+			'<li><a href="'+base+'general/common_functions.html">Common Functions</a></li>' +
 			'<li><a href="'+base+'general/scaffolding.html">Scaffolding</a></li>' +
 			'<li><a href="'+base+'general/routing.html">URI Routing</a></li>' +
 			'<li><a href="'+base+'general/errors.html">Error Handling</a></li>' +
@@ -60,6 +63,8 @@ function create_menu(basepath)
 			'<li><a href="'+base+'general/managing_apps.html">Managing Applications</a></li>' +
 			'<li><a href="'+base+'general/alternative_php.html">Alternative PHP Syntax</a></li>' +
 			'<li><a href="'+base+'general/security.html">Security</a></li>' +
+			'<li><a href="'+base+'general/styleguide.html">PHP Style Guide</a></li>' +
+			'<li><a href="'+base+'doc_style/index.html">Writing Documentation</a></li>' +
 		'</ul>' +
 		
 		'</td><td class="td_sep" valign="top">' +
@@ -74,6 +79,7 @@ function create_menu(basepath)
 		'<li><a href="'+base+'libraries/email.html">Email Class</a></li>' +
 		'<li><a href="'+base+'libraries/encryption.html">Encryption Class</a></li>' +
 		'<li><a href="'+base+'libraries/file_uploading.html">File Uploading Class</a></li>' +
+		'<li><a href="'+base+'libraries/form_validation.html">Form Validation Class</a></li>' +
 		'<li><a href="'+base+'libraries/ftp.html">FTP Class</a></li>' +
 		'<li><a href="'+base+'libraries/table.html">HTML Table Class</a></li>' +
 		'<li><a href="'+base+'libraries/image_lib.html">Image Manipulation Class</a></li>' +		
@@ -85,10 +91,10 @@ function create_menu(basepath)
 		'<li><a href="'+base+'libraries/sessions.html">Session Class</a></li>' +
 		'<li><a href="'+base+'libraries/trackback.html">Trackback Class</a></li>' +
 		'<li><a href="'+base+'libraries/parser.html">Template Parser Class</a></li>' +
+		'<li><a href="'+base+'libraries/typography.html">Typography Class</a></li>' +		
 		'<li><a href="'+base+'libraries/unit_testing.html">Unit Testing Class</a></li>' +
 		'<li><a href="'+base+'libraries/uri.html">URI Class</a></li>' +
 		'<li><a href="'+base+'libraries/user_agent.html">User Agent Class</a></li>' +
-		'<li><a href="'+base+'libraries/validation.html">Validation Class</a></li>' +
 		'<li><a href="'+base+'libraries/xmlrpc.html">XML-RPC Class</a></li>' +
 		'<li><a href="'+base+'libraries/zip.html">Zip Encoding Class</a></li>' +
 		'</ul>' +
@@ -98,6 +104,7 @@ function create_menu(basepath)
 		'<h3>Helper Reference</h3>' +
 		'<ul>' +
 		'<li><a href="'+base+'helpers/array_helper.html">Array Helper</a></li>' +
+		'<li><a href="'+base+'helpers/compatibility_helper.html">Compatibility Helper</a></li>' +
 		'<li><a href="'+base+'helpers/cookie_helper.html">Cookie Helper</a></li>' +
 		'<li><a href="'+base+'helpers/date_helper.html">Date Helper</a></li>' +
 		'<li><a href="'+base+'helpers/directory_helper.html">Directory Helper</a></li>' +
@@ -107,6 +114,9 @@ function create_menu(basepath)
 		'<li><a href="'+base+'helpers/form_helper.html">Form Helper</a></li>' +
 		'<li><a href="'+base+'helpers/html_helper.html">HTML Helper</a></li>' +
 		'<li><a href="'+base+'helpers/inflector_helper.html">Inflector Helper</a></li>' +
+		'<li><a href="'+base+'helpers/language_helper.html">Language Helper</a></li>' +
+		'<li><a href="'+base+'helpers/number_helper.html">Number Helper</a></li>' +
+		'<li><a href="'+base+'helpers/path_helper.html">Path Helper</a></li>' +
 		'<li><a href="'+base+'helpers/security_helper.html">Security Helper</a></li>' +
 		'<li><a href="'+base+'helpers/smiley_helper.html">Smiley Helper</a></li>' +
 		'<li><a href="'+base+'helpers/string_helper.html">String Helper</a></li>' +
@@ -119,10 +129,8 @@ function create_menu(basepath)
 
 		'<h3>Additional Resources</h3>' +
 		'<ul>' +
-		'<li><a href="'+base+'general/quick_reference.html">Quick Reference Chart</a></li>' +
 		'<li><a href="http://codeigniter.com/forums/">Community Forums</a></li>' +
 		'<li><a href="http://codeigniter.com/wiki/">Community Wiki</a></li>' +
-		'<li><a href="'+base+'doc_style/index.html">Writing Documentation</a></li>' +
 		'</ul>' +	
 		
 		'</td></tr></table>');

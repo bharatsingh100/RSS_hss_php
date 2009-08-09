@@ -23,7 +23,8 @@ class Profile extends Controller
 
 		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('Profile_model');
-		$this->load->library('layout', 'layout_profile');
+		$this->load->library('layout');
+		$this->layout->setLayout("layout_profile");
 		//$this->load->scaffolding('swayamsevaks');
 
 		$exception = array('search','del_ss');

@@ -23,7 +23,8 @@ class Vibhag extends Controller
 
 		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('Vibhag_model');
-		$this->load->library('layout', 'layout_vibhag');
+		$this->load->library('layout');
+		$this->layout->setLayout("layout_vibhag");
 
 		//$rs = $this->db->get_where('shakhas', array('shakha_id' => $this->uri->segment(3)))->row();
 		$id = $this->uri->segment(3);
@@ -203,26 +204,7 @@ class Vibhag extends Controller
 
 	function statistics($id)
 	{
-		/*
-	    $yr = date('Y');
-		$ag['shishu'] = $yr - 6;
-		$ag['bala'] = $yr - 12;
-		$ag['kishor'] = $yr - 19;
-		$ag['yuva'] = $yr - 25;
-		$ag['tarun'] = $yr - 50;
-		$v['shakha'] = $this->db->get_where('shakhas', array('shakha_id', $id))->row();
-		$v['families'] = $this->db->select('DISTINCT household_id')->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
-		$v['swayamsevaks'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
-		$v['shishu'] = $this->db->get_where('swayamsevaks', 'birth_year > '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
-		$v['bala'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
-		$v['kishor'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala'].' AND shakha_id =' . $id)->num_rows();
-		$v['yuva'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['yuva'].' AND '. $ag['kishor'].' AND shakha_id =' . $id)->num_rows();
-		$v['tarun'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['tarun'].' AND '. $ag['yuva'].' AND shakha_id =' . $id)->num_rows();
-		$v['phone'] = $this->db->get_where('swayamsevaks', 'ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\' AND shakha_id =' . $id)->num_rows();
-		$v['email'] = $this->db->get_where('swayamsevaks', 'email != \'\' AND email_status = \'Active\' AND shakha_id =' . $id)->num_rows();
-		$v['email_unactive'] = $this->db->get_where('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
-		$v['sankhya'] = $this->db->get_where('sankhyas', array('shakha_id' => $id))->result();
-		$v['pageTitle'] = 'Vibhag Statistics'; */
+
         $data['vibhag'] = $this->Vibhag_model->getVibhagInfo($id);
 	    $data['pageTitle'] = $data['vibhag']->name . ' Vibhag Statistics';
 		$data['shakhas'] = $this->Vibhag_model->getVibhagShakhaStats($id);

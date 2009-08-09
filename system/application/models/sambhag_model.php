@@ -68,7 +68,7 @@ class Sambhag_model extends Model
 		$shakha_ids = $this->get_shakhas($sambhag_id);
 		$shakha_ids = '('.implode(',',$shakha_ids).')';
 
-		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->order_by($sort_by, 'asc')->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
+		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id', FALSE)->order_by($sort_by, 'asc')->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
 
 		return $query;
 	}
@@ -136,7 +136,8 @@ class Sambhag_model extends Model
 			$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 			$this->db->from('swayamsevaks');
 			$this->db->order_by('responsibilities.responsibility');
-			$this->db->join('responsibilities', "responsibilities.vibhag_id = '$vibhag_id' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+			$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+			$this->db->where("responsibilities.vibhag_id = '$vibhag_id'");
 			$query = $this->db->get();
 			if($query->num_rows())
 			{
@@ -157,7 +158,8 @@ class Sambhag_model extends Model
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
 		$this->db->order_by('responsibilities.responsibility');
-		$this->db->join('responsibilities', "responsibilities.sambhag_id = '$id' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->db->where("responsibilities.sambhag_id = '$id'");
 		$query = $this->db->get();
 		if($query->num_rows())
 		{
@@ -214,7 +216,7 @@ class Sambhag_model extends Model
             $v['sevikas'] = $this->db->select('contact_id')->get_where('swayamsevaks', array('gender' => 'F'))->num_rows();
             $this->db->where("shakha_id IN ($sid)");
             $v['swayamsevaks'] = $this->db->select('contact_id')->get_where('swayamsevaks', array('gender' => 'M'))->num_rows();
-            $v['families'] = $this->db->select('DISTINCT household_id')->get_where('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
+            $v['families'] = $this->db->select('DISTINCT household_id', FALSE)->get_where('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
             $v['contacts'] = $this->db->select('contact_id')->get_where('swayamsevaks', "shakha_id IN ($sid)")->num_rows();
             $v['shishu'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year > '. $ag['shishu']." AND shakha_id IN ($sid)")->num_rows();
             $v['bala'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu']." AND shakha_id IN ($sid)")->num_rows();

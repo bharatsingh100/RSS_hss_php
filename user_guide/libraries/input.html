@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : Input Class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Input Class : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -24,11 +24,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -109,13 +109,18 @@ Note: This function should only be used to deal with data upon submission. It's 
 
 <p>Note: If you use the form validation class, it gives you the option of XSS filtering as well.</p>
 
+<p>An optional second parameter, <dfn>is_image</dfn>, allows this function to be used to test images for potential XSS attacks, useful for file upload security.  When this second parameter is set to <dfn>TRUE</dfn>, instead of returning an altered string, the function returns TRUE if the image is safe, and FALSE if it contained potentially malicious information that a browser may attempt to execute.</p>
 
+<code>if ($this->input->xss_clean($file, TRUE) === FALSE)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;// file failed the XSS test<br />
+}</code>
 
 
 <h2>Using POST, COOKIE, or SERVER Data</h2>
 
 <p>CodeIgniter comes with three helper functions that let you fetch POST, COOKIE or SERVER items.  The main advantage of using the provided
-functions rather then fetching an item directly ($_POST['something']) is that the functions will check to see if the item is set and
+functions rather than fetching an item directly ($_POST['something']) is that the functions will check to see if the item is set and
 return false (boolean) if not.  This lets you conveniently use data without having to test whether an item exists first.
 In other words, normally you might do something like this:</p>
 
@@ -153,6 +158,18 @@ else<br />
 
 <code>$this->input->post('some_data', TRUE);</code>
 
+<h2>$this->input->get()</h2>
+
+<p>This function is identical to the post function, only it fetches get data:</p>
+
+<code>$this->input->get('some_data', TRUE);</code>
+
+<h2>$this->input->get_post()</h2>
+
+<p>This function will search through both the post and get streams for data, looking first in post, and then in get:</p>
+
+<code>$this->input->get_post('some_data', TRUE);</code>
+
 <h2>$this->input->cookie()</h2>
 
 <p>This function is identical to the post function, only it fetches cookie data:</p>
@@ -178,7 +195,7 @@ else<br />
 <p>Takes an IP address as input and returns TRUE or FALSE (boolean) if it is valid or not.  Note:  The $this->input->ip_address() function above
 validates the IP automatically.</p>
 
-<code>if ( ! valid_ip($ip))<br />
+<code>if ( ! $this-&gt;input-&gt;valid_ip($ip))<br />
 {<br />
 &nbsp;&nbsp;&nbsp;&nbsp; echo 'Not Valid';<br />
 }<br />
@@ -207,7 +224,7 @@ Previous Topic:&nbsp;&nbsp;<a href="image_lib.html">Image Manipulation Class</a>
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="loader.html">Loader Class</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

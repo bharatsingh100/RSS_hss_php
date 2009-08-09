@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : Form Validation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Form Validation : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,23 +13,21 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
 <meta name='author' content='ExpressionEngine Dev Team' />
 <meta name='description' content='CodeIgniter User Guide' />
-
 </head>
 <body>
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -110,9 +109,9 @@ folder:</p>
 &lt;/head>
 &lt;body>
 
-&lt;?=$this->validation->error_string; ?>
+&lt;?php echo $this->validation->error_string; ?>
 
-&lt;?=form_open('form'); ?>
+&lt;?php echo form_open('form'); ?>
 
 &lt;h5>Username&lt;/h5>
 &lt;input type="text" name="username" value="" size="50" />
@@ -151,7 +150,7 @@ folder:</p>
 
 &lt;h3>Your form was successfully submitted!&lt;/h3>
 
-&lt;p>&lt;?=anchor('form', 'Try it again!'); ?>&lt;/p>
+&lt;p>&lt;?php echo anchor('form', 'Try it again!'); ?>&lt;/p>
 
 &lt;/body>
 &lt;/html>
@@ -191,7 +190,7 @@ class Form extends Controller {
 
 <p>To try your form, visit your site using a URL similar to this one:</p>
 
-<code>www.your-site.com/index.php/<var>form</var>/</code>
+<code>example.com/index.php/<var>form</var>/</code>
 
 <p><strong>If you submit the form you should simply see the form reload.  That's because you haven't set up any validation
 rules yet, which we'll get to in a moment.</strong></p>
@@ -210,7 +209,7 @@ is that it generates the action URL for you, based on the URL in your config fil
 and flexible in the event your URLs change.</li>
 
 <li>At the top of the form you'll notice the following variable:
-<code>&lt;?=$this->validation->error_string; ?&gt;</code>
+<code>&lt;?php echo $this->validation->error_string; ?&gt;</code>
 
 <p>This variable will display any error messages sent back by the validator. If there are no messages it returns nothing.</p>
 </li>
@@ -241,7 +240,7 @@ $this->validation->set_rules($rules);</code>
 
 <p>Your controller should now look like this:</p>
 
-<textarea class="textarea" style="width:100%" cols="50" rows="28"><?php
+<textarea class="textarea" style="width:100%" cols="50" rows="28">&lt;?php
 
 class Form extends Controller {
 	
@@ -319,7 +318,7 @@ $rules['password']	= "<kbd>trim</kbd>|required|matches[passconf]|<kbd>md5</kbd>"
 $rules['passconf']	= "<kbd>trim</kbd>|required";<br />
 $rules['email']		= "<kbd>trim</kbd>|required|valid_email";</code>
 
-<p>In the above, we are "trimming" the fields, converting the password to MD5, and running the username through
+<p>In the above example, we are "trimming" the fields, converting the password to MD5, and running the username through
 the "xss_clean" function, which removes malicious data.</p>
 
 <p class="important"><strong>Any native PHP function that accepts one parameter can be used as a rule, like <dfn>htmlspecialchars</dfn>,
@@ -341,7 +340,7 @@ create a callback function that does that.  Let's create a simple example.</p>
 <p>Then add a new function called <dfn>username_check</dfn> to your controller.  Here's how your controller should look:</p>
 
 
-<textarea class="textarea" style="width:100%" cols="50" rows="44"><?php
+<textarea class="textarea" style="width:100%" cols="50" rows="44">&lt;?php
 
 class Form extends Controller {
 	
@@ -446,7 +445,7 @@ error message.</p>
 }</textarea>
 
 
-<p>Now open your <dfn>myform.php</dfn> view file and update the value in each field so that it has an object corresponding to its name:</p>
+<p>Now open your <dfn>myform.php</dfn> view file and update the value in each field so that it has an attribute corresponding to its name:</p>
 
 
 <textarea class="textarea" style="width:100%" cols="50" rows="30">
@@ -456,21 +455,21 @@ error message.</p>
 &lt;/head>
 &lt;body>
 
-&lt;?=$this->validation->error_string; ?>
+&lt;?php echo $this->validation->error_string; ?>
 
-&lt;?=form_open('form'); ?>
+&lt;?php echo form_open('form'); ?>
 
 &lt;h5>Username&lt;/h5>
-&lt;input type="text" name="username" value="&lt;?=$this->validation->username;?>" size="50" />
+&lt;input type="text" name="username" value="&lt;?php echo $this->validation->username;?>" size="50" />
 
 &lt;h5>Password&lt;/h5>
-&lt;input type="text" name="password" value="&lt;?=$this->validation->password;?>" size="50" />
+&lt;input type="text" name="password" value="&lt;?php echo $this->validation->password;?>" size="50" />
 
 &lt;h5>Password Confirm&lt;/h5>
-&lt;input type="text" name="passconf" value="&lt;?=$this->validation->passconf;?>" size="50" />
+&lt;input type="text" name="passconf" value="&lt;?php echo $this->validation->passconf;?>" size="50" />
 
 &lt;h5>Email Address&lt;/h5>
-&lt;input type="text" name="email" value="&lt;?=$this->validation->email;?>" size="50" />
+&lt;input type="text" name="email" value="&lt;?php echo $this->validation->email;?>" size="50" />
 
 &lt;div>&lt;input type="submit" value="Submit" />&lt;/div>
 
@@ -493,20 +492,20 @@ and the error messages will contain a more relevant field name.</p>
 
 <textarea class="textarea" style="width:100%" cols="50" rows="20">
 &lt;h5>Username&lt;/h5>
-&lt;?=$this->validation->username_error; ?>
-&lt;input type="text" name="username" value="&lt;?=$this->validation->username;?>" size="50" />
+&lt;?php echo $this->validation->username_error; ?>
+&lt;input type="text" name="username" value="&lt;?php echo $this->validation->username;?>" size="50" />
 
 &lt;h5>Password&lt;/h5>
-&lt;?=$this->validation->password_error; ?>
-&lt;input type="text" name="password" value="&lt;?=$this->validation->password;?>" size="50" />
+&lt;?php echo $this->validation->password_error; ?>
+&lt;input type="text" name="password" value="&lt;?php echo $this->validation->password;?>" size="50" />
 
 &lt;h5>Password Confirm&lt;/h5>
-&lt;?=$this->validation->passconf_error; ?>
-&lt;input type="text" name="passconf" value="&lt;?=$this->validation->passconf;?>" size="50" />
+&lt;?php echo $this->validation->passconf_error; ?>
+&lt;input type="text" name="passconf" value="&lt;?php echo $this->validation->passconf;?>" size="50" />
 
 &lt;h5>Email Address&lt;/h5>
-&lt;?=$this->validation->email_error; ?>
-&lt;input type="text" name="email" value="&lt;?=$this->validation->email;?>" size="50" /></textarea>
+&lt;?php echo $this->validation->email_error; ?>
+&lt;input type="text" name="email" value="&lt;?php echo $this->validation->email;?>" size="50" /></textarea>
 
 <p>If there are no errors, nothing will be shown.  If there is an error, the message will appear, wrapped in the delimiters you
 have set (&lt;p> tags by default).</p>
@@ -578,10 +577,10 @@ For example, your "username" error will be available at:<br /><dfn>$this->valida
 <td class="td">&nbsp;</td>
 </tr>
 <tr>
-    <td class="td"><strong>numeric</strong></td>
-    <td class="td">No</td>
-    <td class="td">Returns FALSE if the form element contains anything other than numeric characters.</td>
-    <td class="td">&nbsp;</td>
+	<td class="td"><strong>numeric</strong></td>
+	<td class="td">No</td>
+	<td class="td">Returns FALSE if the form element contains anything other than numeric characters.</td>
+	<td class="td">&nbsp;</td>
 </tr>
 <tr>
 
@@ -597,20 +596,26 @@ For example, your "username" error will be available at:<br /><dfn>$this->valida
 <td class="td">&nbsp;</td>
 </tr>
 <tr>
+	<td class="td"><strong>valid_emails</strong></td>
+	<td class="td">No</td>
+	<td class="td">Returns FALSE if any value provided in a comma separated list is not a valid email.</td>
+	<td class="td">&nbsp;</td>
+</tr>
+<tr>
 <td class="td"><strong>valid_ip</strong></td>
 <td class="td">No</td>
 <td class="td">Returns FALSE if the supplied IP is not valid.</td>
 <td class="td">&nbsp;</td>
 </tr>
 <tr>
-    <td class="td"><strong>valid_base64</strong></td>
-    <td class="td">No</td>
-    <td class="td">Returns FALSE if the supplied string contains anything other than valid Base64 characters.</td>
-    <td class="td">&nbsp;</td>
+	<td class="td"><strong>valid_base64</strong></td>
+	<td class="td">No</td>
+	<td class="td">Returns FALSE if the supplied string contains anything other than valid Base64 characters.</td>
+	<td class="td">&nbsp;</td>
 </tr>
 </table>
 
-<p><strong>Note:</strong> These rules can also be called as discreet functions. For example:</p>
+<p><strong>Note:</strong> These rules can also be called as discrete functions. For example:</p>
 
 <code>$this->validation->required($string);</code>
 
@@ -686,9 +691,9 @@ each item. Example:</p>
 
 <code>
 &lt;select name="myselect"><br />
-&lt;option value="one" <dfn>&lt;?= $this->validation->set_select('myselect', 'one'); ?></dfn> >One&lt;/option><br />
-&lt;option value="two" <dfn>&lt;?= $this->validation->set_select('myselect', 'two'); ?></dfn> >Two&lt;/option><br />
-&lt;option value="three" <dfn>&lt;?= $this->validation->set_select('myselect', 'three'); ?></dfn> >Three&lt;/option><br />
+&lt;option value="one" <dfn>&lt;?php echo  $this->validation->set_select('myselect', 'one'); ?></dfn> >One&lt;/option><br />
+&lt;option value="two" <dfn>&lt;?php echo  $this->validation->set_select('myselect', 'two'); ?></dfn> >Two&lt;/option><br />
+&lt;option value="three" <dfn>&lt;?php echo  $this->validation->set_select('myselect', 'three'); ?></dfn> >Three&lt;/option><br />
 &lt;/select>
 </code>
 
@@ -698,7 +703,7 @@ each item. Example:</p>
 <p>Permits you to display a checkbox in the state it was submitted.  The first parameter
 must contain the name of the checkbox, the second parameter must contain its value. Example:</p>
 
-<code>&lt;input type="checkbox" name="mycheck" value="1" <dfn>&lt;?= $this->validation->set_checkbox('mycheck', '1'); ?></dfn> /></code>
+<code>&lt;input type="checkbox" name="mycheck" value="1" <dfn>&lt;?php echo  $this->validation->set_checkbox('mycheck', '1'); ?></dfn> /></code>
 
 
 <h2>set_radio()</h2>
@@ -706,7 +711,7 @@ must contain the name of the checkbox, the second parameter must contain its val
 <p>Permits you to display radio buttons in the state they were submitted.  The first parameter
 must contain the name of the radio button, the second parameter must contain its value. Example:</p>
 
-<code>&lt;input type="radio" name="myradio" value="1" <dfn>&lt;?= $this->validation->set_radio('myradio', '1'); ?></dfn> /></code>
+<code>&lt;input type="radio" name="myradio" value="1" <dfn>&lt;?php echo  $this->validation->set_radio('myradio', '1'); ?></dfn> /></code>
 
 
 
@@ -724,7 +729,7 @@ Previous Topic:&nbsp;&nbsp;<a href="user_agent.html">User Agent Class</a>
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="xmlrpc.html">XML-RPC Class</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

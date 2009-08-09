@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : FTP Class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>FTP Class : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -24,11 +24,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -79,7 +79,7 @@ file permissions are set to 755.  Note: Setting permissions requires PHP 5.</p>
 <code>
 $this->load->library('ftp');<br />
 <br />
-$config['hostname'] = 'ftp.your-site.com';<br />
+$config['hostname'] = 'ftp.example.com';<br />
 $config['username'] = 'your-username';<br />
 $config['password'] = 'your-password';<br />
 $config['debug'] 	= TRUE;<br />
@@ -98,7 +98,7 @@ $this->ftp->close();
 <code>
 $this->load->library('ftp');<br />
 <br />
-$config['hostname'] = 'ftp.your-site.com';<br />
+$config['hostname'] = 'ftp.example.com';<br />
 $config['username'] = 'your-username';<br />
 $config['password'] = 'your-password';<br />
 $config['debug'] 	= TRUE;<br />
@@ -118,7 +118,7 @@ $this->ftp->close();
 <code>
 $this->load->library('ftp');<br />
 <br />
-$config['hostname'] = 'ftp.your-site.com';<br />
+$config['hostname'] = 'ftp.example.com';<br />
 $config['username'] = 'your-username';<br />
 $config['password'] = 'your-password';<br />
 $config['debug'] 	= TRUE;<br />
@@ -144,7 +144,7 @@ to the function, or you can store them in a config file.</p>
 <code>
 $this->load->library('ftp');<br />
 <br />
-$config['hostname'] = 'ftp.your-site.com';<br />
+$config['hostname'] = 'ftp.example.com';<br />
 $config['username'] = 'your-username';<br />
 $config['password'] = 'your-password';<br />
 $config['port']&nbsp;&nbsp;&nbsp;&nbsp; = 21;<br />
@@ -258,7 +258,7 @@ Permissions can be set by passed an <kbd>octal</kbd> value in the second paramet
 
 <code>
 // Creates a folder named "bar"<br />
-$this->ftp->mkdir('/public_html/foo/bar/', 0777);
+$this->ftp->mkdir('/public_html/foo/bar/', DIR_WRITE_MODE);
 </code>
 
 
@@ -268,7 +268,7 @@ $this->ftp->mkdir('/public_html/foo/bar/', 0777);
 
 <code>
 // Chmod "bar" to 777<br />
-$this->ftp->chmod('/public_html/foo/bar/', 0777);
+$this->ftp->chmod('/public_html/foo/bar/', DIR_WRITE_MODE);
 </code>
 
 
@@ -290,13 +290,13 @@ $this->ftp->chmod('/public_html/foo/bar/', 0777);
 
 <div id="footer">
 <p>
-Previous Topic:&nbsp;&nbsp;<a href="file_uploading.html">File Uploading Class</a>
+Previous Topic:&nbsp;&nbsp;<a href="form_validation.html">Form Validation Class</a>
 &nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="table.html">HTML Table Class</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

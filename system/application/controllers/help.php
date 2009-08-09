@@ -6,7 +6,8 @@ class Help extends Controller
         parent::Controller();
 		//$this->output->enable_profiler(TRUE);
 //		$this->load->model('Profile_model');
-		$this->load->library('layout', 'layout_help');
+		$this->load->library('layout');
+		$this->layout->setLayout("layout_help");
 		//$this->load->scaffolding('swayamsevaks');
 
 		/*$exception = array('search','del_ss');

@@ -3,8 +3,9 @@ class Admin extends Controller
 {
     function Admin()
     {
-        parent::Controller();
-		$this->load->library('layout', 'layout_admin');
+        parent::Controller();		
+		$this->load->library('layout');
+		$this->layout->setLayout("layout_admin");
 		$this->output->enable_profiler($this->config->item('debug'));
 
     }

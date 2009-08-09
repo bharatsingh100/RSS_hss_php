@@ -66,7 +66,7 @@ class Profile_model extends Model
 	{
 		//$term = explode(' ', $term);
 		//foreach(
-		$this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, state, ph_home as phone, ph_home, ph_mobile, ph_work, email');
+		$this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, state, ph_home as phone, ph_home, ph_mobile, ph_work, email', FALSE);
 //		$this->db->order_by($sort_by, 'asc');
 		$this->db->where("MATCH(first_name, last_name, company, position, city, notes, email) AGAINST ('+($term)')");
 		$this->db->where('state', $state);
@@ -89,7 +89,8 @@ class Profile_model extends Model
 	{
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name');
 		$this->db->from('swayamsevaks');
-		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id AND responsibilities.shakha_id = '.$id);
+		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id');
+		$this->db->where('responsibilities.shakha_id = '.$id);
 		//.' AND responsibilities.responsibility = 140');
 		$result = $this->db->get();
 		if($result->num_rows())
@@ -140,7 +141,8 @@ class Profile_model extends Model
 		$temp = $query->row();
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
-		$this->db->join('responsibilities', 'responsibilities.shakha_id = ' . $temp->shakha_id . ' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id');
+		$this->db->join('responsibilities', 'responsibilities.swayamsevak_id = swayamsevaks.contact_id');
+		$this->db->where('responsibilities.shakha_id = ' . $temp->shakha_id);
 		$query = $this->db->get();
 		if($query->num_rows())
 		{

@@ -5,9 +5,9 @@ class User extends Controller
     {
         parent::Controller();
         $this->output->enable_profiler($this->config->item('debug'));
-		$this->load->library('layout', 'layout_user');
+		$this->load->library('layout');
+		$this->layout->setLayout("layout_user");
 		$this->load->helper('security');
-		//$this->output->enable_profiler(TRUE);
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 		$this->output->set_header('Pragma: no-cache');
 
@@ -22,7 +22,6 @@ class User extends Controller
 	function logout()
 	{
 		$this->session->sess_destroy();
-		//if(!$this->session->userdata('message'))
 		$this->session->set_userdata('message', 'You have successfully logged out!');
 		$data['pageTitle'] = 'Logged Out';
 		$this->layout->view('user/login', $data);
@@ -97,8 +96,7 @@ class User extends Controller
 			if($rs->num_rows())
 			{
 				$rs = $rs->row();
-				$j = $this->db->get_where('swayamsevaks', array('contact_id' => $rs->contact_id));
-				$j = $j->row();
+				$j = $this->db->get_where('swayamsevaks', array('contact_id' => $rs->contact_id))->row();
 				$k['pageTitle'] = 'Reset Password';
 				$k['name'] = $j->first_name . ' ' . $j->last_name;
 				$k['contact_id'] = $j->contact_id;
@@ -194,10 +192,8 @@ class User extends Controller
 	{
 		if($user == '' || $password == '')
 		{
-			//$this->session->set_flashdata('message', 'Your password or email address field was blank.');
 			$this->session->set_userdata('message', 'Your password or email address field was blank. Try again');
 			return false;
-//		$this->->db->where('email', $user);
 		}
 
 		$query = $this->db->get_where('swayamsevaks', array('email' => $user));

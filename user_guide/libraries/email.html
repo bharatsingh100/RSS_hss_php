@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : Email Class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Email Class : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -24,11 +24,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -83,7 +83,7 @@ Email Class
 
 <code>$this->load->library('email');<br />
 <br />
-$this->email->from('your@your-site.com', 'Your Name');<br />	
+$this->email->from('your@example.com', 'Your Name');<br />	
 $this->email->to('someone@example.com'); <br />
 $this->email->cc('another@another-example.com'); <br />
 $this->email->bcc('them@their-example.com'); <br />
@@ -163,8 +163,16 @@ will NOT need to use the <dfn>$this->email->initialize()</dfn> function if you s
 <td class="td"><strong>validate</strong></td><td class="td">FALSE</td><td class="td">TRUE or FALSE  (boolean)</td><td class="td">Whether to validate the email address.</td>
 </tr><tr>
 <td class="td"><strong>priority</strong></td><td class="td">3</td><td class="td">1, 2, 3, 4, 5</td><td class="td">Email Priority. 1 = highest.  5 = lowest.  3 = normal.</td>
-</tr><tr>
-<td class="td"><strong>newline</strong></td><td class="td">\n</td><td class="td">"\r\n" or "\n"</td><td class="td">Newline character. (Use "\r\n" to comply with RFC 822).</td>
+</tr>
+<tr>
+	<td class="td"><strong>crlf</strong></td>
+	<td class="td">\n</td>
+	<td class="td">&quot;\r\n&quot; or &quot;\n&quot; or &quot;\r&quot;</td>
+	<td class="td">Newline character. (Use &quot;\r\n&quot; to comply with RFC 822).</td>
+</tr>
+<tr>
+<td class="td"><strong>newline</strong></td><td class="td">\n</td>
+<td class="td">"\r\n" or "\n" or &quot;\r&quot;</td><td class="td">Newline character. (Use "\r\n" to comply with RFC 822).</td>
 </tr><tr>
 <td class="td"><strong>bcc_batch_mode</strong></td><td class="td">FALSE</td><td class="td">TRUE or FALSE (boolean)</td><td class="td">Enable BCC Batch Mode.</td>
 </tr><tr>
@@ -177,11 +185,11 @@ will NOT need to use the <dfn>$this->email->initialize()</dfn> function if you s
 
 <h3>$this->email->from()</h3>
 <p>Sets the email address and name of the person sending the email:</p>
-<code>$this->email->from('<var>you@your-site.com</var>', '<var>Your Name</var>');</code>
+<code>$this->email->from('<var>you@example.com</var>', '<var>Your Name</var>');</code>
 
 <h3>$this->email->reply_to()</h3>
 <p>Sets the reply-to address.  If the information is not provided the information in the "from" function is used. Example:</p>
-<code>$this->email->reply_to('<var>you@your-site.com</var>', '<var>Your Name</var>');</code>
+<code>$this->email->reply_to('<var>you@example.com</var>', '<var>Your Name</var>');</code>
 
 
 <h3>$this->email->to()</h3>
@@ -227,7 +235,7 @@ in a loop, permitting the data to be reset between cycles.</p>
 &nbsp;&nbsp;&nbsp;&nbsp;$this->email->clear();<br /><br />
 	
 &nbsp;&nbsp;&nbsp;&nbsp;$this->email->to($address);<br />
-&nbsp;&nbsp;&nbsp;&nbsp;$this->email->from('your@your-site.com');<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$this->email->from('your@example.com');<br />
 &nbsp;&nbsp;&nbsp;&nbsp;$this->email->subject('Here is your info '.$name);<br />
 &nbsp;&nbsp;&nbsp;&nbsp;$this->email->message('Hi '.$name.' Here is the info you requested.');<br />
 &nbsp;&nbsp;&nbsp;&nbsp;$this->email->send();<br />
@@ -272,7 +280,7 @@ word wrapping within part of your message like this:</p>
 <code>The text of your email that<br />
 gets wrapped normally.<br />
 <br />
-<var>{unwrap}</var>http://www.example.com/a_long_link_that_should_not_be_wrapped.html<var>{/unwrap}</var><br />
+<var>{unwrap}</var>http://example.com/a_long_link_that_should_not_be_wrapped.html<var>{/unwrap}</var><br />
 <br />
 More text that will be<br />
 wrapped normally.</code>
@@ -286,13 +294,13 @@ wrapped normally.</code>
 
 <div id="footer">
 <p>
-Previous Topic:&nbsp;&nbsp;<a href="database/index.html">Database Class</a>
+Previous Topic:&nbsp;&nbsp;<a href="../database/index.html">Database Class</a>
 &nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="encryption.html">Encryption Class</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

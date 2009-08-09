@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Session Class : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -24,11 +24,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -103,7 +103,7 @@ even add your own data to a user's session, but the process of reading, writing,
 <li>The user's unique Session ID (this is a statistically random string with very strong entropy, hashed with MD5 for portability, and regenerated (by default) every five minutes)</li>
 <li>The user's IP Address</li>
 <li>The user's User Agent data (the first 50 characters of the browser data string)</li>
-<li>The "last activity" and "last visit" time stamps.</li>
+<li>The "last activity"  time stamp.</li>
 </ul>
 
 <p>The above data is stored in a cookie as a serialized array with this prototype:</p>
@@ -113,8 +113,7 @@ even add your own data to a user's session, but the process of reading, writing,
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'session_id'&nbsp;&nbsp;&nbsp;&nbsp;=> random hash,<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ip_address'&nbsp;&nbsp;&nbsp;&nbsp;=> 'string - user IP address',<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'user_agent'&nbsp;&nbsp;&nbsp;&nbsp;=> 'string - user agent data',<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'last_activity' => timestamp,<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'last_visit'&nbsp;&nbsp;&nbsp;&nbsp;=> timestamp<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'last_activity' => timestamp<br />
 )</code>
 
 <p>If you have the encryption option enabled, the serialized array will be encrypted before being stored in the cookie,
@@ -124,7 +123,7 @@ and encrypting the data automatically.</p>
 
 <p>Note: Session cookies are only updated every five minutes by default to reduce processor load.  If you repeatedly reload a page
 you'll notice that the "last activity" time only updates if five minutes or more has passed since the last time
-the cookie was written. This time is configurable my changing the $config['time_to_update'] line in your system/config/config.php file.</p>
+the cookie was written. This time is configurable by changing the $config['time_to_update'] line in your system/config/config.php file.</p>
 
 <h2>Retrieving Session Data</h2>
 
@@ -157,12 +156,12 @@ having to run a database query when you need it.</p>
 
 
 <p><code>$newdata = array(<br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'username'&nbsp; => 'johndoe',<br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'email'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'johndoe@some-site.com',<br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'logged_in' => TRUE<br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
-    <br />
-    $this->session->set_userdata(<samp>$newdata</samp>);</code></p>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'username'&nbsp; => 'johndoe',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'email'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'johndoe@some-site.com',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'logged_in' => TRUE<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+	<br />
+	$this->session->set_userdata(<samp>$newdata</samp>);</code></p>
 <p>If you want to add userdata one value at a time, set_userdata() also supports this syntax. </p>
 <p><code>$this-&gt;session-&gt;set_userdata('some_name', 'some_value');</code></p>
 <p class="important"><strong>Note:</strong> Cookies can only hold 4KB of data, so be careful not to exceed the capacity.  The
@@ -203,6 +202,7 @@ session_id varchar(40) DEFAULT '0' NOT NULL,
 ip_address varchar(16) DEFAULT '0' NOT NULL,
 user_agent varchar(50) NOT NULL,
 last_activity int(10) unsigned DEFAULT 0 NOT NULL,
+user_data text NOT NULL,
 PRIMARY KEY (session_id)
 );</textarea>
 
@@ -225,65 +225,69 @@ do not need to write your own routine to do it.</p>
 <h2>Destroying a Session </h2>
 <p>To clear the current session: </p>
 <code>$this-&gt;session-&gt;sess_destroy();</code>
+<p class="important"><strong>Note:</strong> This function should be the last one called, and even flash variables will no longer be available.  If you only want some items destroyed and not all, use <dfn>unset_userdata()</dfn>.</p>
+
+
+
 <h2>Session Preferences</h2>
 <p>You'll find the following Session related preferences in your <kbd>application/config/config.php</kbd> file:</p>
 
 
 <table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
 <tr>
-    <th>Preference</th>
-    <th>Default</th>
-    <th>Options</th>
-    <th>Description</th>
+	<th>Preference</th>
+	<th>Default</th>
+	<th>Options</th>
+	<th>Description</th>
 </tr>
 <tr>
-    <td class="td"><strong>sess_cookie_name</strong></td>
-    <td class="td">ci_session</td>
-    <td class="td">None</td>
-    <td class="td">The name you world the session cookie saved as.</td>
+	<td class="td"><strong>sess_cookie_name</strong></td>
+	<td class="td">ci_session</td>
+	<td class="td">None</td>
+	<td class="td">The name you want the session cookie saved as.</td>
 </tr>
 <tr>
-    <td class="td"><strong>sess_expiration</strong></td>
-    <td class="td">7200</td>
-    <td class="td">None</td>
-    <td class="td">The number of seconds you would like the session to last. The default value is 2 hours (7200 seconds). If you would like a non-expiring session set the value to zero: 0</td>
+	<td class="td"><strong>sess_expiration</strong></td>
+	<td class="td">7200</td>
+	<td class="td">None</td>
+	<td class="td">The number of seconds you would like the session to last. The default value is 2 hours (7200 seconds). If you would like a non-expiring session set the value to zero: 0</td>
 </tr>
 <tr>
-    <td class="td"><strong>sess_encrypt_cookie</strong></td>
-    <td class="td">FALSE</td>
-    <td class="td">TRUE/FALSE (boolean)</td>
-    <td class="td">Whether to encrypt the session data.</td>
+	<td class="td"><strong>sess_encrypt_cookie</strong></td>
+	<td class="td">FALSE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>
+	<td class="td">Whether to encrypt the session data.</td>
 </tr>
 <tr>
-    <td class="td"><strong>sess_use_database</strong></td>
-    <td class="td">FALSE</td>
-    <td class="td">TRUE/FALSE (boolean)</td>
-    <td class="td">Whether to save the session data to a database.  You must create the table before enabling this option.</td>
+	<td class="td"><strong>sess_use_database</strong></td>
+	<td class="td">FALSE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>
+	<td class="td">Whether to save the session data to a database.  You must create the table before enabling this option.</td>
 </tr>
 <tr>
-    <td class="td"><strong>sess_table_name</strong></td>
-    <td class="td">ci_sessions</td>
-    <td class="td">Any valid SQL table name</td>
-    <td class="td">The name of the session database table.</td>
+	<td class="td"><strong>sess_table_name</strong></td>
+	<td class="td">ci_sessions</td>
+	<td class="td">Any valid SQL table name</td>
+	<td class="td">The name of the session database table.</td>
 </tr>
 <tr>
-    <td class="td"><strong>sess_time_to_update</strong></td>
-    <td class="td">300</td>
-    <td class="td">Time in milliseconds</td>
-    <td class="td">This options controls how often the session class will regenerate itself and create a new session id.</td>
+	<td class="td"><strong>sess_time_to_update</strong></td>
+	<td class="td">300</td>
+	<td class="td">Time in seconds</td>
+	<td class="td">This options controls how often the session class will regenerate itself and create a new session id.</td>
 </tr>
 <tr>
-    <td class="td"><strong>sess_match_ip</strong></td>
-    <td class="td">FALSE</td>
-    <td class="td">TRUE/FALSE (boolean)</td>
-    <td class="td">Whether to match the user's IP address when reading the session data.  Note that some ISPs dynamically
-    changes the IP, so if you want a non-expiring session you will likely set this to FALSE.</td>
+	<td class="td"><strong>sess_match_ip</strong></td>
+	<td class="td">FALSE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>
+	<td class="td">Whether to match the user's IP address when reading the session data.  Note that some ISPs dynamically
+	changes the IP, so if you want a non-expiring session you will likely set this to FALSE.</td>
 </tr>
 <tr>
-    <td class="td"><strong>sess_match_useragent</strong></td>
-    <td class="td">TRUE</td>
-    <td class="td">TRUE/FALSE (boolean)</td>
-    <td class="td">Whether to match the User Agent when reading the session data.</td>
+	<td class="td"><strong>sess_match_useragent</strong></td>
+	<td class="td">TRUE</td>
+	<td class="td">TRUE/FALSE (boolean)</td>
+	<td class="td">Whether to match the User Agent when reading the session data.</td>
 </tr>
 </table>
 
@@ -300,7 +304,7 @@ Previous Topic:&nbsp;&nbsp;<a href="pagination.html">Pagination Class</a>
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="trackback.html">Trackback Class</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

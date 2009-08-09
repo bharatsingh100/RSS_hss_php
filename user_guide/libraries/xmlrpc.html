@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : XML-RPC and XML-RPC Server Classes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>XML-RPC and XML-RPC Server Classes : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -24,11 +24,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -180,8 +180,9 @@ class and method for processing.</p>
 $this->load->library('xmlrpc');<br />
 $this->load->library('xmlrpcs');<br />
 <br />
-$config['functions']['<var>new_post</var>']&nbsp;&nbsp;= array('function' => '<dfn>My_blog.new_entry</dfn>');<br />
+$config['functions']['<var>new_post</var>'] = array('function' => '<dfn>My_blog.new_entry</dfn>'),<br />
 $config['functions']['<var>update_post</var>'] = array('function' => '<dfn>My_blog.update_entry</dfn>');<br />
+$config['object'] = $this;<br />
 <br />
 $this->xmlrpcs->initialize($config);<br />
 $this->xmlrpcs->serve();</code>
@@ -189,6 +190,9 @@ $this->xmlrpcs->serve();</code>
 <p>The above example contains an array specifying two method requests that the Server allows.
 The allowed methods are on the left side of the array. When either of those are received, they will be mapped to the class and method on the right.</p>
 
+<p>The '<var>object</var>' key is a special key that you pass an instantiated class object with, which is necessary when the method you are mapping to is not
+	part of the CodeIgniter super object.</p>
+	
 <p>In other words, if an XML-RPC Client sends a request for the <var>new_post</var> method, your
 server will load the <dfn>My_blog</dfn> class and call the <dfn>new_entry</dfn> function.
 If the request is for the <var>update_post</var> method, your
@@ -196,8 +200,7 @@ server will load the <dfn>My_blog</dfn> class and call the <dfn>update_entry</df
 
 <p>The function names in the above example are arbitrary.  You'll decide what they should be called on your server,
 or if you are using standardized APIs, like the Blogger or MetaWeblog API, you'll use their function names.</p>
-
-
+	
 <h2>Processing Server Requests</h2>
 
 <p>When the XML-RPC Server receives a request and loads the class/method for processing, it will pass
@@ -290,7 +293,7 @@ $response = array (<br />
 
 <p class="important">Notice that the above array is formatted as a <dfn>struct</dfn>.  This is the most common data type for responses.</p>
 
-<p>As with Requests, a response can be on of the seven data types listed in the  <a href="#datatypes">Data Types</a>  section.</p>
+<p>As with Requests, a response can be one of the seven data types listed in the  <a href="#datatypes">Data Types</a>  section.</p>
 
 
 <h2>Sending an Error Response</h2>
@@ -316,7 +319,7 @@ XML-RPC Client and Server.  You'll use the Client to send a request to the Serve
 <p>Using a text editor, create a controller called <dfn>xmlrpc_client.php</dfn>.
 In it, place this code and save it to your <samp>applications/controllers/</samp> folder:</p>
 
-<textarea class="textarea" style="width:100%" cols="50" rows="32"><?php
+<textarea class="textarea" style="width:100%" cols="50" rows="32">&lt;?php
 
 class Xmlrpc_client extends Controller {
 	
@@ -354,7 +357,7 @@ class Xmlrpc_client extends Controller {
 <p>Using a text editor, create a controller called <dfn>xmlrpc_server.php</dfn>.
 In it, place this code and save it to your <samp>applications/controllers/</samp> folder:</p>
 
-<textarea class="textarea" style="width:100%" cols="50" rows="30"><?php
+<textarea class="textarea" style="width:100%" cols="50" rows="30">&lt;?php
 
 class Xmlrpc_server extends Controller {
 
@@ -388,16 +391,43 @@ class Xmlrpc_server extends Controller {
 <h3>Try it!</h3>
 
 <p>Now visit the your site using a URL similar to this:</p>
-<code>www.your-site.com/index.php/<var>xmlrpc_client</var>/</code>
+<code>example.com/index.php/<var>xmlrpc_client</var>/</code>
 
 <p>You should now see the message you sent to the server, and its response back to you.</p>
 
-<p>The client you created sends a message ("How's is going?") to the server, along with a reqest for the "Greetings" method.
+<p>The client you created sends a message ("How's is going?") to the server, along with a request for the "Greetings" method.
 The Server receives the request and maps it to the "process" function, where a response is sent back.</p>
 
+<h2>Using Associative Arrays In a Request Parameter</h2>
 
+<p>If you wish to use an associative array in your method parameters you will need to use a struct datatype:</p>
 
-<p>&nbsp;</p>
+<code>$request = array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Param 0<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'=&gt;'John'<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	),<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'struct'<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Param 1<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	'size'=&gt;'large',<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'shape'=&gt;'round'<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	),<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'struct'<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+	$this-&gt;xmlrpc-&gt;request($request);</code>
+	
+<p>You can retrieve the associative array when processing the request in the Server.</p>
+
+<code>$parameters = $request-&gt;output_parameters();<br />
+	$name = $parameters['0']['name'];<br />
+	$size = $parameters['1']['size'];<br />
+	$size = $parameters['1']['shape']; </code>
+
 <h1>XML-RPC Function Reference</h1>
 
 <h2>$this->xmlrpc->server()</h2>
@@ -474,13 +504,13 @@ of values that you can send via XML-RPC:</p>
 
 <div id="footer">
 <p>
-Previous Topic:&nbsp;&nbsp;<a href="validation.html">Validation Class</a>
+Previous Topic:&nbsp;&nbsp;<a href="user_agent.html">User Agent Class</a>
 &nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="zip.html">Zip Encoding Class</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

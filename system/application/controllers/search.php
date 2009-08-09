@@ -4,23 +4,24 @@ class Search extends Controller
     function Search()
     {
         parent::Controller();
-    		if(!$this->session->userdata('logged_in'))
-    		{
-    			$this->session->set_userdata('message', 'Please login to access the system.');
-    			$this->session->set_userdata('redirect', $this->uri->uri_string());
-    			redirect('user');
-    		}
-		
-    		//Check Permissions
-    		if(!$this->permission->is_shakha_kkl($this->session->userdata('shakha_id')))
-    		{
-    				$this->session->set_userdata('message', 'Your are not allowed to access the requested URL');
-    				redirect('profile/view/'.$this->session->userdata('contact_id'));
-    		}
+		if(!$this->session->userdata('logged_in'))
+		{
+			$this->session->set_userdata('message', 'Please login to access the system.');
+			$this->session->set_userdata('redirect', $this->uri->uri_string());
+			redirect('user');
+		}
+	
+		//Check Permissions
+		if(!$this->permission->is_shakha_kkl($this->session->userdata('shakha_id')))
+		{
+				$this->session->set_userdata('message', 'Your are not allowed to access the requested URL');
+				redirect('profile/view/'.$this->session->userdata('contact_id'));
+		}
 			
 		$this->output->enable_profiler($this->config->item('debug'));
 //		$this->load->model('Profile_model');
-		    $this->load->library('layout', 'layout_search');
+		$this->load->library('layout');
+		$this->layout->setLayout("layout_search");
 		//$this->load->scaffolding('swayamsevaks');
 
 /*		$exception = array('search','del_ss');
@@ -38,8 +39,8 @@ class Search extends Controller
 			$this->session->set_userdata('bc_sambhag_id', $rs->sambhag_id);
 		}
 		*/
-    		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-    		$this->output->set_header('Pragma: no-cache');
+		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+		$this->output->set_header('Pragma: no-cache');
     }
 	
 	function index($term = '') 
@@ -69,12 +70,12 @@ class Search extends Controller
 				$this->session->set_userdata('within', 'SA');				
 				break;
 			case 'NT': 
-				$limit = '1';
+				$limit = 1;
 				$this->session->set_userdata('within', 'NT');	
 				break;
 		}
 		$config['base_url'] = base_url()."/search/index/$term/";
-    	$config['total_rows'] = $this->db->get_where('swayamsevaks', $limit);
+    	$config['total_rows'] = $this->db->where($limit, NULL, FALSE)->get('swayamsevaks');
     	$config['per_page'] = '30';
     	$config['full_tag_open'] = '<p>';
     	$config['full_tag_close'] = '</p>';
@@ -90,10 +91,10 @@ class Search extends Controller
 	{
 		//$term = explode(' ', $term);
 		//foreach(
-		$this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, state, ph_home as phone, ph_home, ph_mobile, ph_work, email');
+		$this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, state, ph_home as phone, ph_home, ph_mobile, ph_work, email', FALSE);
 //		$this->db->order_by($sort_by, 'asc');
 		$this->db->where("MATCH(first_name, last_name, company, position, city, notes, email) AGAINST ('+($term)' IN BOOLEAN MODE) ");
-		$this->db->where($limit);
+		if($limit !== 1) $this->db->where($limit, NULL, FALSE);
 		$query = $this->db->get('swayamsevaks', $num, $offset);
 				 
 		return $query;

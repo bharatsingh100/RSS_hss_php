@@ -23,7 +23,8 @@ class Nagar extends Controller
 		
 		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('Nagar_model');
-		$this->load->library('layout', 'layout_nagar');
+		$this->load->library('layout');
+		$this->layout->setLayout("layout_nagar");
 
 		//Set Things for Breadcrumbs
 		$id = $this->uri->segment(3);
@@ -209,7 +210,7 @@ class Nagar extends Controller
 		$ag['yuva'] = $yr - 25;
 		$ag['tarun'] = $yr - 50;
 		$v['shakha'] = $this->db->get_where('shakhas', array('shakha_id', $id))->row();
-		$v['families'] = $this->db->select('DISTINCT household_id')->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
+		$v['families'] = $this->db->select('DISTINCT household_id', FALSE)->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
 		$v['swayamsevaks'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
 		$v['shishu'] = $this->db->get_where('swayamsevaks', 'birth_year > '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
 		$v['bala'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();

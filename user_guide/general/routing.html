@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : URI Routing</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URI Routing : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('../userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="../nav/moo.fx.js"></script>
 <script type="text/javascript" src="../nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -24,11 +24,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 <td id="breadcrumb_right"><a href="../toc.html">Table of Contents Page</a></td>
 </tr>
 </table>
@@ -60,7 +60,7 @@ URI Routing
 <p>Typically there is a one-to-one relationship between a URL string and its corresponding controller class/method.
 The segments in a URI normally follow this pattern:</p>
 
-<code>www.your-site.com/<dfn>class</dfn>/<samp>function</samp>/<var>id</var>/</code>
+<code>example.com/<dfn>class</dfn>/<samp>function</samp>/<var>id</var>/</code>
 
 <p>In some instances, however, you may want to remap this relationship so that a different class/function can be called
 instead of the one corresponding to the URL.</p>
@@ -68,10 +68,10 @@ instead of the one corresponding to the URL.</p>
 <p>For example, lets say you want your URLs to have this prototype:</p>
 
 <p>
-www.your-site.com/product/1/<br />
-www.your-site.com/product/2/<br />
-www.your-site.com/product/3/<br />
-www.your-site.com/product/4/
+example.com/product/1/<br />
+example.com/product/2/<br />
+example.com/product/3/<br />
+example.com/product/4/
 </p>
 
 <p>Normally the second segment of the URL is reserved for the function name, but in the example above it instead has a product ID.
@@ -108,7 +108,6 @@ the "catalog" class and the "product_lookup" method are instead used.</p>
 <p class="important"><strong>Note:</strong> Routes will run in the order they are defined.
 Higher routes will always take precedence over lower ones.</p>
 
-
 <h2>Examples</h2>
 
 <p>Here are a few routing examples:</p>
@@ -119,9 +118,11 @@ Higher routes will always take precedence over lower ones.</p>
 <code>$route['blog/joe'] = "blogs/users/34";</code>
 <p>A URL containing the segments blog/joe will be remapped to the "blogs" class and the "users" method.  The ID will be set to "34".</p>
 
-
 <code>$route['product/:any'] = "catalog/product_lookup";</code>
 <p>A URL with "product" as the first segment, and anything in the second will be remapped to the "catalog" class and the  "product_lookup" method.</p>
+
+<code>$route['product/(:num)'] = "catalog/product_lookup_by_id/$1";</code>
+<p>A URL with "product" as the first segment, and anything in the second will be remapped to the "catalog" class and the "product_lookup_by_id" method passing in the match as a variable to the function.</p>
 
 <p class="important"><strong>Important:</strong> Do not use leading/trailing slashes.</p>
 
@@ -129,7 +130,7 @@ Higher routes will always take precedence over lower ones.</p>
 
 <p>If you prefer you can use regular expressions to define your routing rules.  Any valid regular expression is allowed, as are back-references.</p>
 
-<p class="important"><strong>Note:</strong>&nbsp; If you use back-references you must use the dollar syntax rather then the double backslash syntax.</p>
+<p class="important"><strong>Note:</strong>&nbsp; If you use back-references you must use the dollar syntax rather than the double backslash syntax.</p>
 
 <p>A typical RegEx route might look something like this:</p>
 
@@ -168,7 +169,7 @@ Previous Topic:&nbsp;&nbsp;<a href="scaffolding.html">Scaffolding</a>
 <a href="../index.html">User Guide Home</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
 Next Topic:&nbsp;&nbsp;<a href="errors.html">Error Handling</a>
 </p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 </body>

@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<title>CodeIgniter User Guide : Table of Contents</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Table of Contents : CodeIgniter User Guide</title>
 
 <style type='text/css' media='all'>@import url('userguide.css');</style>
 <link rel='stylesheet' type='text/css' media='all' href='userguide.css' />
@@ -12,7 +13,6 @@
 <script type="text/javascript" src="nav/moo.fx.js"></script>
 <script type="text/javascript" src="nav/user_guide_menu.js"></script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv='expires' content='-1' />
 <meta http-equiv= 'pragma' content='no-cache' />
 <meta name='robots' content='all' />
@@ -25,11 +25,11 @@
 
 <!-- START NAVIGATION -->
 <div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('null');</script></div></div>
-<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="images/nav_toggle.jpg" width="153" height="44" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle Table of Contents" alt="Toggle Table of Contents" /></a></div>
 <div id="masthead">
 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
 <tr>
-<td><h1>CodeIgniter User Guide Version 1.6.0</h1></td>
+<td><h1>CodeIgniter User Guide Version 1.7.1</h1></td>
 </tr>
 </table>
 </div>
@@ -80,6 +80,7 @@ Table of Contents
 
 <h3>Introduction</h3>
 <ul>
+	<li><a href="./overview/getting_started.html">Getting Started</a></li>
 	<li><a href="./overview/at_a_glance.html">CodeIgniter at a Glance</a></li>
 	<li><a href="./overview/features.html">Supported Features</a></li>
 	<li><a href="./overview/appflow.html">Application Flow Chart</a></li>
@@ -93,9 +94,9 @@ Table of Contents
 
 <h3>General Topics</h3>
 <ul>
-	<li><a href="./general/index.html">Getting Started</a></li>
 	<li><a href="./general/urls.html">CodeIgniter URLs</a></li>
 	<li><a href="./general/controllers.html">Controllers</a></li>
+	<li><a href="general/reserved_names.html">Reserved Names</a></li>
 	<li><a href="./general/views.html">Views</a></li>
 	<li><a href="./general/models.html">Models</a></li>
 	<li><a href="./general/helpers.html">Helpers</a></li>
@@ -105,6 +106,7 @@ Table of Contents
 	<li><a href="./general/core_classes.html">Creating Core Classes</a></li>
 	<li><a href="./general/hooks.html">Hooks - Extending the Core</a></li>
 	<li><a href="./general/autoloader.html">Auto-loading Resources</a></li>
+	<li><a href="general/common_functions.html">Common Functions</a></li>
 	<li><a href="./general/scaffolding.html">Scaffolding</a></li>
 	<li><a href="./general/routing.html">URI Routing</a></li>
 	<li><a href="./general/errors.html">Error Handling</a></li>
@@ -113,6 +115,8 @@ Table of Contents
 	<li><a href="./general/managing_apps.html">Managing Applications</a></li>
 	<li><a href="./general/alternative_php.html">Alternative PHP Syntax</a></li>
 	<li><a href="./general/security.html">Security</a></li>
+	<li><a href="./general/styleguide.html">PHP Style Guide</a></li>	
+	<li><a href="./doc_style/index.html">Writing Documentation</a></li>
 </ul>
 
 </td>
@@ -128,6 +132,7 @@ Table of Contents
 <li><a href="./libraries/email.html">Email Class</a></li>
 <li><a href="./libraries/encryption.html">Encryption Class</a></li>
 <li><a href="./libraries/file_uploading.html">File Uploading Class</a></li>
+<li><a href="./libraries/form_validation.html">Form Validation Class</a></li>
 <li><a href="./libraries/ftp.html">FTP Class</a></li>
 <li><a href="./libraries/table.html">HTML Table Class</a></li>
 <li><a href="./libraries/image_lib.html">Image Manipulation Class</a></li> 	
@@ -139,10 +144,10 @@ Table of Contents
 <li><a href="./libraries/sessions.html">Session Class</a></li>
 <li><a href="./libraries/trackback.html">Trackback Class</a></li>
 <li><a href="./libraries/parser.html">Template Parser Class</a></li>
+<li><a href="./libraries/typography.html">Typography Class</a></li>
 <li><a href="./libraries/unit_testing.html">Unit Testing Class</a></li>
 <li><a href="./libraries/uri.html">URI Class</a></li>
 <li><a href="./libraries/user_agent.html">User Agent Class</a></li>
-<li><a href="./libraries/validation.html">Validation Class</a></li>
 <li><a href="./libraries/xmlrpc.html">XML-RPC Class</a></li>
 <li><a href="./libraries/zip.html">Zip Encoding Class</a></li>
 </ul>
@@ -154,6 +159,7 @@ Table of Contents
 <h3>Helper Reference</h3>
 <ul>
 <li><a href="./helpers/array_helper.html">Array Helper</a></li>
+<li><a href="./helpers/compatibility_helper.html">Compatibility Helper</a></li>
 <li><a href="./helpers/cookie_helper.html">Cookie Helper</a></li>
 <li><a href="./helpers/date_helper.html">Date Helper</a></li>
 <li><a href="./helpers/directory_helper.html">Directory Helper</a></li>
@@ -163,6 +169,9 @@ Table of Contents
 <li><a href="./helpers/form_helper.html">Form Helper</a></li>
 <li><a href="./helpers/html_helper.html">HTML Helper</a></li>
 <li><a href="./helpers/inflector_helper.html">Inflector Helper</a></li>
+<li><a href="./helpers/language_helper.html">Language Helper</a></li>
+<li><a href="./helpers/number_helper.html">Number Helper</a></li>
+<li><a href="./helpers/path_helper.html">Path Helper</a></li>
 <li><a href="./helpers/security_helper.html">Security Helper</a></li>
 <li><a href="./helpers/smiley_helper.html">Smiley Helper</a></li>
 <li><a href="./helpers/string_helper.html">String Helper</a></li>
@@ -175,10 +184,8 @@ Table of Contents
 <h3>Additional Resources</h3>
 
 <ul>
-<li><a href="./general/quick_reference.html">Quick Reference Chart</a></li>
 <li><a href="http://codeigniter.com/forums/">Community Forums</a></li>
 <li><a href="http://codeigniter.com/wiki/">Community Wiki</a></li>
-<li><a href="./doc_style/index.html">Writing Documentation</a></li>
 </ul>
 
 
@@ -192,7 +199,7 @@ Table of Contents
 
 <div id="footer">
 <p><a href="#top">Top of Page</a></p>
-<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2007 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2008 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
 </div>
 
 
