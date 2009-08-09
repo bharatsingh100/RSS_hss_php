@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -102,6 +102,9 @@ class CI_Router {
 			$this->set_method('index');
 			$this->_set_request(array($this->default_controller, 'index'));
 			
+			// re-index the routed segments array so it starts with 1 rather than 0
+			$this->uri->_reindex_segments();
+			
 			log_message('debug', "No URI present. Default controller set.");
 			return;
 		}
@@ -201,7 +204,7 @@ class CI_Router {
 				// Does the requested controller exist in the sub-folder?
 				if ( ! file_exists(APPPATH.'controllers/'.$this->fetch_directory().$segments[0].EXT))
 				{
-					show_404();	
+					show_404($this->fetch_directory().$segments[0]);
 				}
 			}
 			else
@@ -217,16 +220,16 @@ class CI_Router {
 				}
 			
 			}
-				
+
 			return $segments;
 		}
-	
+
 		// Can't find the requested controller...
-		show_404();	
+		show_404($segments[0]);
 	}
-		
+
 	// --------------------------------------------------------------------
-	
+
 	/**
 	 *  Parse Routes
 	 *
@@ -249,7 +252,6 @@ class CI_Router {
 
 		// Turn the segment array into a URI string
 		$uri = implode('/', $this->uri->segments);
-		$num = count($this->uri->segments);
 
 		// Is there a literal match?  If so we're done
 		if (isset($this->routes[$uri]))
@@ -371,4 +373,6 @@ class CI_Router {
 
 }
 // END Router Class
-?>
+
+/* End of file Router.php */
+/* Location: ./system/libraries/Router.php */

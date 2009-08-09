@@ -10,7 +10,7 @@ class helper_model extends Model
 
 	function variable_set($name, $value)
 	{
-		$temp = $this->db->getwhere('variables', array('name' => $name));
+		$temp = $this->db->get_where('variables', array('name' => $name));
 		if($temp->num_rows() == 0)
 			$this->db->insert('variables', array('name'=>$name, 'value' => $value));
 		else
@@ -19,7 +19,7 @@ class helper_model extends Model
 
 	function variable_get($name, $default = '')
 	{
-		$result = $this->db->select('value')->getwhere('variables', array('name' => $name));
+		$result = $this->db->select('value')->get_where('variables', array('name' => $name));
 		if($result->num_rows() > 0):
 			return $result->row()->value;
 		else:

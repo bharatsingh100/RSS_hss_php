@@ -129,7 +129,7 @@ class Maps extends Controller
 				break;
 		}
 		$config['base_url'] = base_url()."/search/index/$term/";
-    	$config['total_rows'] = $this->db->getwhere('swayamsevaks', $limit);
+    	$config['total_rows'] = $this->db->get_where('swayamsevaks', $limit);
     	$config['per_page'] = '20';
     	$config['full_tag_open'] = '<p>';
     	$config['full_tag_close'] = '</p>';
@@ -146,7 +146,7 @@ class Maps extends Controller
 		//$term = explode(' ', $term);
 		//foreach(
 		$this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, state, ph_home as phone, ph_home, ph_mobile, ph_work, email');
-//		$this->db->orderby($sort_by, 'asc');
+//		$this->db->order_by($sort_by, 'asc');
 		$this->db->where("MATCH(first_name, last_name, company, position, city, notes, email) AGAINST ('+($term)')");
 		$this->db->where($limit);
 		$query = $this->db->get('swayamsevaks', $num, $offset);

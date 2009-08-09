@@ -20,14 +20,14 @@ class Email extends Controller
 
 	function zip_code_fixes($id)
 	{
-		//$state = $this->db->select('state')->getwhere('shakhas', array('shakha_id' => $id))->row()->state;
-		$ss = $this->db->select('contact_id, city, state')->getwhere('swayamsevaks', array('shakha_id'=>$id, 'zip' => ''));
+		//$state = $this->db->select('state')->get_where('shakhas', array('shakha_id' => $id))->row()->state;
+		$ss = $this->db->select('contact_id, city, state')->get_where('swayamsevaks', array('shakha_id'=>$id, 'zip' => ''));
 		if($ss->num_rows())
 		{
 			$ss = $ss->result();
 			foreach($ss as $s)
 			{
-				$zip = $this->db->select('zip')->getwhere('zipcodes', array('state' => $s->state, 'town' => $s->city));
+				$zip = $this->db->select('zip')->get_where('zipcodes', array('state' => $s->state, 'town' => $s->city));
 				if($zip->num_rows() == 1)
 				{
 					$d['zip'] = $zip->row()->zip;
@@ -74,7 +74,7 @@ class Email extends Controller
 	{
 		$this->db->select('contact_id, UNIX_TIMESTAMP(login) as time, name, ip_addr');
 		$logs = $this->db->order_by('login', 'desc')->get('loginlog', 25);
-		//$logs = $this->db->getwhere('loginlog', "login >= '".date('o-m-d')." 00:00:00'");
+		//$logs = $this->db->get_where('loginlog', "login >= '".date('o-m-d')." 00:00:00'");
         $message = '<?xml version="1.0" ?>'."\n";
         $message .= '<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">'."\n";
         $message .= '<channel>'."\n\n";
@@ -91,7 +91,7 @@ class Email extends Controller
         	foreach($logs as $l)
         		$k[] = $l->contact_id;
         	$k = implode(',', $k);
-        	$query = $this->db->select('contact_id, email, city, state')->getwhere('swayamsevaks', "contact_id IN ($k)")->result();
+        	$query = $this->db->select('contact_id, email, city, state')->get_where('swayamsevaks', "contact_id IN ($k)")->result();
         	$contacts = array();
         	foreach($query as $contact){
         		$contacts[$contact->contact_id] = $contact;}
@@ -122,7 +122,7 @@ class Email extends Controller
 		//Find All Shakhas that are held Today (i.e. Monday, Tuesday)
 	    $day = date('l');
 		$this->db->select('shakha_id');
-		$shakhas = $this->db->getwhere('shakhas', array('frequency_day' => $day, 'frequency' => 'WK', 'shakha_status' => 1));
+		$shakhas = $this->db->get_where('shakhas', array('frequency_day' => $day, 'frequency' => 'WK', 'shakha_status' => 1));
         $exists = '';
 		if($shakhas->num_rows()){
 
@@ -136,7 +136,7 @@ class Email extends Controller
 		    //Build Array of Shakahs that already have their Sankhya Entered
 		    $this->db->select('shakha_id');
 		    $this->db->where("shakha_id IN ($shakha_ids)");
-		    $exists = $this->db->getwhere('sankhyas', array('date' => date('Y-m-d')));
+		    $exists = $this->db->get_where('sankhyas', array('date' => date('Y-m-d')));
 
 		    if($exists->num_rows()) {
 		        $exists = $exists->result_array();
@@ -173,7 +173,7 @@ class Email extends Controller
 
 		$exclude_shakhas = $this->initialize_sankhya();
 
-		$shakhas = $this->db->getwhere('shakhas', array('frequency_day' => date('l'), 'frequency' => 'WK', 'shakha_status' => 1));
+		$shakhas = $this->db->get_where('shakhas', array('frequency_day' => date('l'), 'frequency' => 'WK', 'shakha_status' => 1));
 		if($shakhas->num_rows()){
 			$this->load->model('helper_model');
 			$shakhas = $shakhas->result();
@@ -201,7 +201,7 @@ class Email extends Controller
 
 					$kks = $kks->result();
 					foreach ($kks as $k){
-						$t = $this->db->select('first_name, last_name,  email')->getwhere('swayamsevaks', array('contact_id' => $k->swayamsevak_id, 'email_status' => 'Active'));
+						$t = $this->db->select('first_name, last_name,  email')->get_where('swayamsevaks', array('contact_id' => $k->swayamsevak_id, 'email_status' => 'Active'));
 						if($t->num_rows() && trim($t->row()->email) != '' ){
                             $text   = 'Namaste ' . $t->row()->first_name. " Ji,\n\n";
                             $text  .= $message;
@@ -299,7 +299,7 @@ class Email extends Controller
 		$this->db->where('modified < ', date('Y-m-d H:i:s', strtotime('1 hour ago')));
 		$this->db->update('lists', array('status' => 'Active'));
 		
-		$lists = $this->db->getwhere('lists', array('status' => 'Creating'));
+		$lists = $this->db->get_where('lists', array('status' => 'Creating'));
 		//$p = '/home/'.$this->userdir.'/www/emails/';
 		$p = $this->docpath . 'emails/';
 		if($lists->num_rows())
@@ -322,7 +322,7 @@ class Email extends Controller
 		//List Lists
 		//$host = '_hssusa.org';
 		$host = '';
-		$lists = $this->db->getwhere('lists', array('status' => 'Active'));
+		$lists = $this->db->get_where('lists', array('status' => 'Active'));
 		//$p = '/home/'.$this->userdir.'/www/emails/';
 		$p = $this->docpath . 'emails/';
 		if($lists->num_rows())
@@ -335,11 +335,11 @@ class Email extends Controller
 				$file = $p.'configs/'.$list->address.$host;
 				$cmd = 'cp '.$conf_file.$file;
 				shell_exec($cmd);
-				$t = $this->db->select('email')->getwhere('swayamsevaks', array('contact_id' => $list->mod1))->row();
+				$t = $this->db->select('email')->get_where('swayamsevaks', array('contact_id' => $list->mod1))->row();
 				$mods = "moderator = ['$t->email'";
 				if($list->mod2)
 				{
-					$m = $this->db->select('email')->getwhere('swayamsevaks', array('contact_id' => $list->mod2, 'email_status' => 'Active'));
+					$m = $this->db->select('email')->get_where('swayamsevaks', array('contact_id' => $list->mod2, 'email_status' => 'Active'));
 				    if($m->num_rows())
 					{
 						$m = $m->row();
@@ -348,7 +348,7 @@ class Email extends Controller
 				}
 				if($list->mod3)
 				{
-					$t = $this->db->select('email')->getwhere('swayamsevaks', array('contact_id' => $list->mod3, 'email_status' => 'Active'));
+					$t = $this->db->select('email')->get_where('swayamsevaks', array('contact_id' => $list->mod3, 'email_status' => 'Active'));
 				    if($t->num_rows()){
 						$t = $t->row();
 						$mods .= ", '$t->email']\n";
@@ -377,7 +377,7 @@ class Email extends Controller
 		//$host = '_hssusa.org';
 		$host = '';
 		$path = $this->docpath . 'emails/';
-		$lists = $this->db->getwhere('lists', array('level' => 'NT', 'status' => 'Active'));
+		$lists = $this->db->get_where('lists', array('level' => 'NT', 'status' => 'Active'));
 		if($lists->num_rows())
 		{
 			$lists = $lists->result();
@@ -459,7 +459,7 @@ class Email extends Controller
 		//$host = '_hssusa.org';
 		$host = '';
 		$path = $this->docpath . 'emails/';
-		$lists = $this->db->getwhere('lists', array('status' => 'Active'));
+		$lists = $this->db->get_where('lists', array('status' => 'Active'));
 		if($lists->num_rows())
 		{
 			$lists = $lists->result();

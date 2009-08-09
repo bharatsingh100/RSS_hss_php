@@ -35,7 +35,7 @@ class National_model extends Model
 		unset($data['button']);
 		unset($data['name']);
 		unset($data['resp']);
-		$r = $this->db->getwhere('responsibilities', array('swayamsevak_id' => $data['swayamsevak_id'], 'responsibility' => $data['responsibility'], 'level' => 'NT'));
+		$r = $this->db->get_where('responsibilities', array('swayamsevak_id' => $data['swayamsevak_id'], 'responsibility' => $data['responsibility'], 'level' => 'NT'));
 		if(!$r->num_rows())
 		{
 			$this->db->insert('responsibilities', $data);
@@ -46,7 +46,7 @@ class National_model extends Model
 			$this->session->set_userdata('message', 'You cannot assign same responsibility more than once.');
 			return false;
 		}
-		$var = $this->db->getwhere('swayamsevaks', array('contact_id' => $data['swayamsevak_id']));
+		$var = $this->db->get_where('swayamsevaks', array('contact_id' => $data['swayamsevak_id']));
 		//$var = $var->row();
 		if($var->num_rows() && $var->row(0)->password == '' && trim($var->row(0)->email) != '' )
 		{
@@ -61,7 +61,7 @@ class National_model extends Model
 	
 	function get_swayamsevaks($num, $offset, $sort_by)
 	{
-		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->orderby($sort_by, 'asc')->getwhere('swayamsevaks','1', $num, $offset);
+		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->order_by($sort_by, 'asc')->get_where('swayamsevaks','1', $num, $offset);
 
 		return $query;
 	}
@@ -77,15 +77,15 @@ class National_model extends Model
 	
 	function getShakhaName($id)
 	{
-		$query = $this->db->select('name')->getwhere('shakhas', array('shakha_id' => $id));
+		$query = $this->db->select('name')->get_where('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
 	}
 	
 	function getNationalInfo()
 	{
 		//Get Sambhag Information
-		$this->db->orderby('short_desc', 'asc'); 
-		$v->sambhags = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', array('DOM_ID' => 1))->result();
+		$this->db->order_by('short_desc', 'asc'); 
+		$v->sambhags = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', array('DOM_ID' => 1))->result();
 		
 		//Get Sambhag Karyakarta Information
 		foreach($v->sambhags as & $temp)
@@ -93,7 +93,7 @@ class National_model extends Model
 			$sambhag_id = $temp->REF_CODE;
 			$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 			$this->db->from('swayamsevaks');
-			$this->db->orderby('responsibilities.responsibility');
+			$this->db->order_by('responsibilities.responsibility');
 			$this->db->join('responsibilities', "responsibilities.sambhag_id = '$sambhag_id' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 			$query = $this->db->get();
 			if($query->num_rows())
@@ -114,7 +114,7 @@ class National_model extends Model
 		//Get National Karyakarta List
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
-		$this->db->orderby('responsibilities.responsibility');
+		$this->db->order_by('responsibilities.responsibility');
 		$this->db->join('responsibilities', "responsibilities.level = 'NT' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 		$query = $this->db->get();
 		if($query->num_rows())
@@ -134,14 +134,14 @@ class National_model extends Model
 	function getShortDesc($var1)
 	{
 		$this->db->select('short_desc');
-		$query = $this->db->getwhere('Ref_Code', array('REF_CODE' => $var1));
+		$query = $this->db->get_where('Ref_Code', array('REF_CODE' => $var1));
 		
 		return ($query->num_rows()) ? $query->row()->short_desc : '';
 	}
 	
 	function getRefCodes($var1)
 	{
-		return $this->db->getwhere('Ref_Code', array('DOM_ID' => $var1));
+		return $this->db->get_where('Ref_Code', array('DOM_ID' => $var1));
 	}
 	
 	function getNationalContacts() {
@@ -155,19 +155,19 @@ class National_model extends Model
         $ag['tarun'] = $yr - 50;
 
         //Get Statistics on Contacts
-        $v['sevikas'] = $this->db->select('contact_id')->getwhere('swayamsevaks', array('gender' => 'F'))->num_rows();
-        $v['swayamsevaks'] = $this->db->select('contact_id')->getwhere('swayamsevaks', array('gender' => 'M'))->num_rows();
+        $v['sevikas'] = $this->db->select('contact_id')->get_where('swayamsevaks', array('gender' => 'F'))->num_rows();
+        $v['swayamsevaks'] = $this->db->select('contact_id')->get_where('swayamsevaks', array('gender' => 'M'))->num_rows();
         $v['families'] = $this->db->select('DISTINCT household_id')->get('swayamsevaks')->num_rows();
         $v['contacts'] = $this->db->select('contact_id')->get('swayamsevaks')->num_rows();
-        $v['shishu'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year > '. $ag['shishu'])->num_rows();
-        $v['bala'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu'])->num_rows();
-        $v['kishor'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala'])->num_rows();
-        $v['yuva'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['yuva'].' AND '. $ag['kishor'])->num_rows();
-        $v['tarun'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['tarun'].' AND '. $ag['yuva'])->num_rows();
-        $v['praudh'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'birth_year > '.$ag['tarun'])->num_rows();
-        $v['phone'] = $this->db->select('contact_id')->getwhere('swayamsevaks', '(ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\')')->num_rows();
-        $v['email'] = $this->db->select('contact_id')->getwhere('swayamsevaks', 'email != \'\' AND email_status = \'Active\' ')->num_rows();
-        $v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' ')->num_rows();
+        $v['shishu'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year > '. $ag['shishu'])->num_rows();
+        $v['bala'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu'])->num_rows();
+        $v['kishor'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala'])->num_rows();
+        $v['yuva'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['yuva'].' AND '. $ag['kishor'])->num_rows();
+        $v['tarun'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['tarun'].' AND '. $ag['yuva'])->num_rows();
+        $v['praudh'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'birth_year > '.$ag['tarun'])->num_rows();
+        $v['phone'] = $this->db->select('contact_id')->get_where('swayamsevaks', '(ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\')')->num_rows();
+        $v['email'] = $this->db->select('contact_id')->get_where('swayamsevaks', 'email != \'\' AND email_status = \'Active\' ')->num_rows();
+        $v['email_unactive'] = $this->db->get_where('swayamsevaks', 'email != \'\' AND email_status != \'Active\' ')->num_rows();
 
         return $v;
     }
@@ -177,19 +177,19 @@ class National_model extends Model
 		//Get Sambhag Information
 		$this->db->where('DOM_ID', 1);
 		//$this->db->like('REF_CODE', $id);
-		$this->db->orderby('short_desc', 'asc'); 
+		$this->db->order_by('short_desc', 'asc'); 
 		$sambhags = $this->db->select('REF_CODE as sambhag_id, short_desc as name')->get('Ref_Code')->result();
 		
 		
 		foreach($sambhags as &$sambhag) {
 			$sambhag->active_shakhas = $this->db->select('COUNT(shakha_id) as count')
-												->getwhere('shakhas', array('shakha_status' => 1, 'sambhag_id' => $sambhag->sambhag_id))
+												->get_where('shakhas', array('shakha_status' => 1, 'sambhag_id' => $sambhag->sambhag_id))
 												->row()->count;
 			$sambhag->sampark_kendras = $this->db->select('COUNT(shakha_id) as count')
-												->getwhere('shakhas', array('shakha_status' => 0, 'sambhag_id' => $sambhag->sambhag_id))
+												->get_where('shakhas', array('shakha_status' => 0, 'sambhag_id' => $sambhag->sambhag_id))
 												->row()->count;
 			$sambhag->weekly_shakhas = $this->db->select('COUNT(shakha_id) as count')
-												->getwhere('shakhas', array('shakha_status' => 1, 'sambhag_id' => $sambhag->sambhag_id, 'frequency' => 'WK'))
+												->get_where('shakhas', array('shakha_status' => 1, 'sambhag_id' => $sambhag->sambhag_id, 'frequency' => 'WK'))
 												->row()->count;
 			$sambhag->karyakartas = $this->db->query("SELECT count(distinct(swayamsevak_id)) as count 
 														FROM `responsibilities` 

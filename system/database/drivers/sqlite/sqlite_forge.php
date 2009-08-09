@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -76,12 +76,13 @@ class CI_DB_sqlite_forge extends CI_DB_forge {
 	{
 		$sql = 'CREATE TABLE ';
 		
-		if ($if_not_exists === TRUE)
+		// IF NOT EXISTS added to SQLite in 3.3.0
+		if ($if_not_exists === TRUE && version_compare($this->_version(), '3.3.0', '>=') === TRUE)
 		{
 			$sql .= 'IF NOT EXISTS ';
 		}
 		
-		$sql .= $this->db->_escape_table($table)." (";
+		$sql .= $this->db->_escape_table($table)."(";
 		$current_field_count = 0;
 
 		foreach ($fields as $field=>$attributes)
@@ -143,13 +144,24 @@ class CI_DB_sqlite_forge extends CI_DB_forge {
 			$primary_keys = $this->db->_protect_identifiers($primary_keys);
 			$sql .= ",\n\tPRIMARY KEY (" . implode(', ', $primary_keys) . ")";
 		}
-
-		if (count($keys) > 0)
+		
+		if (is_array($keys) && count($keys) > 0)
 		{
-			$keys = $this->db->_protect_identifiers($keys);
-			$sql .= ",\n\tUNIQUE (" . implode(', ', $keys) . ")";
+			foreach ($keys as $key)
+			{
+				if (is_array($key))
+				{
+					$key = $this->db->_protect_identifiers($key);	
+				}
+				else
+				{
+					$key = array($this->db->_protect_identifiers($key));
+				}
+				
+				$sql .= ",\n\tUNIQUE (" . implode(', ', $key) . ")";
+			}
 		}
-
+		
 		$sql .= "\n)";
 
 		return $sql;
@@ -230,4 +242,6 @@ class CI_DB_sqlite_forge extends CI_DB_forge {
 		
 	}
 }
-?>
+
+/* End of file sqlite_forge.php */
+/* Location: ./system/database/drivers/sqlite/sqlite_forge.php */

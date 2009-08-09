@@ -67,7 +67,7 @@ class Profile_model extends Model
 		//$term = explode(' ', $term);
 		//foreach(
 		$this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, state, ph_home as phone, ph_home, ph_mobile, ph_work, email');
-//		$this->db->orderby($sort_by, 'asc');
+//		$this->db->order_by($sort_by, 'asc');
 		$this->db->where("MATCH(first_name, last_name, company, position, city, notes, email) AGAINST ('+($term)')");
 		$this->db->where('state', $state);
 		$query = $this->db->get('swayamsevaks', $num, $offset);
@@ -77,7 +77,7 @@ class Profile_model extends Model
 	
 	function getRefCodes($var1)
 	{
-		return $this->db->getwhere('Ref_Code', array('DOM_ID' => $var1));
+		return $this->db->get_where('Ref_Code', array('DOM_ID' => $var1));
 	}
 	
 	function getStates()
@@ -96,7 +96,7 @@ class Profile_model extends Model
 		{
 			$count = $result->num_rows();
 			for($i = 0; $i < $count; $i++)
-				$result->row($i)->num = $this->db->getwhere('swayamsevaks', array('gatanayak' => $result->row($i)->contact_id))->num_rows();
+				$result->row($i)->num = $this->db->get_where('swayamsevaks', array('gatanayak' => $result->row($i)->contact_id))->num_rows();
 		}
 		return $result->result();
 	}
@@ -104,7 +104,7 @@ class Profile_model extends Model
 	function getGata($id)
 	{
 		$this->db->select('contact_id, first_name, last_name');
-		$q = $this->db->getwhere('swayamsevaks', array('gatanayak' => $id));
+		$q = $this->db->get_where('swayamsevaks', array('gatanayak' => $id));
 		return $q->result();
 		
 	}
@@ -124,7 +124,7 @@ class Profile_model extends Model
 	
 	function getResponsibilities($id)
 	{
-		$query = $this->db->getwhere('responsibilities', array('swayamsevak_id' => $id));
+		$query = $this->db->get_where('responsibilities', array('swayamsevak_id' => $id));
 		$count = $query->num_rows();
 		for($i = 0; $i < $count; $i++)
 		{
@@ -136,7 +136,7 @@ class Profile_model extends Model
 	
 	function getShakhaInfo($id)
 	{
-		$query = $this->db->getwhere('shakhas', array('shakha_id' => $id));
+		$query = $this->db->get_where('shakhas', array('shakha_id' => $id));
 		$temp = $query->row();
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
@@ -160,13 +160,13 @@ class Profile_model extends Model
 	function getShortDesc($var1)
 	{
 		$this->db->select('short_desc');
-		$query = $this->db->getwhere('Ref_Code', array('REF_CODE' => $var1));
+		$query = $this->db->get_where('Ref_Code', array('REF_CODE' => $var1));
 		return $query->row()->short_desc;
 	}
 	
 	function getShakhaName($id)
 	{
-		$query = $this->db->select('name')->getwhere('shakhas', array('shakha_id' => $id));
+		$query = $this->db->select('name')->get_where('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
 	}
 	

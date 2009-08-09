@@ -12,7 +12,7 @@ class Ajax extends Controller
 	function resp_autocomplete($id)
 	{
 		//$this->db->like('first_name', $_POST['name']); 
-		$names = $this->db->select("CONCAT(first_name, ' ' , last_name) as name")->getwhere('swayamsevaks', array('shakha_id' => $id));
+		$names = $this->db->select("CONCAT(first_name, ' ' , last_name) as name")->get_where('swayamsevaks', array('shakha_id' => $id));
 		//$names = $names->result();
 		$result = '';
 		if($names->num_rows()){

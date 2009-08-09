@@ -10,7 +10,7 @@ class Email_model extends Model
     
 	function get_email_addresses($list_id) {
 		
-		$list = $this->db->getwhere('lists', array('id' => $list_id))->row_array();
+		$list = $this->db->get_where('lists', array('id' => $list_id))->row_array();
 		//var_dump($list);
 		switch($list['level']) {
 			case 'SH':
@@ -28,7 +28,7 @@ class Email_model extends Model
 	
 	function get_shakha_emails($lid, $group) {
 		
-		$i = $this->db->select('vibhag_id', 'nagar_id')->getwhere('shakhas',array('shakha_id' => $lid))->row();
+		$i = $this->db->select('vibhag_id', 'nagar_id')->get_where('shakhas',array('shakha_id' => $lid))->row();
 
 		$vibhag_id = $i->vibhag_id;
 		$nagar_id = isset($i->nagar_id) ? $i->nagar_id : '';
@@ -67,7 +67,7 @@ class Email_model extends Model
 	function get_nagar_emails($lid, $group){
 		
 		$tids = array();
-		$shakha_ids = $this->db->select('shakha_id')->getwhere('shakhas', array('nagar_id' => $lid))->result();
+		$shakha_ids = $this->db->select('shakha_id')->get_where('shakhas', array('nagar_id' => $lid))->result();
 		foreach($shakha_ids as $ids)
 			$tids[] = $ids->shakha_id;
 		$shakha_ids = '('.implode(',',$tids).')';
@@ -106,7 +106,7 @@ class Email_model extends Model
 		//$this->load->model('Vibhag_model');
 		//$shakha_ids = $this->Vibhag_model->get_shakhas($lid);
 		$tids = array();
-		$shakha_ids = $this->db->select('shakha_id')->getwhere('shakhas', array('vibhag_id' => $lid))->result();
+		$shakha_ids = $this->db->select('shakha_id')->get_where('shakhas', array('vibhag_id' => $lid))->result();
 		foreach($shakha_ids as $ids)
 			$tids[] = $ids->shakha_id;
 		$shakha_ids = '('.implode(',',$tids).')';
@@ -200,7 +200,7 @@ class Email_model extends Model
 	function get_sambhag_emails($lid, $group){
 		
 		$tids = array();
-		$shakha_ids = $this->db->select('shakha_id')->getwhere('shakhas', array('sambhag_id' => $lid))->result();
+		$shakha_ids = $this->db->select('shakha_id')->get_where('shakhas', array('sambhag_id' => $lid))->result();
 		foreach($shakha_ids as $ids)
 			$tids[] = $ids->shakha_id;
 		$shakha_ids = '('.implode(',',$tids).')';
@@ -252,7 +252,7 @@ class Email_model extends Model
 	function add_owners_moderators($lid, &$emails) {
 		
 		//Get List Info
-		$list = $this->db->getwhere('lists', array('id' => $lid))->row();
+		$list = $this->db->get_where('lists', array('id' => $lid))->row();
 		print_r($list); print_r($lid); die();
 		$contact_ids = array();
 		if($list->owner > 0) $contact_ids[] = $list->owner;

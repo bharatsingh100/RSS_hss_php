@@ -12,8 +12,8 @@ class Help extends Controller
 		/*$exception = array('search','del_ss');
 		if(!in_array( $this->uri->segment(2), $exception))
 		{
-			$t1 = $this->db->select('shakha_id')->getwhere('swayamsevaks', array('contact_id' => $this->uri->segment(3)))->row()->shakha_id;
-			$rs = $this->db->getwhere('shakhas', array('shakha_id' => $t1))->row();
+			$t1 = $this->db->select('shakha_id')->get_where('swayamsevaks', array('contact_id' => $this->uri->segment(3)))->row()->shakha_id;
+			$rs = $this->db->get_where('shakhas', array('shakha_id' => $t1))->row();
 			$this->session->set_userdata('bc_shakha', $rs->name);
 			$this->session->set_userdata('bc_shakha_id', $rs->shakha_id);
 //			$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);
@@ -74,8 +74,8 @@ class Help extends Controller
 		//$this->db->where('contact_id', $id);
 		//$data['query'] = $this->db->get('swayamsevaks');
 		//$this->load->helper('url');
-		$data['query'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id));
-		$data['shakha'] = $this->db->getwhere('shakhas', array('shakha_id' => $data['query']->row()->shakha_id))->row();
+		$data['query'] = $this->db->get_where('swayamsevaks', array('contact_id' => $id));
+		$data['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $data['query']->row()->shakha_id))->row();
 		$this->db->select('contact_id, first_name, last_name')->from('swayamsevaks')->where('household_id', $data['query']->row()->household_id);
 		$data['households'] = $this->db->get();
 		$data['resp'] = $this->Profile_model->getResponsibilities($id);
@@ -94,7 +94,7 @@ class Help extends Controller
 			redirect('profile/view/' . $_POST['contact_id']);
 		}
 			
-		$data['query'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id));
+		$data['query'] = $this->db->get_where('swayamsevaks', array('contact_id' => $id));
 		$data['pageTitle'] = 'Edit Profile';
 		$data['states'] = $this->Profile_model->getStates();
 		$data['gatanayak'] = $this->Profile_model->getGatanayaks($data['query']->row(0)->shakha_id);
@@ -112,9 +112,9 @@ class Help extends Controller
 			$this->session->set_userdata('message', 'Contact\'s family was successfully updated.&nbsp;');
 			redirect('profile/view/' . $id);
 		}
-		$data['contact'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id))->row();
-		$this->db->orderby('household_id');
-		$temp = $this->db->select('contact_id, household_id, first_name, last_name')->getwhere('swayamsevaks', array('state' => $data['contact']->state));
+		$data['contact'] = $this->db->get_where('swayamsevaks', array('contact_id' => $id))->row();
+		$this->db->order_by('household_id');
+		$temp = $this->db->select('contact_id, household_id, first_name, last_name')->get_where('swayamsevaks', array('state' => $data['contact']->state));
 		if($temp->num_rows())
 			$data['households'] = $temp->result();
 		$data['shakha_name'] = $this->Profile_model->getShakhaName($data['contact']->shakha_id);
@@ -126,7 +126,7 @@ class Help extends Controller
 	function del_ss()
 	{
 		//Get Shakha ID for redirect
-		$ss = $this->db->select('shakha_id')->getwhere('swayamsevaks', array('contact_id' => $_POST['contact_id']))->row();
+		$ss = $this->db->select('shakha_id')->get_where('swayamsevaks', array('contact_id' => $_POST['contact_id']))->row();
 		$shakha_id = $ss->shakha_id;
 		
 		//Remove the contact as Gatanayak for anyone

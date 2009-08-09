@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -96,8 +96,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 	 */
 	function db_set_charset($charset, $collation)
 	{
-		// TODO - add support if needed
-		return TRUE;
+		return @mysqli_query($this->conn_id, "SET NAMES '".$this->escape_str($charset)."' COLLATE '".$this->escape_str($collation)."'");
 	}
 
 	// --------------------------------------------------------------------
@@ -249,7 +248,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 	 */
 	function escape_str($str)	
 	{
-		if (function_exists('mysqli_real_escape_string') AND is_resource($this->conn_id))
+		if (function_exists('mysqli_real_escape_string') AND is_object($this->conn_id))
 		{
 			return mysqli_real_escape_string($this->conn_id, $str);
 		}
@@ -410,9 +409,9 @@ class CI_DB_mysqli_driver extends CI_DB {
 	 */
 	function _escape_table($table)
 	{
-		if (stristr($table, '.'))
+		if (strpos($table, '.') !== FALSE)
 		{
-			$table = preg_replace("/\./", "`.`", $table);
+			$table = '`' . str_replace('.', '`.`', $table) . '`';
 		}
 		
 		return $table;
@@ -448,6 +447,13 @@ class CI_DB_mysqli_driver extends CI_DB {
 		// we may need "`item1` `item2`" and not "`item1 item2`"
 		if (ctype_alnum($item) === FALSE)
 		{
+			if (strpos($item, '.') !== FALSE)
+			{
+				$aliased_tables = implode(".",$this->ar_aliased_tables).'.';
+				$table_name =  substr($item, 0, strpos($item, '.')+1);
+				$item = (strpos($aliased_tables, $table_name) !== FALSE) ? $item = $item : $this->dbprefix.$item;
+			}
+
 			// This function may get "field >= 1", and need it to return "`field` >= 1"
 			$lbound = ($first_word_only === TRUE) ? '' : '|\s|\(';
 
@@ -458,7 +464,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 			return "`{$item}`";
 		}
 
-		$exceptions = array('AS', '/', '-', '%', '+', '*');
+		$exceptions = array('AS', '/', '-', '%', '+', '*', 'OR', 'IS');
 		
 		foreach ($exceptions as $exception)
 		{
@@ -485,7 +491,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 	 */
 	function _from_tables($tables)
 	{
-		if (! is_array($tables))
+		if ( ! is_array($tables))
 		{
 			$tables = array($tables);
 		}
@@ -533,11 +539,15 @@ class CI_DB_mysqli_driver extends CI_DB {
 			$valstr[] = $key." = ".$val;
 		}
 		
-		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
 		
 		$orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
 	
-		return "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr)." WHERE ".implode(" ", $where).$orderby.$limit;
+		$sql = "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr);
+		$sql .= ($where != '' AND count($where) >=1) ? " WHERE ".implode(" ", $where) : '';
+		$sql .= $orderby.$limit;
+		
+		return $sql;
 	}
 
 	
@@ -576,7 +586,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 	{
 		$conditions = '';
 
-		if (count($where) > 0 || count($like) > 0)
+		if (count($where) > 0 OR count($like) > 0)
 		{
 			$conditions = "\nWHERE ";
 			$conditions .= implode("\n", $this->ar_where);
@@ -588,7 +598,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 			$conditions .= implode("\n", $like);
 		}
 
-		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
 	
 		return "DELETE FROM ".$table.$conditions.$limit;
 	}
@@ -635,4 +645,6 @@ class CI_DB_mysqli_driver extends CI_DB {
 
 }
 
-?>
+
+/* End of file mysqli_driver.php */
+/* Location: ./system/database/drivers/mysqli/mysqli_driver.php */

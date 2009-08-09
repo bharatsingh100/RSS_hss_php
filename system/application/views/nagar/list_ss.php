@@ -18,7 +18,7 @@ $ag['tarun'] = $yr - 50;
 //Find all shakha names in the nagar
 $shakha_ids = $this->Nagar_model->get_shakhas($this->uri->segment(3));
 $shakha_ids = '('.implode(',',$shakha_ids).')';
-$rs = $this->db->select('shakha_id, name')->getwhere('shakhas', 'shakha_id IN ' . $shakha_ids);
+$rs = $this->db->select('shakha_id, name')->get_where('shakhas', 'shakha_id IN ' . $shakha_ids);
 $sharr = '';
 if($rs->num_rows())
 	foreach($rs->result() as $val)

@@ -42,7 +42,7 @@ class User extends Controller
 			    redirect('profile/change_password/' . $this->session->userdata('contact_id'));
 		    else { //Add MD5 hash of password if wrong or not present (Shouldn't need this After Some Time)
 		      $this->db->select('passwordmd5');
-		      $pass = $this->db->getwhere('swayamsevaks', array('contact_id' => $this->session->userdata('contact_id')));
+		      $pass = $this->db->get_where('swayamsevaks', array('contact_id' => $this->session->userdata('contact_id')));
 		      $pass = $pass->row();
 		      if(md5($this->input->post('password')) != $pass->passwordmd5){
 		        $p['passwordmd5'] = md5($this->input->post('password'));
@@ -93,11 +93,11 @@ class User extends Controller
 		}
 		elseif($code != '')
 		{
-			$rs = $this->db->getwhere('pass_reset', array('enc_email' => $code));
+			$rs = $this->db->get_where('pass_reset', array('enc_email' => $code));
 			if($rs->num_rows())
 			{
 				$rs = $rs->row();
-				$j = $this->db->getwhere('swayamsevaks', array('contact_id' => $rs->contact_id));
+				$j = $this->db->get_where('swayamsevaks', array('contact_id' => $rs->contact_id));
 				$j = $j->row();
 				$k['pageTitle'] = 'Reset Password';
 				$k['name'] = $j->first_name . ' ' . $j->last_name;
@@ -125,7 +125,7 @@ class User extends Controller
 			if($email && strlen($email) > 6)
 			{
 				//$email = trim($this->input->post('email'));
-				$result = $this->db->getwhere('swayamsevaks', array('email' => $email));
+				$result = $this->db->get_where('swayamsevaks', array('email' => $email));
 				if($result->num_rows())
 				{
 					$v = $result->row();
@@ -200,12 +200,12 @@ class User extends Controller
 //		$this->->db->where('email', $user);
 		}
 
-		$query = $this->db->getwhere('swayamsevaks', array('email' => $user));
+		$query = $this->db->get_where('swayamsevaks', array('email' => $user));
 		if($query->num_rows() > 0)
 		{
 			$row = $query->row();
 			//Only Karyakartas are allowed to access this system
-			$t = $this->db->getwhere('responsibilities', array('swayamsevak_id' => $row->contact_id));
+			$t = $this->db->get_where('responsibilities', array('swayamsevak_id' => $row->contact_id));
 			if($t->num_rows() == 0)
 			{
 				$this->session->set_userdata('message', 'Your are not allowed to access this system. Please contact us for more info.');
@@ -233,7 +233,7 @@ class User extends Controller
 				$this->session->set_userdata($row);
 				if($row->shakha_id != '')
 				{
-					$t = $this->db->getwhere('shakhas', array('shakha_id' => $row->shakha_id))->row();
+					$t = $this->db->get_where('shakhas', array('shakha_id' => $row->shakha_id))->row();
 					if(trim($t->nagar_id) != '')
 						$this->session->set_userdata('nagar_id', $t->nagar_id);
 					$this->session->set_userdata('vibhag_id', $t->vibhag_id);

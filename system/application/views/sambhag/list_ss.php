@@ -38,7 +38,7 @@ for($i = 0; $i < $total_rows; $i++)
 	//Input Shakha URLs instead of Numbers
 	$shakha_ids = $this->Vibhag_model->get_shakhas($this->uri->segment(3));
 	$shakha_ids = '('.implode(',',$shakha_ids).')';
-	$rs = $this->db->select('shakha_id, name')->getwhere('shakhas', 'shakha_id IN ' . $shakha_ids);
+	$rs = $this->db->select('shakha_id, name')->get_where('shakhas', 'shakha_id IN ' . $shakha_ids);
 	$sh = '';
 	foreach($rs->result() as $row)
 		$sh[$row->shakha_id] = $row->name;

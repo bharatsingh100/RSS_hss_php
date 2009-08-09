@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -48,7 +48,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 	 */	
 	function db_connect()
 	{
-		if ( ! $conn_id = @sqlite_open($this->database, 0666, $error))
+		if ( ! $conn_id = @sqlite_open($this->database, FILE_WRITE_MODE, $error))
 		{
 			log_message('error', $error);
 			
@@ -73,7 +73,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 	 */	
 	function db_pconnect()
 	{
-		if ( ! $conn_id = @sqlite_popen($this->database, 0666, $error))
+		if ( ! $conn_id = @sqlite_popen($this->database, FILE_WRITE_MODE, $error))
 		{
 			log_message('error', $error);
 			
@@ -402,11 +402,9 @@ class CI_DB_sqlite_driver extends CI_DB {
 	 */
 	function _escape_table($table)
 	{
-		if (stristr($table, '.'))
-		{
-			$table = preg_replace("/\./", "`.`", $table);
-		}
-		
+
+		// other database drivers use this to add backticks, hence this
+		// function is simply going to return the tablename for sqlite		
 		return $table;
 	}
 		
@@ -437,27 +435,34 @@ class CI_DB_sqlite_driver extends CI_DB {
 		}	
 
 		// This function may get "item1 item2" as a string, and so
-		// we may need "`item1` `item2`" and not "`item1 item2`"
+		// we may need "item1 item2" and not "item1 item2"
 		if (ctype_alnum($item) === FALSE)
 		{
-			// This function may get "field >= 1", and need it to return "`field` >= 1"
+			if (strpos($item, '.') !== FALSE)
+			{
+				$aliased_tables = implode(".",$this->ar_aliased_tables).'.';
+				$table_name =  substr($item, 0, strpos($item, '.')+1);
+				$item = (strpos($aliased_tables, $table_name) !== FALSE) ? $item = $item : $this->dbprefix.$item;
+			}
+
+			// This function may get "field >= 1", and need it to return "field >= 1"
 			$lbound = ($first_word_only === TRUE) ? '' : '|\s|\(';
 
-			$item = preg_replace('/(^'.$lbound.')([\w\d\-\_]+?)(\s|\)|$)/iS', '$1`$2`$3', $item);
+			$item = preg_replace('/(^'.$lbound.')([\w\d\-\_]+?)(\s|\)|$)/iS', '$1$2$3', $item);
 		}
 		else
 		{
-			return "`{$item}`";
+			return "{$item}";
 		}
 
-		$exceptions = array('AS', '/', '-', '%', '+', '*');
+		$exceptions = array('AS', '/', '-', '%', '+', '*', 'OR', 'IS');
 		
 		foreach ($exceptions as $exception)
 		{
 		
-			if (stristr($item, " `{$exception}` ") !== FALSE)
+			if (stristr($item, " {$exception} ") !== FALSE)
 			{
-				$item = preg_replace('/ `('.preg_quote($exception).')` /i', ' $1 ', $item);
+				$item = preg_replace('/ ('.preg_quote($exception).') /i', ' $1 ', $item);
 			}
 		}
 		return $item;
@@ -477,7 +482,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 	 */
 	function _from_tables($tables)
 	{
-		if (! is_array($tables))
+		if ( ! is_array($tables))
 		{
 			$tables = array($tables);
 		}
@@ -525,11 +530,15 @@ class CI_DB_sqlite_driver extends CI_DB {
 			$valstr[] = $key." = ".$val;
 		}
 		
-		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
 		
 		$orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
 	
-		return "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr)." WHERE ".implode(" ", $where).$orderby.$limit;
+		$sql = "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr);
+		$sql .= ($where != '' AND count($where) >=1) ? " WHERE ".implode(" ", $where) : '';
+		$sql .= $orderby.$limit;
+		
+		return $sql;
 	}
 
 	
@@ -568,7 +577,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 	{
 		$conditions = '';
 
-		if (count($where) > 0 || count($like) > 0)
+		if (count($where) > 0 OR count($like) > 0)
 		{
 			$conditions = "\nWHERE ";
 			$conditions .= implode("\n", $this->ar_where);
@@ -580,7 +589,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 			$conditions .= implode("\n", $like);
 		}
 
-		$limit = (!$limit) ? '' : ' LIMIT '.$limit;
+		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
 	
 		return "DELETE FROM ".$table.$conditions.$limit;
 	}
@@ -626,7 +635,27 @@ class CI_DB_sqlite_driver extends CI_DB {
 		@sqlite_close($conn_id);
 	}
 
+	// --------------------------------------------------------------------
+
+	/**
+	 * Rename a table
+	 *
+	 * Generates a platform-specific query so that a table can be renamed
+	 *
+	 * @access	private
+	 * @param	string	the old table name
+	 * @param	string	the new table name
+	 * @return	string
+	 */
+	function _rename_table($table_name, $new_table_name)
+	{
+		$sql = 'ALTER TABLE '.$this->db->_protect_identifiers($table_name)." RENAME TO ".$this->db->_protect_identifiers($new_table_name);
+		return $sql;
+	}
+
 
 }
 
-?>
+
+/* End of file sqlite_driver.php */
+/* Location: ./system/database/drivers/sqlite/sqlite_driver.php */

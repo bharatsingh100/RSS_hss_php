@@ -69,7 +69,7 @@ class Shakha extends Controller
         //$this->db->where('level_id = '.$id.' AND status = \'Active\' OR status = \'Creating'\');
         //Hide the Deleted E-mail Lists after 2 Days
         $this->db->where("modified > " . date('o-m-d', strtotime('-2 Days')));
-        $d['lists'] = $this->db->getwhere('lists', array('level_id' => $id))->result_array();
+        $d['lists'] = $this->db->get_where('lists', array('level_id' => $id))->result_array();
 
         foreach ($d['lists'] as &$list)
         {
@@ -77,20 +77,20 @@ class Shakha extends Controller
             if($list['mod1'])
             {
                 $this->db->select('contact_id,first_name,last_name');
-                $t = $this->db->getwhere('swayamsevaks', array('contact_id' => $list['mod1']))->row();
+                $t = $this->db->get_where('swayamsevaks', array('contact_id' => $list['mod1']))->row();
                 $list['mod1'] = anchor('profile/view/'.$t->contact_id, $t->first_name.' '.$t->last_name) . '<br \>';
             }
             if($list['mod2'])
             {
                 $this->db->select('contact_id,first_name,last_name');
-                $t = $this->db->getwhere('swayamsevaks', array('contact_id' => $list['mod2']))->row();
+                $t = $this->db->get_where('swayamsevaks', array('contact_id' => $list['mod2']))->row();
                 $list['mod2'] = anchor('profile/view/'.$t->contact_id,$t->first_name.' '.$t->last_name) . '<br \>';
             }
 			else $list['mod2'] = '';
             if($list['mod3'])
             {
                 $this->db->select('contact_id,first_name,last_name');
-                $t = $this->db->getwhere('swayamsevaks', array('contact_id' => $list['mod3']))->row();
+                $t = $this->db->get_where('swayamsevaks', array('contact_id' => $list['mod3']))->row();
                 $list['mod3'] = anchor('profile/view/'.$t->contact_id,$t->first_name.' '.$t->last_name) . '<br \>';
             }
 			else $list['mod3'] = '';
@@ -143,7 +143,7 @@ class Shakha extends Controller
 		}
 
 		
-		$c['lists'] = $this->db->getwhere('lists', array('id' => $list_id))->row();
+		$c['lists'] = $this->db->get_where('lists', array('id' => $list_id))->row();
 		$c['emails'] = $this->Shakha_model->list_members($list_id);
 		$c['shakha'] = $this->Shakha_model->getShakhaInfo($c['lists']->level_id);
 		$c['pageTitle'] = 'Edit E-mail list';
@@ -201,7 +201,7 @@ class Shakha extends Controller
 			$error['msg'][] = 'You must select at least one member for your list';
 			$ers = true;
 		}
-		if($this->db->getwhere('lists', array('address' => $error['address']))->num_rows())
+		if($this->db->get_where('lists', array('address' => $error['address']))->num_rows())
 		{
 				$error['msg'][] = 'The list name you selected, already exists. Choose another one.';
 				$error['address'] = '';
@@ -234,24 +234,24 @@ class Shakha extends Controller
 		$ag['kishor'] = $yr - 19;
 		$ag['yuva'] = $yr - 25;
 		$ag['tarun'] = $yr - 50;
-		$v['shakha'] = $this->db->getwhere('shakhas', array('shakha_id' => $id))->row();
-		$v['families'] = $this->db->select('DISTINCT household_id')->getwhere('swayamsevaks', array('shakha_id' => $id))->num_rows();
-		$v['contacts'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id))->num_rows();
-		$v['swayamsevaks'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id, 'gender' => 'M'))->num_rows();
-		$v['sevikas'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id, 'gender' => 'F'))->num_rows();
-		$v['shishu'] = $this->db->getwhere('swayamsevaks', 'birth_year > '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
-		$v['bala'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
-		$v['kishor'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala'].' AND shakha_id =' . $id)->num_rows();
-		$v['yuva'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['yuva'].' AND '. $ag['kishor'].' AND shakha_id =' . $id)->num_rows();
-		$v['tarun'] = $this->db->getwhere('swayamsevaks', 'birth_year BETWEEN '.$ag['tarun'].' AND '. $ag['yuva'].' AND shakha_id =' . $id)->num_rows();
-		$v['praudh'] = $this->db->getwhere('swayamsevaks', 'birth_year < '.$ag['tarun'].' AND shakha_id =' . $id)->num_rows();
-		$v['phone'] = $this->db->getwhere('swayamsevaks', '(ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\') AND shakha_id =' . $id)->num_rows();
-		$v['email'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status = \'Active\' AND shakha_id =' . $id)->num_rows();
-		$v['email_unactive'] = $this->db->getwhere('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
-		$v['sankhyas'] = $this->db->orderby('date', 'desc')->getwhere('sankhyas', array('shakha_id' => $id))->result();
+		$v['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
+		$v['families'] = $this->db->select('DISTINCT household_id')->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
+		$v['contacts'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
+		$v['swayamsevaks'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id, 'gender' => 'M'))->num_rows();
+		$v['sevikas'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id, 'gender' => 'F'))->num_rows();
+		$v['shishu'] = $this->db->get_where('swayamsevaks', 'birth_year > '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
+		$v['bala'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['bala'].' AND '. $ag['shishu'].' AND shakha_id =' . $id)->num_rows();
+		$v['kishor'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['kishor'].' AND '. $ag['bala'].' AND shakha_id =' . $id)->num_rows();
+		$v['yuva'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['yuva'].' AND '. $ag['kishor'].' AND shakha_id =' . $id)->num_rows();
+		$v['tarun'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN '.$ag['tarun'].' AND '. $ag['yuva'].' AND shakha_id =' . $id)->num_rows();
+		$v['praudh'] = $this->db->get_where('swayamsevaks', 'birth_year < '.$ag['tarun'].' AND shakha_id =' . $id)->num_rows();
+		$v['phone'] = $this->db->get_where('swayamsevaks', '(ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\') AND shakha_id =' . $id)->num_rows();
+		$v['email'] = $this->db->get_where('swayamsevaks', 'email != \'\' AND email_status = \'Active\' AND shakha_id =' . $id)->num_rows();
+		$v['email_unactive'] = $this->db->get_where('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
+		$v['sankhyas'] = $this->db->order_by('date', 'desc')->get_where('sankhyas', array('shakha_id' => $id))->result();
 		$v['pageTitle'] = $v['shakha']->name.' Shakha Statistics';
 		$v['invalid'] = $this->db->select('contact_id,first_name,last_name,email')->where('shakha_id', $id)
-								->getwhere('swayamsevaks', "email_status IN ('Unsubscribed','Bounced')")->result();
+								->get_where('swayamsevaks', "email_status IN ('Unsubscribed','Bounced')")->result();
 
 		$this->layout->view('shakha/statistics', $v);
 	}
@@ -307,13 +307,13 @@ class Shakha extends Controller
 			}
 		}
 
-		$v = $this->db->getwhere('sankhyas', array('shakha_id' => $id, 'date' => $date));
+		$v = $this->db->get_where('sankhyas', array('shakha_id' => $id, 'date' => $date));
 		if($v->num_rows()){
 			$data['sankhya'] = $v->row();
-			$data['contact'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $data['sankhya']->contact_id))->row();
+			$data['contact'] = $this->db->get_where('swayamsevaks', array('contact_id' => $data['sankhya']->contact_id))->row();
 		}
 
-		$data['shakha'] = $this->db->getwhere('shakhas', array('shakha_id' => $id))->row();
+		$data['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
 
 		$data['pageTitle'] = 'Add Sankhya';
 
@@ -322,7 +322,7 @@ class Shakha extends Controller
 
 	function _getShakhaDate($id)
 	{
-		$shakha = $this->db->getwhere('shakhas', array('shakha_id' => $id))->row();
+		$shakha = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
 
 		$wd = array("Sunday" => 0, "Monday" => 1, "Tuesday" => 2, "Wednesday" => 3, "Thursday" => 4, "Friday" => 5, "Saturday" => 6);
 
@@ -366,11 +366,11 @@ class Shakha extends Controller
 		$data['states'] = $this->Shakha_model->getStates();
 		$data['row'] = $this->Shakha_model->getShakhaInfo($id);
 		$data['pageTitle'] = $data['row']->name;
-		$this->db->orderby('short_desc', 'desc');
-		$vibhags = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', array('DOM_ID' => 2))->result();
+		$this->db->order_by('short_desc', 'desc');
+		$vibhags = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', array('DOM_ID' => 2))->result();
 		foreach($vibhags as $vibhag)
 			$data['vibhags'][$vibhag->REF_CODE] = $vibhag->short_desc;
-		$nagars = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', array('DOM_ID' => 3))->result();
+		$nagars = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', array('DOM_ID' => 3))->result();
 		foreach($nagars as $nagar)
 			$data['vibhags'][$nagar->REF_CODE] = $data['vibhags'][substr($nagar->REF_CODE, 0, 4)]
 												 . ' - ' . $nagar->short_desc . ' Nagar';
@@ -385,7 +385,7 @@ class Shakha extends Controller
 
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
-		$this->db->orderby('responsibilities.responsibility');
+		$this->db->order_by('responsibilities.responsibility');
 		$this->db->join('responsibilities', "responsibilities.shakha_id = $id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 		$q = $this->db->get();
 		$i = $q->num_rows() - 1;
@@ -432,7 +432,7 @@ class Shakha extends Controller
 		$this->output->enable_profiler(FALSE);
 		$this->load->dbutil();
 		$this->db->select('contact_id, household_id, contact_type, gana, first_name, last_name, gender, birth_year, company, position, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, ssv_completed, notes');
-		$data['query'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id));
+		$data['query'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id));
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=". url_title($this->Shakha_model->getShakhaName($id)) . '-' . date("M-d_H-i") .".csv");
 		$this->load->view('shakha/csv', $data);
@@ -442,7 +442,7 @@ class Shakha extends Controller
 		if($id == '') $id = $this->session->userdata('shakha_id');
 		$this->load->library('pagination');
 		$config['base_url'] = base_url()."shakha/browse/$id/$order/";
-    	$config['total_rows'] = $this->db->getwhere('swayamsevaks', array('shakha_id' => $id))->num_rows();
+    	$config['total_rows'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
 		//$this->db->count_all('swayamsevaks');
     	$config['per_page'] = '35';
     	$config['full_tag_open'] = '<p>';
@@ -476,7 +476,7 @@ class Shakha extends Controller
 		{
 			$data['gatas'][$kk->contact_id] = $kk;
 			$this->db->select('contact_id, first_name, last_name');
-			$this->db->orderby('first_name');
+			$this->db->order_by('first_name');
 			$this->db->where('gatanayak', $kk->contact_id);
 			$t = $this->db->get('swayamsevaks');
 			$data['gatas'][$kk->contact_id]->gata =($t->num_rows()) ? $t->result() : array();
@@ -502,7 +502,7 @@ class Shakha extends Controller
 	    $g = '('.implode(',',$gataIDs).')';
 
 		$this->db->select('gatanayak, contact_id, household_id, first_name, last_name, gender, birth_year, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, notes');
-		$this->db->orderby('gatanayak, household_id');
+		$this->db->order_by('gatanayak, household_id');
 		$this->db->where('gatanayak IN '.$g);
 		$data['ss'] = $this->db->get('swayamsevaks');
 
@@ -556,16 +556,16 @@ class Shakha extends Controller
 		$data['states'] = $this->Shakha_model->getStates();
 		$data['gatanayak'] = $this->Shakha_model->getGatanayaks($id);
 		$data['shakha_id'] = $id;
-		$data['shakha_st'] = $this->db->select('state')->getwhere('shakhas', array('shakha_id'=>$id))->row()->state;
-		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 11')->result();
-		$data['ganas'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 12')->result();
+		$data['shakha_st'] = $this->db->select('state')->get_where('shakhas', array('shakha_id'=>$id))->row()->state;
+		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 11')->result();
+		$data['ganas'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 12')->result();
 		$data['pageTitle'] = 'Add New Contact';
 		$this->layout->view('shakha/add-swayamsevak', $data);
 	}
 
 	function add_family_member($shakha_id, $id)
 	{
-	   $results = $this->db->getwhere('swayamsevaks', array('contact_id' => $id))->row_array();
+	   $results = $this->db->get_where('swayamsevaks', array('contact_id' => $id))->row_array();
 	   $this->addss($shakha_id, $results);
   	}
 

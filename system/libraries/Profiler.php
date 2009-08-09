@@ -1,4 +1,4 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * CodeIgniter
  *
@@ -125,7 +125,7 @@ class CI_Profiler {
 			}
 			else
 			{
-				$highlight = array('SELECT', 'FROM', 'WHERE', 'AND', 'OR', 'LEFT JOIN', 'ORDER BY', 'LIMIT', 'INSERT', 'INTO', 'VALUES', 'UPDATE');
+				$highlight = array('SELECT', 'FROM', 'WHERE', 'AND', 'LEFT JOIN', 'ORDER BY', 'LIMIT', 'INSERT', 'INTO', 'VALUES', 'UPDATE', 'OR');
 				
 				foreach ($this->CI->db->queries as $key => $val)
 				{
@@ -340,4 +340,6 @@ class CI_Profiler {
 }
 
 // END CI_Profiler class
-?>
+
+/* End of file Profiler.php */
+/* Location: ./system/libraries/Profiler.php */

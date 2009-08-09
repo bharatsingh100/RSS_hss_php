@@ -50,7 +50,7 @@ for($i = 0; $i < $total_rows; $i++)
 	//Get the Gatanyak Name and Display	
 	if($vars[$i]['gatanayak'] != '')
     {
-        $r = $this->db->select('contact_id, first_name')->getwhere('swayamsevaks', array('contact_id'=> $vars[$i]['gatanayak']))->row();
+        $r = $this->db->select('contact_id, first_name')->get_where('swayamsevaks', array('contact_id'=> $vars[$i]['gatanayak']))->row();
         $vars[$i]['gatanayak'] = anchor('profile/view/'.$r->contact_id, $r->first_name);
     }
 

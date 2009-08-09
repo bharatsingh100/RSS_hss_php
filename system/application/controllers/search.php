@@ -26,8 +26,8 @@ class Search extends Controller
 /*		$exception = array('search','del_ss');
 		if(!in_array( $this->uri->segment(2), $exception))
 		{
-			$t1 = $this->db->select('shakha_id')->getwhere('swayamsevaks', array('contact_id' => $this->uri->segment(3)))->row()->shakha_id;
-			$rs = $this->db->getwhere('shakhas', array('shakha_id' => $t1))->row();
+			$t1 = $this->db->select('shakha_id')->get_where('swayamsevaks', array('contact_id' => $this->uri->segment(3)))->row()->shakha_id;
+			$rs = $this->db->get_where('shakhas', array('shakha_id' => $t1))->row();
 			$this->session->set_userdata('bc_shakha', $rs->name);
 			$this->session->set_userdata('bc_shakha_id', $rs->shakha_id);
 //			$this->session->set_userdata('bc_nagar_id', $rs->nagar_id);
@@ -74,7 +74,7 @@ class Search extends Controller
 				break;
 		}
 		$config['base_url'] = base_url()."/search/index/$term/";
-    	$config['total_rows'] = $this->db->getwhere('swayamsevaks', $limit);
+    	$config['total_rows'] = $this->db->get_where('swayamsevaks', $limit);
     	$config['per_page'] = '30';
     	$config['full_tag_open'] = '<p>';
     	$config['full_tag_close'] = '</p>';
@@ -91,7 +91,7 @@ class Search extends Controller
 		//$term = explode(' ', $term);
 		//foreach(
 		$this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, state, ph_home as phone, ph_home, ph_mobile, ph_work, email');
-//		$this->db->orderby($sort_by, 'asc');
+//		$this->db->order_by($sort_by, 'asc');
 		$this->db->where("MATCH(first_name, last_name, company, position, city, notes, email) AGAINST ('+($term)' IN BOOLEAN MODE) ");
 		$this->db->where($limit);
 		$query = $this->db->get('swayamsevaks', $num, $offset);

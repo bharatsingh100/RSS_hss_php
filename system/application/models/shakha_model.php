@@ -33,7 +33,7 @@ class Shakha_model extends Model
 		unset($data['button']);
 		unset($data['name']);
 		unset($data['resp']);
-		$r = $this->db->getwhere('responsibilities', array('swayamsevak_id' => $data['swayamsevak_id'], 'responsibility' => $data['responsibility'], 'shakha_id' => $data['shakha_id']));
+		$r = $this->db->get_where('responsibilities', array('swayamsevak_id' => $data['swayamsevak_id'], 'responsibility' => $data['responsibility'], 'shakha_id' => $data['shakha_id']));
 		if(!$r->num_rows())
 		{
 			$this->db->insert('responsibilities', $data);
@@ -44,7 +44,7 @@ class Shakha_model extends Model
 			$this->session->set_userdata('message', 'You cannot assign same responsibility more than once.');
 			return false;
 		}
-		$var = $this->db->getwhere('swayamsevaks', array('contact_id' => $data['swayamsevak_id']));
+		$var = $this->db->get_where('swayamsevaks', array('contact_id' => $data['swayamsevak_id']));
 		//$var = $var->row();
 		if($var->num_rows() && $var->row()->password == '' && trim($var->row(0)->email) != '' )
 		{
@@ -59,7 +59,7 @@ class Shakha_model extends Model
 
 	function get_sankhyas($id, $date)
 	{
-		$q = $this->db->getwhere('sankhyas', array('shakha_id' => $id, 'date' => $date));
+		$q = $this->db->get_where('sankhyas', array('shakha_id' => $id, 'date' => $date));
 		return $q->result();
 	}
 	
@@ -77,7 +77,7 @@ class Shakha_model extends Model
 						+ $data['yuva_m'] + $data['yuva_f'] + $data['tarun_m'] 
 						+ $data['tarun_f'] + $data['praudh_m'] + $data['praudh_f'];
 		unset($data['button']);
-		$exists = $this->db->getwhere('sankhyas', array('date' => $data['date'], 'shakha_id' => $data['shakha_id']));
+		$exists = $this->db->get_where('sankhyas', array('date' => $data['date'], 'shakha_id' => $data['shakha_id']));
 		if($exists->num_rows()) { //If sankhya for that week already exists then update
 			$this->db->where('shakha_id', $data['shakha_id']);
 			$this->db->where('date', $data['date']);
@@ -106,26 +106,26 @@ class Shakha_model extends Model
 	
 	function get_swayamsevaks($num, $offset, $shakha_id, $sort_by)
 	{
-		//$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak')->orderby($sort_by, 'asc')->getwhere('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
+		//$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak')->order_by($sort_by, 'asc')->get_where('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
 		$sort_by = ($sort_by === 'name') ? 'first_name' : $sort_by;
-		$query = $this->db->select('household_id, contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak')->orderby($sort_by, 'asc')->getwhere('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
+		$query = $this->db->select('household_id, contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, gana, gatanayak')->order_by($sort_by, 'asc')->get_where('swayamsevaks', array('shakha_id' => $shakha_id/*$this->session->userdata('shakha_id')*/), $num, $offset);
 		return $query;
 	}
 	function getShakhaName($id)
 	{
-		$query = $this->db->select('name')->getwhere('shakhas', array('shakha_id' => $id));
+		$query = $this->db->select('name')->get_where('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
 	}
 	function getShakhaInfo($id)
 	{
-		$query = $this->db->getwhere('shakhas', array('shakha_id' => $id));
+		$query = $this->db->get_where('shakhas', array('shakha_id' => $id));
 		$temp = $query->row();
 		//if($temp->shakha_id = '') { $temp->shakha_id = 0;}
 		//$temp->shakha_id = 0;
 		$shakha_id = $temp->shakha_id;
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
-		$this->db->orderby('responsibilities.responsibility');
+		$this->db->order_by('responsibilities.responsibility');
 		$this->db->join('responsibilities', "responsibilities.shakha_id = $shakha_id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 		$query = $this->db->get();
 		if($query->num_rows())
@@ -139,8 +139,8 @@ class Shakha_model extends Model
 				$i++;
 			}
 		}
-		$this->db->orderby('date', 'desc');
-		$j = $this->db->getwhere('sankhyas', array('shakha_id' => $id));
+		$this->db->order_by('date', 'desc');
+		$j = $this->db->get_where('sankhyas', array('shakha_id' => $id));
 		$temp->sankhyas = $j->result();
 		return $temp;
 	}
@@ -293,13 +293,13 @@ class Shakha_model extends Model
 	function getShortDesc($var1)
 	{
 		$this->db->select('short_desc');
-		$query = $this->db->getwhere('Ref_Code', array('REF_CODE' => $var1));
+		$query = $this->db->get_where('Ref_Code', array('REF_CODE' => $var1));
 		
 		return ($query->num_rows()) ? $query->row()->short_desc : '';
 	}
 	function getRefCodes($var1)
 	{
-		return $this->db->getwhere('Ref_Code', array('DOM_ID' => $var1));
+		return $this->db->get_where('Ref_Code', array('DOM_ID' => $var1));
 	}
 	function getStates()
 	{
@@ -321,7 +321,7 @@ class Shakha_model extends Model
 		{
 			$count = $result->num_rows();
 			for($i = 0; $i < $count; $i++)
-				$result->row($i)->num = $this->db->getwhere('swayamsevaks', array('gatanayak' => $result->row($i)->contact_id))->num_rows();
+				$result->row($i)->num = $this->db->get_where('swayamsevaks', array('gatanayak' => $result->row($i)->contact_id))->num_rows();
 		}
 		return $result->result();
 	}
@@ -333,13 +333,13 @@ class Shakha_model extends Model
 	}
 	
 	function list_members($list_id) {
-		$l = $this->db->getwhere('lists', array('id' => $list_id))->row();
+		$l = $this->db->get_where('lists', array('id' => $list_id))->row();
 		$emails = unserialize(gzuncompress($l->emails));
 		//var_dump($emails);
 		$emails = '(\'' . implode("','", $emails) . "')";
 		$this->db->select('contact_id, first_name, last_name');
 		$this->db->order_by('first_name');
-		$result = $this->db->getwhere('swayamsevaks', 'email IN ' . $emails)->result_array();
+		$result = $this->db->get_where('swayamsevaks', 'email IN ' . $emails)->result_array();
 		return $result;
 		//var_dump($result);
 		//die();

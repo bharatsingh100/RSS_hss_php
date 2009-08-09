@@ -33,11 +33,11 @@ class Xmlrpc_client extends Controller {
 	function getShakhas($id) {
 
     $this->db->select('shakha_id, name, city, state, zip, shakha_status, frequency, frequency_day, time_from, time_to');
-    $this->db->orderby('city');
+    $this->db->order_by('city');
     if(strlen($id) == 2)
-      $rs = $this->db->getwhere('shakhas', array('state' => $id, "shakha_status" => 1));
+      $rs = $this->db->get_where('shakhas', array('state' => $id, "shakha_status" => 1));
     else if($id == 'ALL')
-      $rs = $this->db->getwhere('shakhas', '1');
+      $rs = $this->db->get_where('shakhas', '1');
     else
       exit();
 
@@ -50,7 +50,7 @@ class Xmlrpc_client extends Controller {
 		  $shakhaid = $shakha['shakha_id'];
 		  $this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
   		$this->db->from('swayamsevaks');
-  		$this->db->orderby('responsibilities.responsibility');
+  		$this->db->order_by('responsibilities.responsibility');
   		$this->db->join('responsibilities', "responsibilities.shakha_id = $shakhaid AND (responsibilities.responsibility = 020 OR responsibilities.responsibility = 030) AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
   		$contacts = $this->db->get();
 
@@ -78,7 +78,7 @@ class Xmlrpc_client extends Controller {
 
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
-		$this->db->orderby('responsibilities.responsibility');
+		$this->db->order_by('responsibilities.responsibility');
 		$this->db->join('responsibilities', "responsibilities.shakha_id = $shakha_id AND (responsibilities.responsibility = 020 OR responsibilities.responsibility = 030) AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 		$rs = $this->db->get();
         print_r(json_encode($rs->result_array()));

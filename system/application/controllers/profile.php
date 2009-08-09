@@ -29,8 +29,8 @@ class Profile extends Controller
 		$exception = array('search','del_ss');
 		if(!in_array( $this->uri->segment(2), $exception))
 		{
-			$t1 = $this->db->select('shakha_id')->getwhere('swayamsevaks', array('contact_id' => $this->uri->segment(3)))->row()->shakha_id;
-			$rs = $this->db->getwhere('shakhas', array('shakha_id' => $t1))->row();
+			$t1 = $this->db->select('shakha_id')->get_where('swayamsevaks', array('contact_id' => $this->uri->segment(3)))->row()->shakha_id;
+			$rs = $this->db->get_where('shakhas', array('shakha_id' => $t1))->row();
 			$this->session->set_userdata('bc_shakha', $rs->name);
 			$this->session->set_userdata('bc_shakha_id', $rs->shakha_id);
 			if(trim($rs->nagar_id) != '') {
@@ -49,22 +49,22 @@ class Profile extends Controller
 
 	function view($id)
 	{
-		$data['query'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id));
-		$data['shakha'] = $this->db->getwhere('shakhas', array('shakha_id' => $data['query']->row()->shakha_id))->row();
+		$data['query'] = $this->db->get_where('swayamsevaks', array('contact_id' => $id));
+		$data['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $data['query']->row()->shakha_id))->row();
 		if ($data['shakha']->nagar_id != '') {
 			$this->db->select('REF_CODE, short_desc');
-			$data['nagar'] = $this->db->getwhere('Ref_Code', array('DOM_ID' => 3, 'REF_CODE' => $data['shakha']->nagar_id))->row();
+			$data['nagar'] = $this->db->get_where('Ref_Code', array('DOM_ID' => 3, 'REF_CODE' => $data['shakha']->nagar_id))->row();
 		}
 		$this->db->select('REF_CODE, short_desc');
-		$data['vibhag'] = $this->db->getwhere('Ref_Code', array('DOM_ID' => 2, 'REF_CODE' => $data['shakha']->vibhag_id))->row();
+		$data['vibhag'] = $this->db->get_where('Ref_Code', array('DOM_ID' => 2, 'REF_CODE' => $data['shakha']->vibhag_id))->row();
 		$this->db->select('REF_CODE, short_desc');
-		$data['sambhag'] = $this->db->getwhere('Ref_Code', array('DOM_ID' => 1, 'REF_CODE' => $data['shakha']->sambhag_id))->row();
+		$data['sambhag'] = $this->db->get_where('Ref_Code', array('DOM_ID' => 1, 'REF_CODE' => $data['shakha']->sambhag_id))->row();
 		$this->db->select('contact_id, first_name, last_name, birth_year')->from('swayamsevaks')->where('household_id', $data['query']->row()->household_id);
 		$data['households'] = $this->db->get();
 		$data['resp'] = $this->Profile_model->getResponsibilities($id);
 		$data['pageTitle'] = $data['query']->row()->first_name . ' ' . $data['query']->row()->last_name;
 		$data['gata'] = $this->Profile_model->getGata($id);
-		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 11')->result();
+		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 11')->result();
 		if(strlen($data['query']->row()->gatanayak))
 		{
 			$this->db->select('contact_id,first_name,last_name');
@@ -84,17 +84,17 @@ class Profile extends Controller
 			redirect('profile/view/' . $_POST['contact_id']);
 		}
 
-		$data['query'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id));
+		$data['query'] = $this->db->get_where('swayamsevaks', array('contact_id' => $id));
 		$data['pageTitle'] = 'Edit Profile';
 		$data['states'] = $this->Profile_model->getStates();
 		$data['resp'] = $this->Profile_model->getResponsibilities($id);
 		$data['gatanayak'] = $this->Profile_model->getGatanayaks($data['query']->row(0)->shakha_id);
 		$data['shakha_name'] = $this->Profile_model->getShakhaName($data['query']->row(0)->shakha_id);
-		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 11')->result();
-		$data['ganas'] = $this->db->select('REF_CODE, short_desc')->getwhere('Ref_Code', 'DOM_ID = 12')->result();
-		//$data['shakhas'] = $this->db->getwhere('shakhas', array('state' => $data['query']->row(0)->state))->result();
+		$data['ctype'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 11')->result();
+		$data['ganas'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 12')->result();
+		//$data['shakhas'] = $this->db->get_where('shakhas', array('state' => $data['query']->row(0)->state))->result();
 		/* Changed to show all shakhas in Edit Profile page */
-		$data['shakhas'] = $this->db->orderby('state, name')->get('shakhas')->result();
+		$data['shakhas'] = $this->db->order_by('state, name')->get('shakhas')->result();
 		$this->layout->view('profile/edit-profile', $data);
 
 	}
@@ -113,8 +113,8 @@ class Profile extends Controller
 			$this->session->set_userdata('message', 'Contact\'s family was successfully updated.&nbsp;');
 			redirect('profile/view/' . $id);
 		}
-		$data['contact'] = $this->db->getwhere('swayamsevaks', array('contact_id' => $id))->row();
-		$this->db->orderby('first_name');
+		$data['contact'] = $this->db->get_where('swayamsevaks', array('contact_id' => $id))->row();
+		$this->db->order_by('first_name');
 		$this->db->where('state', $data['contact']->state);
 		$temp = $this->db->select('contact_id, household_id, first_name, last_name')->get('swayamsevaks');
 		if($temp->num_rows())
@@ -128,7 +128,7 @@ class Profile extends Controller
 	function del_ss()
 	{
 		//Get Shakha ID for redirect
-		$ss = $this->db->select('shakha_id')->getwhere('swayamsevaks', array('contact_id' => $_POST['contact_id']))->row();
+		$ss = $this->db->select('shakha_id')->get_where('swayamsevaks', array('contact_id' => $_POST['contact_id']))->row();
 		$shakha_id = $ss->shakha_id;
 
 		//Remove the contact as Gatanayak for anyone
@@ -159,7 +159,7 @@ class Profile extends Controller
 	{
 		if($this->input->post('password'))
 		{
-			$oldpass = $this->db->select('password')->getwhere('swayamsevaks', array('contact_id' => $id))->row()->password;
+			$oldpass = $this->db->select('password')->get_where('swayamsevaks', array('contact_id' => $id))->row()->password;
 			if(trim($oldpass) != '' && sha1(trim($this->input->post('old_pass'))) != $oldpass)
 			{
 				$this->session->set_userdata('message', 'Your old password didn\'t match. Please try again.');
@@ -189,7 +189,7 @@ class Profile extends Controller
 		else
 		{
 			//$rs = $rs->row();
-			$j = $this->db->getwhere('swayamsevaks', array('contact_id' => $id))->row();
+			$j = $this->db->get_where('swayamsevaks', array('contact_id' => $id))->row();
 			//$j = $j->row();
 			$k['pageTitle'] = 'Change Password';
 			$k['name'] = $j->first_name . ' ' . $j->last_name;

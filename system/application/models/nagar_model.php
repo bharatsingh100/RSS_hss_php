@@ -39,7 +39,7 @@ class Nagar_model extends Model
 		unset($data['resp']);
 		
 		//Check if the KK already has that responsibility assigned
-		$r = $this->db->getwhere('responsibilities', array('swayamsevak_id' => $data['swayamsevak_id'], 'responsibility' => $data['responsibility'], 'nagar_id' => $data['nagar_id']));
+		$r = $this->db->get_where('responsibilities', array('swayamsevak_id' => $data['swayamsevak_id'], 'responsibility' => $data['responsibility'], 'nagar_id' => $data['nagar_id']));
 		if(!$r->num_rows())
 		{
 			$this->db->insert('responsibilities', $data);
@@ -54,7 +54,7 @@ class Nagar_model extends Model
 		}
 		
 		//Get the Contact's information and set password = to his email if blank.
-		$var = $this->db->getwhere('swayamsevaks', array('contact_id' => $data['swayamsevak_id']));
+		$var = $this->db->get_where('swayamsevaks', array('contact_id' => $data['swayamsevak_id']));
 		if($var->num_rows() && $var->row(0)->password == '' && trim($var->row(0)->email) != '' )
 		{
 			$t['password'] = sha1($var->row(0)->email);
@@ -67,7 +67,7 @@ class Nagar_model extends Model
 
 	function get_sankhyas($id, $date)
 	{
-		$q = $this->db->getwhere('sankhyas', array('shakha_id' => $id, 'date' => $date));
+		$q = $this->db->get_where('sankhyas', array('shakha_id' => $id, 'date' => $date));
 		return $q->result();
 	}
 	
@@ -87,7 +87,7 @@ class Nagar_model extends Model
 						 
 		unset($data['button']);
 		
-		$exists = $this->db->getwhere('sankhyas', array('date' => $data['date'], 'shakha_id' => $data['shakha_id']));
+		$exists = $this->db->get_where('sankhyas', array('date' => $data['date'], 'shakha_id' => $data['shakha_id']));
 		
 		if($exists->num_rows()) { //If sankhya for that week already exists then update
 			$this->db->where('shakha_id', $data['shakha_id']);
@@ -119,14 +119,14 @@ class Nagar_model extends Model
 		
 		$shakha_ids = '('.implode(',',$shakha_ids).')';
 
-		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->orderby($sort_by, 'asc')->getwhere('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
+		$query = $this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, ph_home as phone, ph_home, ph_mobile, ph_work, email, birth_year, shakha_id')->order_by($sort_by, 'asc')->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids, $num, $offset);
 
 		return $query;
 	}
 	
 	function get_shakhas($nagar_id)
 	{
-		$shakhas = $this->db->getwhere('shakhas', array('nagar_id' => $nagar_id))->result();
+		$shakhas = $this->db->get_where('shakhas', array('nagar_id' => $nagar_id))->result();
 		$shakha_ids = '';
 		foreach($shakhas as $shakha)
 			$shakha_ids[] = $shakha->shakha_id;
@@ -136,7 +136,7 @@ class Nagar_model extends Model
 	
   	function getShakhaName($id)
 	{
-		$query = $this->db->select('name')->getwhere('shakhas', array('shakha_id' => $id));
+		$query = $this->db->select('name')->get_where('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
 	}
 	
@@ -145,14 +145,14 @@ class Nagar_model extends Model
 	{
 		
 		//Get Nagar's Shakha Information
-		$query = $this->db->getwhere('shakhas', array('nagar_id' => $id));
+		$query = $this->db->get_where('shakhas', array('nagar_id' => $id));
 		$t = $query->result();
 		foreach($t as & $temp) 
 		{
 			$shakha_id = $temp->shakha_id;
 			$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 			$this->db->from('swayamsevaks');
-			$this->db->orderby('responsibilities.responsibility');
+			$this->db->order_by('responsibilities.responsibility');
 			$this->db->join('responsibilities', "responsibilities.shakha_id = $shakha_id AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 			$query = $this->db->get();
 			if($query->num_rows())
@@ -166,8 +166,8 @@ class Nagar_model extends Model
 					$i++;
 				}
 			}
-			$this->db->orderby('date', 'desc');
-			$j = $this->db->getwhere('sankhyas', array('shakha_id' => $id));
+			$this->db->order_by('date', 'desc');
+			$j = $this->db->get_where('sankhyas', array('shakha_id' => $id));
 			$temp->sankhyas = $j->result();
 		}
 		
@@ -177,7 +177,7 @@ class Nagar_model extends Model
 		
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
-		$this->db->orderby('responsibilities.responsibility');
+		$this->db->order_by('responsibilities.responsibility');
 		$this->db->join('responsibilities', "responsibilities.nagar_id = '$id' AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
 		$query = $this->db->get();
 		if($query->num_rows())
@@ -244,7 +244,7 @@ class Nagar_model extends Model
 	
   	function getRefCodes($var1)
 	{
-		return $this->db->getwhere('Ref_Code', array('DOM_ID' => $var1));
+		return $this->db->get_where('Ref_Code', array('DOM_ID' => $var1));
 	}
 	
   	function getStates()
@@ -269,7 +269,7 @@ class Nagar_model extends Model
 		{
 			$count = $result->num_rows();
 			for($i = 0; $i < $count; $i++)
-				$result->row($i)->num = $this->db->getwhere('swayamsevaks', array('gatanayak' => $result->row($i)->contact_id))->num_rows();
+				$result->row($i)->num = $this->db->get_where('swayamsevaks', array('gatanayak' => $result->row($i)->contact_id))->num_rows();
 		}
 		return $result->result();
 	}
