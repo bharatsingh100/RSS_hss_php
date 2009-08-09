@@ -21,8 +21,11 @@ RedirectMatch 403 /\.svn.*$
 </IfModule> 
 
 <IfModule mod_expires.c>
-  <filesmatch "\.(jpg|gif|png|css|js)$">
+  <filesmatch "\.(jpg|gif|png|css|js|ico)$">
        ExpiresActive on
        ExpiresDefault "access plus 1 year"
    </filesmatch>
 </IfModule>
+
+#Add Deflate
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/x-javascript text/javascript text/css application/xml
