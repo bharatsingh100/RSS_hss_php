@@ -15,8 +15,15 @@ class User extends Controller
 
 	function index()
 	{
+		if($this->session->userdata('logged_in')){
+			//User is already logged in.
+			redirect('profile/view/' . $this->session->userdata('contact_id'));
+		}
+		else {
 			$data['pageTitle'] = 'User Login';
 			$this->layout->view('user/login', $data);
+		}
+		
 	}
 
 	function logout()
