@@ -47,11 +47,13 @@ class Xmlrpc_client extends Controller {
 
 		foreach($shakhas as &$shakha) {
 
-		  $shakhaid = $shakha['shakha_id'];
-		  $this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
+	  	$shakhaid = $shakha['shakha_id'];
+	  	$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
   		$this->db->from('swayamsevaks');
   		$this->db->order_by('responsibilities.responsibility');
-  		$this->db->join('responsibilities', "responsibilities.shakha_id = $shakhaid AND (responsibilities.responsibility = 020 OR responsibilities.responsibility = 030) AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+  		$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+  		$this->db->where('responsibilities.shakha_id',$shakhaid);
+  		$this->db->where_in('responsibilities.responsibility', array('020','030'));
   		$contacts = $this->db->get();
 
   		if($contacts->num_rows() > 0)
@@ -62,7 +64,7 @@ class Xmlrpc_client extends Controller {
 	}
 
 	function syncUsers($lastTime) {
-	  $this->db->select('ss.contact_id, ss.first_name, ss.last_name, ss.email, ss.passwordmd5, UNIX_TIMESTAMP(ss.modified) as modified, responsibilities.level, responsibilities.created');
+	  $this->db->select('ss.contact_id, ss.first_name, ss.last_name, ss.email, ss.passwordmd5, UNIX_TIMESTAMP(ss.modified) as modified, responsibilities.level, responsibilities.created', FALSE);
 	  $this->db->from('swayamsevaks ss');
 	  $this->db->join('responsibilities', 'responsibilities.swayamsevak_id = ss.contact_id');
 	  $this->db->having("modified > $lastTime OR UNIX_TIMESTAMP(responsibilities.created) > $lastTime");
