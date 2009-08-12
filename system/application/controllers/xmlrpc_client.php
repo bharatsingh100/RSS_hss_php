@@ -53,7 +53,7 @@ class Xmlrpc_client extends Controller {
   		$this->db->order_by('responsibilities.responsibility');
   		$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
   		$this->db->where('responsibilities.shakha_id',$shakhaid);
-  		$this->db->where_in('responsibilities.responsibility', array('020','030'));
+  		$this->db->where_in('responsibilities.responsibility', array('020','021','030','031'));
   		$contacts = $this->db->get();
 
   		if($contacts->num_rows() > 0)
