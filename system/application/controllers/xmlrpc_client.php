@@ -7,7 +7,7 @@ class Xmlrpc_client extends Controller {
     parent::Controller();
     $this->output->enable_profiler(TRUE);
   }
-  
+
   function index() {
 
 		$this->load->helper ( 'url' );
@@ -30,50 +30,57 @@ class Xmlrpc_client extends Controller {
 		}
 	} */
 
-	function getShakhas($id) {
+    /*Return List of Shakhas along with other info as JSON Object*/
+    function getShakhas($id) {
 
-    $this->db->select('shakha_id, name, city, state, zip, shakha_status, frequency, frequency_day, time_from, time_to');
-    $this->db->order_by('city');
-    if(strlen($id) == 2)
-      $rs = $this->db->get_where('shakhas', array('state' => $id, "shakha_status" => 1));
-    else if($id == 'ALL')
-      $rs = $this->db->get_where('shakhas', '1');
-    else
-      exit();
+        $this->db->select('shakha_id, name, city, state, zip, shakha_status, frequency, frequency_day, time_from, time_to');
+        $this->db->order_by('city');
 
-    if($rs->num_rows() == 0) exit();
+        if(strlen($id) === 2)
+            $rs = $this->db->get_where('shakhas', array('state' => $id, "shakha_status" => 1));
+        else if($id == 'ALL')
+            $rs = $this->db->get('shakhas');
+        else
+            exit();
 
-		$shakhas = $rs->result_array();
+        if($rs->num_rows() == 0) exit();
 
-		foreach($shakhas as &$shakha) {
+        $shakhas = $rs->result_array();
 
-	  	$shakhaid = $shakha['shakha_id'];
-	  	$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
-  		$this->db->from('swayamsevaks');
-  		$this->db->order_by('responsibilities.responsibility');
-  		$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
-  		$this->db->where('responsibilities.shakha_id',$shakhaid);
-  		$this->db->where_in('responsibilities.responsibility', array('020','021','030','031'));
-  		$contacts = $this->db->get();
+	//Moving static query part out of the foreach loop
+        $this->db->start_cache();
+        $this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
+        $this->db->from('swayamsevaks');
+        $this->db->order_by('responsibilities.responsibility');
+        $this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+        $this->db->where_in('responsibilities.responsibility', array('020','021','030','031'));
+        $this->db->stop_cache();
 
-  		if($contacts->num_rows() > 0)
-  		  $shakha['contacts'] = $contacts->result_array();
-		}
+        foreach($shakhas as &$shakha) {
 
-		print(json_encode($shakhas));
-	}
+            $this->db->where('responsibilities.shakha_id',$shakha['shakha_id']);
+            $contacts = $this->db->get();
 
-	function syncUsers($lastTime) {
-	  $this->db->select('ss.contact_id, ss.first_name, ss.last_name, ss.email, ss.passwordmd5, UNIX_TIMESTAMP(ss.modified) as modified, responsibilities.level, responsibilities.created', FALSE);
-	  $this->db->from('swayamsevaks ss');
-	  $this->db->join('responsibilities', 'responsibilities.swayamsevak_id = ss.contact_id');
-	  $this->db->having("modified > $lastTime OR UNIX_TIMESTAMP(responsibilities.created) > $lastTime");
-	  //$this->db->having("modified >= $lastTime");
-	  $rs = $this->db->get();
+            if($contacts->num_rows() > 0){
+                $shakha['contacts'] = $contacts->result_array();
+            }//End if
+        }//End Foreach
 
-	  if($rs->num_rows() > 0)
-	    print(json_encode($rs->result_array()));
-	}
+        $this->db->flush_cache();
+        print(json_encode($shakhas));
+    }
+
+    function syncUsers($lastTime) {
+        $this->db->select('ss.contact_id, ss.first_name, ss.last_name, ss.email, ss.passwordmd5, UNIX_TIMESTAMP(ss.modified) as modified, responsibilities.level, responsibilities.created', FALSE);
+        $this->db->from('swayamsevaks ss');
+        $this->db->join('responsibilities', 'responsibilities.swayamsevak_id = ss.contact_id');
+        $this->db->having("modified > $lastTime OR UNIX_TIMESTAMP(responsibilities.created) > $lastTime");
+        //$this->db->having("modified >= $lastTime");
+        $rs = $this->db->get();
+
+        if($rs->num_rows() > 0)
+            print(json_encode($rs->result_array()));
+    }
 
 	/*
 	function getShakhaContacts($shakha_id) {
