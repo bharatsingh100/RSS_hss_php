@@ -180,7 +180,7 @@ class Nagar_model extends Model
 		$this->db->from('swayamsevaks');
 		$this->db->order_by('responsibilities.responsibility');
 		$this->db->join('responsibilities', "responsibilities.swayamsevak_id = swayamsevaks.contact_id");
-		$this->db->where("responsibilities.nagar_id = '$id'")
+		$this->db->where("responsibilities.nagar_id = '$id'");
 		$query = $this->db->get();
 		if($query->num_rows())
 		{
