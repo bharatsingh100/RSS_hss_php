@@ -13,7 +13,7 @@ new_member_options = 256
 administrivia = True
 max_message_size = 0
 include_rfc2369_headers = 1
-include_list_post_header = 0
+include_list_post_header = 1
 max_days_to_hold = 0
 nondigestable = 1
 msg_header = ''
@@ -51,4 +51,3 @@ default_member_moderation = 0
 unsubscribe_policy = 1
 msg_footer = """_______________________________________________
 You are subscribed to %(real_name)s mailing list."""
-To unsubscribe from HSS E-mails visit http://www.hssusa.org/email_unsubscribe.php"""
