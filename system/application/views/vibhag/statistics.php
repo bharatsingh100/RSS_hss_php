@@ -2,7 +2,16 @@
 <h2><?=$vibhag->name?> Vibhag - Statistics</h2>
 <p>&nbsp;</p>
 <h3>Downloadable Reports</h3>
-<ul><li><?php echo anchor('vibhag/all_vibhag_karyakarta_csv/'.$this->uri->segment(3), 'All Karyakartas in Vibhag'); ?> (MS Excel)</li></ul>
+<ul>
+  <li>
+    <?php echo anchor('vibhag/all_vibhag_karyakarta_csv/'.$this->uri->segment(3),
+                        'All Karyakartas in Vibhag'); ?> (MS Excel)
+  </li>
+  <li>
+    <?php echo anchor('vibhag/all_shakhas_csv/'.$this->uri->segment(3),
+                        'All Shakhas in Vibhag'); ?> (MS Excel)
+  </li>
+</ul>
 <p>&nbsp;</p>
 <h3>Average Sankhya:</h3>
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
@@ -23,7 +32,7 @@
     <td><?=(int)$shakha['this_year']?></td>
     <td><?=(int)$shakha['last_year']?></td>
   </tr><?php endforeach; ?>
-  <tr><td colspan="6">&nbsp;</tr>
+  <tr><td colspan="6">&nbsp;</td></tr>
   <tr>
     <td><strong>Vibhag Average</strong></td>
     <td><?=(int)$vibhag->sankhya['this_month']['total']?></td>

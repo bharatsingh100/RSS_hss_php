@@ -2,7 +2,12 @@
 <h2><?=$sambhag->name?> Sambhag - Statistics</h2>
 <p>&nbsp;</p>
 <h3>Downloadable Reports</h3>
-<ul><li><?php echo anchor('sambhag/all_sambhag_karyakarta_csv/'.$this->uri->segment(3), 'All Karyakartas in Sambhag'); ?> (MS Excel)</li></ul>
+<ul>
+  <li><?php echo anchor('sambhag/all_sambhag_karyakarta_csv/'.$this->uri->segment(3),
+                      'All Karyakartas in Sambhag'); ?> (MS Excel)</li>
+  <li><?php echo anchor('sambhag/all_shakhas_csv/'.$this->uri->segment(3),
+                      'All Shakhas in Sambhag'); ?> (MS Excel)</li>
+</ul>
 <p>&nbsp;</p>
 <h3>Contact List:</h3>
 <table width="50%" border="1" cellspacing="2" cellpadding="2">

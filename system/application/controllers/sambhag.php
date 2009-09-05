@@ -358,10 +358,6 @@ class Sambhag extends Controller
 	{
 		$this->load->dbutil();
 
-		//Get list of Shakhas in the Vibhag
-		//$shakha_ids = $this->Vibhag_model->get_shakhas($id);
-		//$shakha_ids = '('.implode(',',$shakha_ids).')';
-
 		$data['query'] = $this->db->query("SELECT s.first_name as FirstName, s.last_name as LastName, s.email Email,
 											s.city as City, s.state as State, sh.name as Shakha,
 											rc.short_desc as Nagar, rc0.short_desc as Vibhag, rc1.short_desc as Sambhag, rc2.short_desc as Responsibility
@@ -374,16 +370,26 @@ class Sambhag extends Controller
 											WHERE s.shakha_id IN (SELECT shakha_id FROM shakhas WHERE sambhag_id LIKE '{$id}') 
 											AND r.swayamsevak_id = s.contact_id
 											ORDER BY Shakha, Nagar, Vibhag, Sambhag ASC;");
-		//Get the database of Swayamsevaks of this Vibhag
-		/*$this->db->select('swayamsevaks.contact_id, swayamsevaks.household_id, shakhas.name as shakhka, Ref_Code.short_desc as contact_type, swayamsevaks.first_name, swayamsevaks.last_name, swayamsevaks.gender, birth_year, swayamsevaks.company, swayamsevaks.position, swayamsevaks.email, swayamsevaks.email_status, swayamsevaks.ph_mobile, swayamsevaks.ph_home, swayamsevaks.ph_work, swayamsevaks.street_add1, swayamsevaks.street_add2, swayamsevaks.city, swayamsevaks.state, swayamsevaks.zip, swayamsevaks.ssv_completed, swayamsevaks.notes');
-		$this->db->from('swayamsevaks, shakhas, Ref_Code');
-		$this->db->where('swayamsevaks.shakha_id IN ' . $shakha_ids. ' AND shakhas.shakha_id = swayamsevaks.shakha_id AND Ref_Code.DOM_ID = 11 AND Ref_Code.REF_CODE = swayamsevaks.contact_type');
-		$this->db->order_by('shakhas.name, swayamsevaks.household_id');
-		$data['query'] = $this->db->get();*/
 
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=All-Karyakartas-{$id}-". date("M-d_H-i") .".csv");
-		$this->load->view('vibhag/csv', $data);
+		$this->load->view('sambhag/csv', $data);
+	}
+
+  //Output list of Shakhas for a Sambhag
+  function all_shakhas_csv($id)
+	{
+		$this->load->dbutil();
+
+		$data['query'] = $this->db->query("SELECT s.shakha_id, s.name, s.address1,
+                      s.address2, s.city, s.state, s.zip, s.frequency,
+                      s.frequency_day, s.time_from, s.time_to, s.shakha_status
+											FROM shakhas s
+											WHERE s.sambhag_id = '{$id}'");
+
+		$this->output->set_header("Content-type: application/vnd.ms-excel");
+		$this->output->set_header("Content-disposition: csv; filename=All-Shakhas-". date("M-d_H-i") .".csv");
+		$this->load->view('sambhag/csv', $data);
 	}
 	
 /*	function add_shakha($id)
