@@ -3,6 +3,10 @@
 <p>&nbsp;</p>
 <h3>Downloadable Reports</h3>
 <ul>
+  <li>
+    <?php echo anchor('sambhag/csv_out/'.$this->uri->segment(3),
+                        'All Contacts in Sambhag'); ?> (MS Excel)
+  </li>
   <li><?php echo anchor('sambhag/all_sambhag_karyakarta_csv/'.$this->uri->segment(3),
                       'All Karyakartas in Sambhag'); ?> (MS Excel)</li>
   <li><?php echo anchor('sambhag/all_shakhas_csv/'.$this->uri->segment(3),

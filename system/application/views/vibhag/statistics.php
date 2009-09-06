@@ -4,6 +4,10 @@
 <h3>Downloadable Reports</h3>
 <ul>
   <li>
+    <?php echo anchor('vibhag/csv_out/'.$this->uri->segment(3),
+                        'All Contacts in Vibhag'); ?> (MS Excel)
+  </li>
+  <li>
     <?php echo anchor('vibhag/all_vibhag_karyakarta_csv/'.$this->uri->segment(3),
                         'All Karyakartas in Vibhag'); ?> (MS Excel)
   </li>
