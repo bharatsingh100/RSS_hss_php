@@ -313,7 +313,7 @@ class Vibhag extends Controller
 	}
 
   //Output Shakha Sankhya for a Vibhag
-  function all_sankhyas_csv($id, $count = 0)
+  function all_sankhyas_csv($id, $count = null)
 	{
 		$this->load->dbutil();
     $this->db->select('sh.shakha_id, sh.name, sh.city,
@@ -322,8 +322,9 @@ class Vibhag extends Controller
                       s.yuva_m, s.yuva_f, s.tarun_m, s.tarun_f, s.praudh_m,
                       s.praudh_f, s.families, s.total, s.shakha_info as notes')
               ->from('sankhyas s, shakhas sh')
-              ->where('s.shakha_id','sh.shakha_id')
-              ->where('sh.vibhag_id',$id);
+              ->where('sh.vibhag_id',$id)
+              ->where('sh.shakha_id','s.shakha_id', FALSE)
+              ->order_by('s.date', 'desc');
 
     switch($count) {
       case '0': //This Month
