@@ -7,6 +7,17 @@
                         'All Karyakartas in HSS'); ?> (MS Excel)</li>
   <li><?php echo anchor('national/all_shakhas_csv/',
                         'All Shakhas in HSS'); ?> (MS Excel)</li>
+  <li><strong>Sankhya Reports</strong>
+    <ul>
+      <li><?php echo anchor('national/all_sankhyas_csv/0',
+                        'This Months\'s Sankhya'); ?></li>
+      <li><?php echo anchor('national/all_sankhyas_csv/1',
+                        'Last Months\'s Sankhya'); ?></li>
+      <li><?php echo anchor('national/all_sankhyas_csv/6',
+                        'Last 6 Months\'s Sankhya'); ?></li>
+      <li><?php echo anchor('national/all_sankhyas_csv/', 'All Time Sankhya'); ?></li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <?php //print_r($stats); ?>
@@ -31,7 +42,7 @@
 		<td><?php echo $sambhag->karyakartas;  $karyakartas += $sambhag->karyakartas;?></td>
 	</tr>
 	<?php endforeach; ?>
-	<tr><td colspan="4">&nbsp;</tr>
+	<tr><td colspan="4">&nbsp;</td></tr>
 	<tr>
 	    <td><strong>Total:</strong></td>
 	    <td><?php echo $active_shakhas;?></td>

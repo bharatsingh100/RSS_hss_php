@@ -7,6 +7,18 @@
                       'All Karyakartas in Sambhag'); ?> (MS Excel)</li>
   <li><?php echo anchor('sambhag/all_shakhas_csv/'.$this->uri->segment(3),
                       'All Shakhas in Sambhag'); ?> (MS Excel)</li>
+  <li><strong>Sankhya Reports</strong>
+    <ul>
+      <li><?php echo anchor('sambhag/all_sankhyas_csv/'. $this->uri->segment(3). '/0',
+                        'This Months\'s Sankhya'); ?></li>
+      <li><?php echo anchor('sambhag/all_sankhyas_csv/'. $this->uri->segment(3). '/1',
+                        'Last Months\'s Sankhya'); ?></li>
+      <li><?php echo anchor('sambhag/all_sankhyas_csv/'. $this->uri->segment(3). '/6',
+                        'Last 6 Months\'s Sankhya'); ?></li>
+      <li><?php echo anchor('sambhag/all_sankhyas_csv/'.$this->uri->segment(3),
+                        'All Time Sankhya'); ?></li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <h3>Contact List:</h3>

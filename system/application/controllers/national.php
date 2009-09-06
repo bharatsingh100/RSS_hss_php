@@ -262,20 +262,20 @@ class National extends Controller
 		
 		$this->load->library('pagination');
 		$config['base_url'] = base_url()."national/browse/$id/$order/";
-    	$config['total_rows'] = $this->db->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids)->num_rows();//$this->db->count_all('swayamsevaks');
-    	$config['per_page'] = '35';
-    	$config['full_tag_open'] = '<p>';
-    	$config['full_tag_close'] = '</p>';
+    $config['total_rows'] = $this->db->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids)->num_rows();//$this->db->count_all('swayamsevaks');
+    $config['per_page'] = '35';
+    $config['full_tag_open'] = '<p>';
+    $config['full_tag_close'] = '</p>';
 		$config['uri_segment'] = 5;
 //		$config['post_url'] = $data['order'].'/'.$data['orderDir'];
 		$this->pagination->initialize($config);
-		
+
 		$data['results'] = $this->National_model->get_swayamsevaks($config['per_page'], $this->uri->segment(5), $id, $order);
 		$data['pageTitle'] = 'Browse Swayamsevaks';
 		$data['national_name'] = $this->National_model->getShortDesc($id);
-	    	
+
 		$this->load->library('table');
-    		$this->table->set_heading('Name', 'City', 'Phone', 'E-mail', 'Gana', 'Shakha');
+    $this->table->set_heading('Name', 'City', 'Phone', 'E-mail', 'Gana', 'Shakha');
 		$this->layout->view('national/list_ss', $data);
 	}
 		
@@ -320,6 +320,38 @@ class National extends Controller
 
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=All-Shakhas-". date("M-d_H-i") .".csv");
+		$this->load->view('national/csv', $data);
+	}
+
+  //Output Shakha Sankhyas
+  function all_sankhyas_csv($id, $count = null)
+	{
+		$this->load->dbutil();
+    $this->db->select('sh.shakha_id, sh.name, sh.city,
+                      sh.state, sh.frequency, sh.shakha_status, s.date, s.shishu_m,
+                      s.shishu_f, s.bala_m, s.bala_f, s.kishor_m, s.kishor_f,
+                      s.yuva_m, s.yuva_f, s.tarun_m, s.tarun_f, s.praudh_m,
+                      s.praudh_f, s.families, s.total, s.shakha_info as notes')
+              ->from('sankhyas s, shakhas sh')
+              ->where('sh.shakha_id','s.shakha_id', FALSE)
+              ->order_by('s.date', 'desc');
+
+    switch($count) {
+      case '0': //This Month
+        $this->db->where('s.date >', date('Y-m-00'));
+        break;
+      case '1': //Last Month
+        $this->db->where('s.date >', date('Y-m-00', strtotime('last months')));
+        break;
+      case '6': //Last 6 Months
+        $this->db->where('s.date >', date('Y-m-00', strtotime('-6 months')));
+        break;
+    }
+
+    $data['query'] = $this->db->get();
+
+		$this->output->set_header("Content-type: application/vnd.ms-excel");
+		$this->output->set_header("Content-disposition: csv; filename=All-Sankhyas-". date("M-d_H-i") .".csv");
 		$this->load->view('national/csv', $data);
 	}
 

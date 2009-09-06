@@ -341,7 +341,7 @@ class Vibhag extends Controller
     $data['query'] = $this->db->get();
 
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
-		$this->output->set_header("Content-disposition: csv; filename=All-Shakhas-". date("M-d_H-i") .".csv");
+		$this->output->set_header("Content-disposition: csv; filename=All-Sankhyas-". date("M-d_H-i") .".csv");
 		$this->load->view('vibhag/csv', $data);
 	}
 

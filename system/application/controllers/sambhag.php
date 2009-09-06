@@ -391,7 +391,39 @@ class Sambhag extends Controller
 		$this->output->set_header("Content-disposition: csv; filename=All-Shakhas-". date("M-d_H-i") .".csv");
 		$this->load->view('sambhag/csv', $data);
 	}
-	
+
+  //Output Shakha Sankhya for a Sambha
+  function all_sankhyas_csv($id, $count = null)
+	{
+		$this->load->dbutil();
+    $this->db->select('sh.shakha_id, sh.name, sh.city,
+                      sh.state, sh.frequency, sh.shakha_status, s.date, s.shishu_m,
+                      s.shishu_f, s.bala_m, s.bala_f, s.kishor_m, s.kishor_f,
+                      s.yuva_m, s.yuva_f, s.tarun_m, s.tarun_f, s.praudh_m,
+                      s.praudh_f, s.families, s.total, s.shakha_info as notes')
+              ->from('sankhyas s, shakhas sh')
+              ->where('sh.sambhag_id',$id)
+              ->where('sh.shakha_id','s.shakha_id', FALSE)
+              ->order_by('s.date', 'desc');
+
+    switch($count) {
+      case '0': //This Month
+        $this->db->where('s.date >', date('Y-m-00'));
+        break;
+      case '1': //Last Month
+        $this->db->where('s.date >', date('Y-m-00', strtotime('last months')));
+        break;
+      case '6': //Last 6 Months
+        $this->db->where('s.date >', date('Y-m-00', strtotime('-6 months')));
+        break;
+    }
+
+    $data['query'] = $this->db->get();
+
+		$this->output->set_header("Content-type: application/vnd.ms-excel");
+		$this->output->set_header("Content-disposition: csv; filename=All-Sankhyas-". date("M-d_H-i") .".csv");
+		$this->load->view('sambhag/csv', $data);
+	}
 /*	function add_shakha($id)
 	{
 		if(isset($_POST['save']))
