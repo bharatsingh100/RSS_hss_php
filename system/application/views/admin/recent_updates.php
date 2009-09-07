@@ -1,28 +1,36 @@
 <h2>Recent Updates</h2>
 <ul>
+  <li><strong>September 06, 2009</strong>
+    <ul>
+      <li><strong>Enhancement: </strong>Added Shakha Information Report to Vibhag, Sambhag, and National</li>
+      <li><strong>Enhancement: </strong>Added Sankhya Information Report to Vibhag, Sambhag, and National</li>
+      <li><strong>Enhancement: </strong>Added Contacts Report to Sambhag and Vibhag's Statistics Page</li>
+      <li><strong>Bug Fix: </strong>System shouldn't prompt to log in if the User is already logged in</li>
+    </ul>
+  </li>
   <li><strong>April 05, 2009</strong>
     <ul>
-        <li><strong>Enhancement: </strong>Created National Reports &amp; Statistics Page</li>
-        <li><strong>Enhancement: </strong>Created Sambhag Reports &amp; Statistics Page</li>
-        <li><strong>Enhancement: </strong>Created New E-mail Lists Options for Vibhag to create highly customized e-mail lists.</li>
-        <li><strong>Enhancement: </strong>Started Automatic E-mail Notification to Shakha Karyakartas for Sankhya</li>
+      <li><strong>Enhancement: </strong>Created National Reports &amp; Statistics Page</li>
+      <li><strong>Enhancement: </strong>Created Sambhag Reports &amp; Statistics Page</li>
+      <li><strong>Enhancement: </strong>Created New E-mail Lists Options for Vibhag to create highly customized e-mail lists.</li>
+      <li><strong>Enhancement: </strong>Started Automatic E-mail Notification to Shakha Karyakartas for Sankhya</li>
     </ul>
   </li>
   <li><strong>March 15, 2009</strong>
     <ul>
-        <li><strong>Enhancement: </strong>Separating inactive shakhas into Samparka Kendra on Vibhag Home Page i.e.  </li>
-        <li><strong>Enhancement: </strong>Gave Sampark Pramukhs same permissiosn as Mukhya Shiskhas / Karyavahs etc.</li>
-        <li><strong>Enhancement: </strong>Show E-mail List Members on Edit List Page.</li>
-        <li><strong>Enhancement: </strong>Automatically add Nagar/Vibhag Team to Shakha's All Contacts E-Mail Lists.</li>
-        <li><strong>Enhancement: </strong>Added option to Sort Contact Lists by Family. So that Family members show up together.</li>
-        <li><strong>Enhancement: </strong>Allowed Vibhag's to Change their Name.</li>
-        <li><strong>Enhancement: </strong>Allowed Vibhag Team to Control if the Mukhya Shikshak and Karyavah's should receive weekly Sankhya Reminders</li>
+      <li><strong>Enhancement: </strong>Separating inactive shakhas into Samparka Kendra on Vibhag Home Page i.e.  </li>
+      <li><strong>Enhancement: </strong>Gave Sampark Pramukhs same permissiosn as Mukhya Shiskhas / Karyavahs etc.</li>
+      <li><strong>Enhancement: </strong>Show E-mail List Members on Edit List Page.</li>
+      <li><strong>Enhancement: </strong>Automatically add Nagar/Vibhag Team to Shakha's All Contacts E-Mail Lists.</li>
+      <li><strong>Enhancement: </strong>Added option to Sort Contact Lists by Family. So that Family members show up together.</li>
+      <li><strong>Enhancement: </strong>Allowed Vibhag's to Change their Name.</li>
+      <li><strong>Enhancement: </strong>Allowed Vibhag Team to Control if the Mukhya Shikshak and Karyavah's should receive weekly Sankhya Reminders</li>
     </ul>
   </li>
   <li><strong>March 9, 2009</strong>
     <ul>
-        <li><strong>E-mail List Addresses Changed</strong> - The e-mail address for your e-mail lists that work through Sampark System have been changed. For example, instead of madhav-shakha@hssusa.org in past, now you would have send the e-mails to madhav-shakha@lists.hssusa.org! Everything else is same as before. Only addresses have changed.</li>
-        <li><strong>New URL for Sampark System</strong> - The Sampark (CRM) System will be available on its new URL http://sampark.hssusa.org! The old URLs will redirect you to the correct ones. So, if you use bookmarks to access the Sampark System, don't forget to update your bookmarks for faster access.</li>
+      <li><strong>E-mail List Addresses Changed</strong> - The e-mail address for your e-mail lists that work through Sampark System have been changed. For example, instead of madhav-shakha@hssusa.org in past, now you would have send the e-mails to madhav-shakha@lists.hssusa.org! Everything else is same as before. Only addresses have changed.</li>
+      <li><strong>New URL for Sampark System</strong> - The Sampark (CRM) System will be available on its new URL http://sampark.hssusa.org! The old URLs will redirect you to the correct ones. So, if you use bookmarks to access the Sampark System, don't forget to update your bookmarks for faster access.</li>
 		<li><strong>Moved to New Server</strong> - The Sampark System has moved to its own dedicated server (previously it was on a VPS). This gives us more flexibility and power. One major benefits would be that E-mail Lists will now be automatically created upon a request, within a hour maximum!! Now, there would be no need to wait for me to create it manually.</li>
 		<li><strong>Improvements in Junk E-mail</strong> - Many people in past had mentioned that Emails from our email lists were going to Bulk Mail folder of Yahoo. I have implemented the following features on our E-mail system SenderID, SPF, DKIM, Domain-Keys, RDNS, which should prevent e-mails going to Junk or Bulk Mail folder. Let me know if the issue still persists.</li>
 		<li><strong>Defect: </strong>Show prevous Shakha Notes when Updating Sankhya</li>
