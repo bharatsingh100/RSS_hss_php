@@ -72,3 +72,19 @@ function totalSankhya(){
 	document.getElementById('total').innerHTML = n + g;
 	
 }
+
+var mylib = 
+{
+	national :
+	{
+		statistics : function() 
+		{
+			var api = new jGCharts.Api(); 
+			
+			$('<img>')
+				.attr('src', api.make(opt)) 
+				.appendTo("#shakhas_chart");
+			
+		}	
+	}
+}
