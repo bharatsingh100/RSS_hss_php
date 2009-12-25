@@ -199,7 +199,7 @@ class Shakha extends Controller {
     }
 
     $this->Shakha_model->add_email_list();
-    $this->session->set_userdata('message', 'Your list ' . $this->input->post('address') . '@hssusa.org has been requested.');
+    $this->session->set_userdata('message', 'Your list ' . $this->input->post('address') . '@lists.hssusa.org has been requested.');
     redirect('shakha/email_lists/' . $this->input->post('level_id'));
 
     //TODO: Add hidden shakha id parameter to from page

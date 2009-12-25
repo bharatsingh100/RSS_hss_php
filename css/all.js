@@ -79,12 +79,10 @@ var mylib =
 	{
 		statistics : function() 
 		{
-			var api = new jGCharts.Api(); 
-			
+			var api = new jGCharts.Api(); 			
 			$('<img>')
 				.attr('src', api.make(opt)) 
 				.appendTo("#shakhas_chart");
-			
 		}	
 	}
 }
