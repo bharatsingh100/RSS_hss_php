@@ -4,10 +4,10 @@ CREATE TABLE  `web5db1`.`activities` (
 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
 `subject_id` MEDIUMINT UNSIGNED NOT NULL COMMENT  'id of the object performing action',
 `object_id` MEDIUMINT UNSIGNED NOT NULL COMMENT  'id of the person on whom the actiion was performed',
-`object_id2` VARCHAR( 10 ) NOT NULL COMMENT  'id of the object on whom the action was performed',
+`object_id2` VARCHAR( 10 ) NULL COMMENT  'id of the object on whom the action was performed',
 `type` ENUM(  'note',  'responsibility',  'sankhya',  'profile',  'information',  'event', 'email' ) NOT NULL COMMENT  'type of activity performed',
 `verb` ENUM(  'updated',  'assigned',  'removed',  'created',  'registered',  'attended', 'bounced' ) NOT NULL COMMENT  'action performed on the activity',
-`data` TEXT NOT NULL COMMENT  'additional data related to the activity',
+`data` TEXT NULL COMMENT  'additional data related to the activity',
 `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT  'time the activity was performed',
 PRIMARY KEY (  `id` )
 ) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT =  'activity stream'

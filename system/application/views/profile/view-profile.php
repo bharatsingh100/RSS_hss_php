@@ -118,10 +118,22 @@ echo strlen($row->gana) ? '&#8212;'.$row->gana : '';
 
 <div style="clear: both;"><br />
 </div>
-<h3>Notes</h3>
+<?php if($notes = $this->activities->get_activities('contact', $row->contact_id, 'notes')):?>
+	<h3>Notes</h3>
+	<?php foreach($notes as $note):?>
+		<h4><?php echo $note;?></h4>
+	<?php endforeach;?>
+<?php endif;?>
+<!--<h3>Notes</h3>
 <h4><a href="#">Keshav Dev</a> : I Called Varun ji about his work but he
 didn't pick up the phone. <span class="time_ago">2 months ago</span></h4>
-<h3>Latest Activities:</h3>
+-->
+<?php if($activities = $this->activities->get_activities('contact', $row->contact_id)):?>
+	<h3>Latest Activities:</h3>
+	<?php foreach($activities as $activity):?>
+		<h4><?php echo $activity;?></h4>
+	<?php endforeach;?>
+<?php endif;?><!--
 <h4><a href="#">Keshav Dev</a> assigned <a href="#">Shivaji Shakha</a>
 Karyavah responsiblity to <a href="#">Avarind Modini</a>.</h4>
 <h4>Keshav Dev removed Shivaji Shkha's Karyavah responsibliyt from
@@ -134,4 +146,4 @@ days ago</span></h4>
 minutes ago</span></h4>
 <h4>Keshav Dev updated Tarun Taneja's profile <span class="time_ago">few
 minutes ago</span></h4>
-<h4>Last Update on: <?php echo date('F jS, Y h:i A' , strtotime($row->modified)) ?></h4>
+--><h4>Last Update on: <?php echo date('F jS, Y h:i A' , strtotime($row->modified)) ?></h4>

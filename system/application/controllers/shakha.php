@@ -239,15 +239,10 @@ class Shakha extends Controller {
   }
 
   function del_responsibility($shakha_id, $ss_id, $resp_id) {
-
-    $this->db->where('shakha_id', $shakha_id);
-    $this->db->where('responsibility', $resp_id);
-    $this->db->where('swayamsevak_id', $ss_id);
-    $this->db->delete('responsibilities');
-
+    $this->Shakha_model->delete_responsibility($shakha_id, $ss_id, $resp_id);
     //Remove Karyakarta from his gata members.
-    $d['gatanayak'] = '';
-    $this->db->update('swayamsevaks', $d, array('gatanayak' => $ss_id));
+    //$d['gatanayak'] = '';
+    //$this->db->update('swayamsevaks', $d, array('gatanayak' => $ss_id));
 
     $this->session->set_userdata('message', 'Responsibility deleted.');
     redirect('shakha/responsibilities/' . $shakha_id);

@@ -9,7 +9,7 @@ $sh_add .= $row->city . ', ' . $row->state . ', ' . $row->zip;
 <p><?php echo $sh_add?>&nbsp;(<?php echo anchor_popup('http://maps.google.com/maps?q=' . str_replace(' ', '+', $sh_add), 'Map'); ?>)</p>
 <p><?php echo 'Every ' . $row->frequency_day?>, <?php echo date('g:i A', strtotime($row->time_from)) . ' - ' .  date('g:i A', strtotime($row->time_to));?>
 <p>&nbsp;</p>
-<?php 
+<?php
 if(isset($row->kk))
 {
 	echo '<h3>Shakha Karyakartas:</h3>'."\n";
@@ -44,5 +44,10 @@ if(isset($row->sankhyas)){
 <p>Sep 5: <a href="#">Conference call for Vijyadashmi Utsav tonight</a></p>
 <p><a href="#">more ...</a> </p>
 -->
-<br />
-<h4>Last Update on: <?php echo date('F jS, Y h:i A' , strtotime($row->modified)) ?></h4>
+<?php if($activities = $this->activities->get_activities('shakha', $row->shakha_id, NULL, 8)):?>
+	<h3>Latest Activities:</h3>
+	<?php foreach($activities as $activity):?>
+		<h4><?php echo $activity;?></h4>
+	<?php endforeach;?>
+<?php endif;?>
+<p><h4>Last Update on: <?php echo date('F jS, Y h:i A' , strtotime($row->modified)) ?></h4></p>
