@@ -1,18 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
-/>
-<title><?=$pageTitle?> - Swayamsevak Information Management - HSS</title>
-<link rel="stylesheet" type="text/css" href="/css/main.css" />
-<link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
-<script type="text/javascript" src="/css/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="/css/jq_js.js"></script>
-</head>
-
-<body>
+<?php require_once 'header.php';?>
 
 <!-- Begin Wrapper -->
    <div id="wrapper">
@@ -61,18 +47,4 @@
 
 		 <!-- End Right Column -->
 
-		 <!-- Begin Footer -->
-		 <div id="footer">
-		   <div align="center">
-		     <p><a href="/admin/info">General Information</a>&nbsp;&nbsp;|&nbsp;&nbsp;  <a href="/admin/recent_updates">Recent Updates</a>&nbsp;&nbsp;|&nbsp;&nbsp;  <a href="/admin/contact">Contact System Administrator</a><br /><br />
-		       Copyright &copy; Hindu Swayamsevak Sangh (HSS) USA, Inc. All Rights Reserved. <br />
-		       Tel: 973.860.2HSS&nbsp;&nbsp;|&nbsp;&nbsp;Fax: 973.302.8HSS&nbsp;&nbsp;| E-mail:&nbsp;info@hssus.org </p>
-	       </div>
-	 </div>
-	 <!-- End Footer -->
-
-   </div>
-   <!-- End Wrapper -->
-
-</body>
-</html>
+		 <?php require_once 'footer.php'; ?>
