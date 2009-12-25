@@ -130,6 +130,12 @@ h3 {
 	background-color: #EFF0F9;/*#F2F2E6;*/
 	padding: 3px;
 }
+
+h4 {
+	/*font-size: 80%;*/
+	font-weight: normal;
+}
+
 #rightcolumn h3 {
 	border-bottom-color: #FFFFFF;
 	border-bottom: thin;
@@ -140,9 +146,7 @@ h3 {
 p {
 	margin-bottom: 3px;
 }
-h4 {
-	font-size: 80%;
-}
+
 input, select {
 	font-family: "Trebuchet MS", Helvetica, Arial;
 	vertical-align: middle;
@@ -187,3 +191,7 @@ select {
 }
 
 .sambhags th { text-align: left; }
+
+.time_ago {
+	color: gray;
+}
