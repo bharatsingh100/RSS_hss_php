@@ -60,7 +60,8 @@ class Profile extends Controller
 		$data['vibhag'] = $this->db->get_where('Ref_Code', array('DOM_ID' => 2, 'REF_CODE' => $data['shakha']->vibhag_id))->row();
 		$this->db->select('REF_CODE, short_desc');
 		$data['sambhag'] = $this->db->get_where('Ref_Code', array('DOM_ID' => 1, 'REF_CODE' => $data['shakha']->sambhag_id))->row();
-		$this->db->select('contact_id, first_name, last_name, birth_year')->from('swayamsevaks')->where('household_id', $data['query']->row()->household_id);
+		$this->db->select('contact_id, first_name, last_name, birth_year')
+		  ->from('swayamsevaks')->where('household_id', $data['query']->row()->household_id);
 		$data['households'] = $this->db->get();
 		$data['resp'] = $this->Profile_model->getResponsibilities($id);
 		$data['pageTitle'] = $data['query']->row()->first_name . ' ' . $data['query']->row()->last_name;
