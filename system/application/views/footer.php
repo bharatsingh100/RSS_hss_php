@@ -10,12 +10,12 @@
 
    </div>
    <!-- End Wrapper -->
-
 <script type="text/javascript" src="/css/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="/css/all.js"></script>
 <script type="text/javascript" src="/css/jgcharts.pack.js"></script>
 <script type="text/javascript">
 <!--
+	<?php /* Execute Javascript function from all.js based on URL */ ?>
 	<?php $url_parts = $this->uri->segment(1) . '.' . $this->uri->segment(2); ?>
 
 	if(typeof(mylib.<?php echo $this->uri->segment(1); ?>) !== "undefined") {
@@ -23,6 +23,7 @@
     		mylib.<?php echo $url_parts;; ?>();
     	}
 	}
+
 //-->
 </script>
 </body>
