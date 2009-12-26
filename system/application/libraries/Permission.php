@@ -30,7 +30,7 @@ class Permission
 		if($temp->num_rows()) $this->sh_resp = $temp->row()->responsibility;
 
 		//IS_ADMIN
-		$a = array('1'); //Abhi Gupta Super Admin (CID = 1)
+		$a = array(1,4717); //Abhi Gupta & Ramesh Subramaniam Super Admin (CID = 1)
 		$this->is_admin = in_array($this->cid,$a) ? true : false;
 
 		//IS_NT_KK
