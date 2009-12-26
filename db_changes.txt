@@ -1,3 +1,44 @@
+#SNY Table
+
+CREATE TABLE IF NOT EXISTS `sny` (
+  `count_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `shakha_id` int(10) unsigned NOT NULL,
+  `contact_id` int(10) unsigned NOT NULL,
+  `ip` varchar(18) CHARACTER SET utf8 NOT NULL,
+  `week1_ss` mediumint(9) unsigned DEFAULT NULL,
+  `week1_s` mediumint(8) unsigned DEFAULT NULL,
+  `week2_ss` mediumint(9) unsigned DEFAULT NULL,
+  `week2_s` mediumint(9) unsigned DEFAULT NULL,
+  `week3_ss` mediumint(9) unsigned DEFAULT NULL,
+  `week3_s` mediumint(9) unsigned DEFAULT NULL,
+  `bala_m` mediumint(4) unsigned DEFAULT NULL,
+  `bala_f` mediumint(4) unsigned DEFAULT NULL,
+  `bala_c` mediumint(9) DEFAULT NULL,
+  `kishor_m` mediumint(4) unsigned DEFAULT NULL,
+  `kishor_f` mediumint(4) unsigned DEFAULT NULL,
+  `kishor_c` mediumint(9) DEFAULT NULL,
+  `yuva_m` mediumint(4) unsigned DEFAULT NULL,
+  `yuva_f` mediumint(4) unsigned DEFAULT NULL,
+  `yuva_c` mediumint(9) DEFAULT NULL,
+  `tarun_m` mediumint(4) unsigned DEFAULT NULL,
+  `tarun_f` mediumint(4) unsigned DEFAULT NULL,
+  `tarun_c` mediumint(9) DEFAULT NULL,
+  `praudh_m` mediumint(4) unsigned DEFAULT NULL,
+  `praudh_f` mediumint(4) unsigned DEFAULT NULL,
+  `praudh_c` mediumint(9) DEFAULT NULL,
+  `families` mediumint(4) unsigned DEFAULT NULL,
+  `others_m` mediumint(9) DEFAULT NULL COMMENT 'other people',
+  `others_f` mediumint(9) DEFAULT NULL COMMENT 'other females',
+  `others_c` mediumint(9) DEFAULT NULL,
+  `total` mediumint(4) unsigned DEFAULT NULL,
+  `shakha_info` text CHARACTER SET utf8,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`count_id`),
+  KEY `date` (`week1_ss`),
+  KEY `shakha_id` (`shakha_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
 #Adding activity Stream table
 
 CREATE TABLE  `web5db1`.`activities` (
