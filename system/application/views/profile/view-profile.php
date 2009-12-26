@@ -118,32 +118,36 @@ echo strlen($row->gana) ? '&#8212;'.$row->gana : '';
 
 <div style="clear: both;"><br />
 </div>
-<?php if($notes = $this->activities->get_activities('contact', $row->contact_id, 'notes')):?>
-	<h3>Notes</h3>
-	<?php foreach($notes as $note):?>
-		<h4><?php echo $note;?></h4>
-	<?php endforeach;?>
-<?php endif;?>
-<!--<h3>Notes</h3>
-<h4><a href="#">Keshav Dev</a> : I Called Varun ji about his work but he
-didn't pick up the phone. <span class="time_ago">2 months ago</span></h4>
+<?php if($this->permission->allow_profile_edit($this->uri->segment(3))): ?>
+  <?php /* Show notes about the person */ ?>
+  <?php if($notes = $this->activities->get_activities('contact', $row->contact_id, 'note', 5)):?>
+  	<h3>Notes</h3>
+  	<?php foreach($notes as $note):?>
+  		<h4><?php echo $note;?></h4>
+  	<?php endforeach;?>
+  <?php endif;?>
+
+  <?php /* Show latest activities of the person */ ?>
+  <?php if($activities = $this->activities->get_activities('contact', $row->contact_id, NULL, 8)):?>
+  	<div class="margin-top-15px" id="profile-activities">
+      	<h3>Latest Activities (<?php echo anchor("profile/activities/{$row->contact_id}", 'View All'); ?>)</h3>
+      	<?php foreach($activities as $activity):?>
+      		<h4><?php echo $activity;?></h4>
+      	<?php endforeach;?>
+  	</div>
+  <?php endif;?>
+
+<!--<h4>Last Update on: <?php //echo date('F jS, Y h:i A' , strtotime($row->modified)) ?></h4>
 -->
-<?php if($activities = $this->activities->get_activities('contact', $row->contact_id)):?>
-	<h3>Latest Activities:</h3>
-	<?php foreach($activities as $activity):?>
-		<h4><?php echo $activity;?></h4>
-	<?php endforeach;?>
-<?php endif;?><!--
-<h4><a href="#">Keshav Dev</a> assigned <a href="#">Shivaji Shakha</a>
-Karyavah responsiblity to <a href="#">Avarind Modini</a>.</h4>
-<h4>Keshav Dev removed Shivaji Shkha's Karyavah responsibliyt from
-Aravind Modini</h4>
-<h4>Keshav Dev updated Shivaji Shakha's information <span
-	class="time_ago">15 days ago</span></h4>
-<h4>Keshav Dev Updated Shivaji Sahkahs's Sankhya <span class="time_ago">3
-days ago</span></h4>
-<h4>Keshav Dev requested njkk email list for <span class="time_ago">5
-minutes ago</span></h4>
-<h4>Keshav Dev updated Tarun Taneja's profile <span class="time_ago">few
-minutes ago</span></h4>
---><h4>Last Update on: <?php echo date('F jS, Y h:i A' , strtotime($row->modified)) ?></h4>
+  <?php
+    //Display Add Notes form only if the user is not looking at their own profile
+    //and they have at last low shakha level permission
+    if($this->session->userdata('contact_id') !== $this->uri->segment(3)):?>
+      <h3 class="margin-top-15px">Add a new note</h3>
+      <?php echo form_error('note'); ?>
+      <?php echo form_open('profile/add_note/' . $row->contact_id); ?>
+      <?php echo form_textarea(array('name' => 'note', 'rows' => 5, 'style' => 'width:100%')); ?>
+      <?php echo form_submit('add_note', 'Add Note'); ?>
+      <?php echo form_close(); ?>
+  <?php endif; ?>
+<?php endif; //Permission endif?>

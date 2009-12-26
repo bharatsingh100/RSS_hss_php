@@ -1,29 +1,29 @@
 <?php
 
-class Profile_model extends Model 
+class Profile_model extends Model
 {
   function Profile_model()
   {
     parent::Model();
   }
-	
+
   function insert_ss()
   {
 		foreach($_POST as $key => $val)
 			$data[$key] = trim($val);
 		//$max_hh = $this->db->select('MAX(household_id)')->get('swayamsevaks')->result_array();
 		//$max_hh = $max_hh[0]['MAX(household_id)'] + 1;
-		
+
 		$data['ph_home']    = ($data['ph_home'] == 'Home...') ? '' : $this->reformat_phone_dash($data['ph_home']);
 		$data['ph_mobile']  = ($data['ph_mobile'] == 'Mobile...') ? '' : $this->reformat_phone_dash($data['ph_mobile']);
 		$data['ph_work']    = ($data['ph_work'] == 'Work...') ? '' : $this->reformat_phone_dash($data['ph_work']);
-		
+
 		if(!isset($data['email_status']) || trim($data['email_status']) == ''
 			|| !isset($data['email']) || trim($data['email']) == '')
 			$data['email_status'] = (isset($data['email']) && $data['email'] != '') ? 'Active' : '';
-		
+
 		//$data['household_id'] = ((isset($data['household_id']) && !empty($data['household_id'])) ? $data['household_id'] : $max_hh);
-  		
+
 		//Split Name into First and Last
 		$name = str_word_count(trim($data['name']), 2);
 		unset($data['name']);
@@ -31,17 +31,17 @@ class Profile_model extends Model
 		if(count($name) > 1){
 			$data['last_name'] = $this->capitalizeName(array_pop($name));
 			$data['first_name'] = $this->capitalizeName(implode(' ',$name));
-		} else { 
+		} else {
 			$data['first_name'] = $this->capitalizeName(array_pop($name));
 			$data['last_name'] = '';
 		}
-		
+
 		//$data['first_name']   = $this->capitalizeName($data['first_name']);
 		//$data['last_name']    = $this->capitalizeName($data['last_name']);
 		$data['city']         = $this->capitalizeName($data['city']);
 		$data['street_add1']  = $this->capitalizeName($data['street_add1']);
 		$data['street_add2']  = $this->capitalizeName($data['street_add2']);
-		
+
 		if(isset($data['add_update'])) //If update address of other family membmers
 		{
 			$this->db->where('household_id', $data['household_id']);
@@ -57,11 +57,15 @@ class Profile_model extends Model
 		//unset($data['add_family']);
 		unset($data['add_update']);
 		$this->db->where('contact_id', $data['contact_id']);
-		$this->db->update('swayamsevaks', $data);
+
+  		if($this->db->update('swayamsevaks', $data)) {
+          $contact_id = $this->session->userdata('contact_id') ? $this->session->userdata('contact_id') : 0;
+		  $this->activities->add_activity($contact_id, $data['contact_id'], 'profile', 'updated', $data, $data['shakha_id']);
+		}
 		//$temp->household_id = $max_hh;
 		//return $data;
 	}
-	
+
 	function search($num, $offset, $state, $term)
 	{
 		//$term = explode(' ', $term);
@@ -71,20 +75,20 @@ class Profile_model extends Model
 		$this->db->where("MATCH(first_name, last_name, company, position, city, notes, email) AGAINST ('+($term)')");
 		$this->db->where('state', $state);
 		$query = $this->db->get('swayamsevaks', $num, $offset);
-				 
+
 		return $query;
 	}
-	
+
 	function getRefCodes($var1)
 	{
 		return $this->db->get_where('Ref_Code', array('DOM_ID' => $var1));
 	}
-	
+
 	function getStates()
 	{
 		return $this->getRefCodes(6)->result();
 	}
-	
+
 	function getGatanayaks($id)
 	{
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name');
@@ -101,18 +105,18 @@ class Profile_model extends Model
 		}
 		return $result->result();
 	}
-	
+
 	function getGata($id)
 	{
 		$this->db->select('contact_id, first_name, last_name');
 		$q = $this->db->get_where('swayamsevaks', array('gatanayak' => $id));
 		return $q->result();
-		
+
 	}
-	function reformat_phone_dash($ph) 
+	function reformat_phone_dash($ph)
 	{
 		$onlynums = preg_replace('/[^0-9]/','',$ph);
-		if (strlen($onlynums)==10) 
+		if (strlen($onlynums)==10)
 		{
 			$areacode = substr($onlynums, 0,3);
 			$exch = substr($onlynums,3,3);
@@ -122,7 +126,7 @@ class Profile_model extends Model
 	    }
    		return $ph;
 	}
-	
+
 	function getResponsibilities($id)
 	{
 		$query = $this->db->get_where('responsibilities', array('swayamsevak_id' => $id));
@@ -134,7 +138,7 @@ class Profile_model extends Model
 		}
 		return $query->result();
 	}
-	
+
 	function getShakhaInfo($id)
 	{
 		$query = $this->db->get_where('shakhas', array('shakha_id' => $id));
@@ -165,17 +169,24 @@ class Profile_model extends Model
 		$query = $this->db->get_where('Ref_Code', array('REF_CODE' => $var1));
 		return $query->row()->short_desc;
 	}
-	
+
 	function getShakhaName($id)
 	{
 		$query = $this->db->select('name')->get_where('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
 	}
-	
+
 	function capitalizeName($name) {
 		$name = strtolower($name);
 		$name = join("-", array_map('ucwords', explode("-", $name)));
 		return $name;
+	}
+
+	function add_note($id) {
+	    $d['note'] = $this->input->post('note');
+	    //Update activities table
+		$contact_id = $this->session->userdata('contact_id') ? $this->session->userdata('contact_id') : 0;
+		$this->activities->add_activity($contact_id, $id, 'note', 'added', $d);
 	}
 }
 

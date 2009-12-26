@@ -20,7 +20,7 @@ class Shakha extends Controller {
 
     //Check Permissions
     //$perml = Array of functions for lower shakha level permissions
-    $perml = array('browse', 'gata', 'addss', 'add_family_member', 'import_contacts', 'add_sankhya', 'responsibilities', 'edit_shakha', 'statistics', 'email_lists', 'create_list');
+    $perml = array('activities', 'browse', 'gata', 'addss', 'add_family_member', 'import_contacts', 'add_sankhya', 'responsibilities', 'edit_shakha', 'statistics', 'email_lists', 'create_list');
     $permh = array('import_contacts', 'add_sankhya', 'responsibilities', 'edit_shakha', 'email_lists', 'create_list');
 
     if (in_array($this->uri->segment(2), $perml)) {
@@ -140,6 +140,13 @@ class Shakha extends Controller {
     $c['shakha'] = $this->Shakha_model->getShakhaInfo($c['lists']->level_id);
     $c['pageTitle'] = 'Edit E-mail list';
     $this->layout->view('shakha/edit_list', $c);
+  }
+
+  function activities($id) {
+    $data['activities'] = $this->activities->get_activities('shakha', $id);
+    $data['row'] = $this->Shakha_model->getShakhaInfo($id);
+    $data['pageTitle'] = $data['row']->name . ' Activities';
+    $this->layout->view('shakha/view-activities', $data);
   }
 
   function create_list($id, $error = '') {

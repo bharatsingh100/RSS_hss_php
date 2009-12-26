@@ -227,7 +227,7 @@ class Shakha_model extends Model
 
 		if($this->db->insert('swayamsevaks', $data)) {
           $contact_id = $this->session->userdata('contact_id') ? $this->session->userdata('contact_id') : 0;
-		  $this->activities->add_activity($contact_id, $this->db->insert_id(), 'profile', 'created', $data, $data['shakha_id']);
+		  $this->activities->add_activity($contact_id, $this->db->insert_id(), 'profile', 'added', $data, $data['shakha_id']);
 		}
 		return $data;
 	}

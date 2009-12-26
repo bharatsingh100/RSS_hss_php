@@ -76,6 +76,14 @@ class Profile extends Controller
 		$this->layout->view('profile/view-profile', $data);
 	}
 
+	function activities($id)
+	{
+		$data['query'] = $this->db->get_where('swayamsevaks', array('contact_id' => $id));
+		$data['pageTitle'] = $data['query']->row()->first_name . ' ' . $data['query']->row()->last_name;
+		$data['activities'] = $this->activities->get_activities('contact', $id);
+		$this->layout->view('profile/view-activities', $data);
+	}
+
 	function edit_profile($id)
 	{
 		$submit = $this->input->post('save');
@@ -148,6 +156,10 @@ class Profile extends Controller
 		//Delete the contact
 		$this->db->delete('swayamsevaks', array('contact_id' =>  $_POST['contact_id']));
 
+		//Add to activity stream
+		$contact_id = $this->session->userdata('contact_id') ? $this->session->userdata('contact_id') : 0;
+		$this->activities->add_activity($contact_id, $_POST['contact_id'], 'profile', 'deleted');
+
 		//Delete all the responsibilities of the contact
 		$this->db->delete('responsibilities', array('swayamsevak_id' =>  $_POST['contact_id']));
 
@@ -199,6 +211,14 @@ class Profile extends Controller
 			$this->layout->view('profile/change_pass', $k);
 		}
 
+	}
+
+	function add_note($id) {
+	  if($this->input->post('note')) {
+	    $this->Profile_model->add_note($id);
+	    $this->session->set_userdata('message', 'Your note was successfully saved.');
+	  }
+	  redirect('profile/view/'.$id);
 	}
 }
 

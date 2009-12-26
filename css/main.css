@@ -192,6 +192,11 @@ select {
 
 .sambhags th { text-align: left; }
 
-.time_ago {
+.small-text {
 	color: gray;
+	font-size:90%;
+}
+
+.margin-top-15px {
+	margin-top: 15px;
 }

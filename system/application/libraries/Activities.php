@@ -33,27 +33,37 @@ class Activities
       $param->verb         = $verb;
       $param->data         = serialize($data);
       $this->CI->db->insert('activities', $param);
-      //log_message('debug', 'Activities class loaded for testing');
     }
 
     public function get_activities($object_type, $object_id, $type = NULL, $limit = NULL, $raw = FALSE) {
 
       //Get Records from Database
       $events = $this->_get_activities_from_db($object_type, $object_id, $type, $limit);
-      //var_dump($events);
       if(is_null($events) || $raw) return $events;
 
-      $activities = $this->_gets_events_output_html($events);
-      //var_dump($activities);
+      $activities = $this->_gets_events_output_html($events, $type);
       return $activities;
     }
 
+    /**
+     * Find all the records in database regarding the specific activity
+     * @param int $object_type
+     * @param int $object_id
+     * @param string $type
+     * @param int $limit
+     * @return object
+     */
     private function _get_activities_from_db($object_type, $object_id, $type, $limit) {
 
       switch($object_type) {
         case 'contact':
-          $this->CI->db->where("(subject_id = {$object_id} OR object_id = {$object_id})");
-          //$this->CI->db->or_where('object_id', (int)$object_id);
+          //Only pull the activities from object1 if we want to display notes
+          if($type === 'note') {
+            $this->CI->db->where('object_id', $object_id);
+          }
+          else {
+            $this->CI->db->where("(subject_id = {$object_id} OR object_id = {$object_id})");
+          }
           break;
         case 'sambhag':
         case 'vibhag' :
@@ -62,6 +72,8 @@ class Activities
         case 'national':
           $this->CI->db->where('object_id2', $object_id);
           break;
+        default:
+          return NULL;
       }
       $this->CI->db->distinct();
       $this->CI->db->order_by('created', 'desc');
@@ -78,7 +90,7 @@ class Activities
       return $query->num_rows() ? $query->result() : NULL;
     }
 
-    private function _gets_events_output_html($events) {
+    private function _gets_events_output_html($events, $type) {
 
       $output = array();
 
@@ -89,7 +101,14 @@ class Activities
         switch($event->type) {
           case 'profile' :
             $temp .= " {$event->verb} {$event->type} ";
-            $temp .= ' of ' . $this->_get_profile_link($event->object_id);
+            $temp .= ' of ';
+            if($event->subject_id !== $event->object_id) {
+              $temp .= $this->_get_profile_link($event->object_id);
+            }
+            else {
+              $temp .= 'self';
+            }
+            $temp .= ($event->verb === 'added') ? ' to ' . $this->_get_object_link($event->object_id2) : '';
             break;
           case 'information' :
             $temp .= " {$event->verb} {$event->type} ";
@@ -99,16 +118,36 @@ class Activities
             $temp .= " {$event->verb} ";
             $temp .= $this->_get_responsibility_link($event->object_id2, $event->data) . ' responsibility';
             $temp .= ($event->verb === 'assigned') ? ' to ' : ' from ';
-            $temp .= $this->_get_profile_link($event->object_id);
+            if($event->subject_id !== $event->object_id) {
+              $temp .= $this->_get_profile_link($event->object_id);
+            }
+            else {
+              $temp .= 'self';
+            }
             break;
           case 'sankhya' :
             $temp .= " {$event->verb} {$event->type} ";
             $temp .= ' of ' . $this->_get_object_link($event->object_id2);
             $d = unserialize($event->data);
             $temp .= ' for ' . anchor("shakha/add_sankhya/{$event->object_id2}/{$d['date']}", $d['date']) . '.';
+            break;
+          case 'note' :
+            //In this case only notes are requested and nothing else
+            if($type === 'note') {
+              $note = unserialize($event->data);
+              $temp .= ' <span class="small-text">said</span> ' . $note['note'];
+            }
+            else {
+              $temp .= " {$event->verb} {$event->type} ";
+              $temp .= ' on ' .  $this->_get_profile_link($event->object_id);
+              $temp .= '\'s profile.';
+            }
+            break;
+          default:
+            continue;
         }
 
-        $temp .= ' <span class="time_ago">' . $this->_nicetime($event->created) . '</span>';
+        $temp .= ' <span class="small-text">' . $this->_nicetime($event->created) . '</span>';
         $output[] = $temp;
       }
 
@@ -181,7 +220,7 @@ class Activities
         }
 
         // is it future date or past date
-        if($now > $unix_date) {
+        if($now >= $unix_date) {
             $difference     = $now - $unix_date;
             $tense         = "ago";
 
