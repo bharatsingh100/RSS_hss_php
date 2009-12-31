@@ -102,35 +102,44 @@ class Activities
           case 'profile' :
             $temp .= " {$event->verb} {$event->type} ";
             $temp .= ' of ';
+
             if($event->subject_id !== $event->object_id) {
-              $temp .= $this->_get_profile_link($event->object_id);
+              $contact = $this->_get_profile_link($event->object_id);
+              //Fix to prevent blowing up when a Person has been deleted from system.
+              $temp = is_null($contact) ? '' : $temp . $contact;
             }
             else {
               $temp .= 'self';
             }
             $temp .= ($event->verb === 'added') ? ' to ' . $this->_get_object_link($event->object_id2) : '';
             break;
+
           case 'information' :
             $temp .= " {$event->verb} {$event->type} ";
             $temp .= ' of ' . $this->_get_object_link($event->object_id2);
             break;
+
           case 'responsibility' :
             $temp .= " {$event->verb} ";
             $temp .= $this->_get_responsibility_link($event->object_id2, $event->data) . ' responsibility';
             $temp .= ($event->verb === 'assigned') ? ' to ' : ' from ';
             if($event->subject_id !== $event->object_id) {
-              $temp .= $this->_get_profile_link($event->object_id);
+              $contact = $this->_get_profile_link($event->object_id);
+              //Fix to prevent blowing up when a Person has been deleted from system.
+              $temp = is_null($contact) ? '' : $temp . $contact;
             }
             else {
               $temp .= 'self';
             }
             break;
+
           case 'sankhya' :
             $temp .= " {$event->verb} {$event->type} ";
             $temp .= ' of ' . $this->_get_object_link($event->object_id2);
             $d = unserialize($event->data);
             $temp .= ' for ' . anchor("shakha/add_sankhya/{$event->object_id2}/{$d['date']}", $d['date']) . '.';
             break;
+
           case 'note' :
             //In this case only notes are requested and nothing else
             if($type === 'note') {
@@ -143,12 +152,16 @@ class Activities
               $temp .= '\'s profile.';
             }
             break;
+
           default:
             continue;
         }
 
-        $temp .= ' <span class="small-text">' . $this->_nicetime($event->created) . '</span>';
-        $output[] = $temp;
+        if(!empty($temp)) {
+          $temp .= ' <span class="small-text">' . $this->_nicetime($event->created) . '</span>';
+          $output[] = $temp;
+        }
+
       }
 
       return $output;
@@ -194,11 +207,20 @@ class Activities
 
       return $link;
     }
+
+    /**
+     * Fetch the name of contact and return it as link HTML
+     */
     private function _get_profile_link($profile_id) {
+
+      $link = NULL;
+
       $this->CI->db->select('first_name, last_name')->limit(1);
       $object = $this->CI->db->get_where('swayamsevaks', array('contact_id' => $profile_id));
-      $object = $object->row();
-      $link = anchor("profile/view/{$profile_id}", "{$object->first_name} {$object->last_name}");
+
+      if($object = $object->row()) {
+        $link = anchor("profile/view/{$profile_id}", "{$object->first_name} {$object->last_name}");
+      }
       return $link;
     }
 
