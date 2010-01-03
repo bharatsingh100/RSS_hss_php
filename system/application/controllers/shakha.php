@@ -302,7 +302,7 @@ class Shakha extends Controller {
     $this->layout->view('shakha/add-sankhya', $data);
   }
 
-  function _getShakhaDate($id) {
+  private function _getShakhaDate($id) {
     $shakha = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
 
     $wd = array("Sunday" => 0, "Monday" => 1, "Tuesday" => 2, "Wednesday" => 3, "Thursday" => 4, "Friday" => 5, "Saturday" => 6);
