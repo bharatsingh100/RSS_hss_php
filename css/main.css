@@ -200,3 +200,11 @@ select {
 .margin-top-15px {
 	margin-top: 15px;
 }
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}

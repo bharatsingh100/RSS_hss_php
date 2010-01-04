@@ -302,6 +302,26 @@ class Shakha extends Controller {
     $this->layout->view('shakha/add-sankhya', $data);
   }
 
+  /**
+   * Add SNY Count for each Shakha
+   * @param $id Shakha ID
+   */
+  function sny_count($id) {
+
+    $v = $this->db->get_where('sny', array('shakha_id' => $id));
+
+    if ($v->num_rows()) {
+      $data['sankhya'] = $v->row();
+      $data['contact'] = $this->db->get_where('swayamsevaks', array('contact_id' => $data['sankhya']->contact_id))->row();
+    }
+
+    $data['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
+
+    $data['pageTitle'] = 'Submit SNY Count';
+
+    $this->layout->view('shakha/add-sny-count', $data);
+  }
+
   private function _getShakhaDate($id) {
     $shakha = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
 
@@ -326,6 +346,18 @@ class Shakha extends Controller {
 
   //Insert or Update Sankhya
   function insert_sankhya($id) {
+    if ($this->input->post('shakha_id') && $this->input->post('shakha_id') != '') {
+      $this->Shakha_model->insert_sankhya();
+      $this->session->set_userdata('message', 'Sankhya added for your Shakha');
+      redirect('shakha/view/' . $this->input->post('shakha_id'));
+    }
+    else {
+      redirect('shakha/add_sankhya/' . $id);
+    }
+  }
+
+  //Insert or Update SNY Count
+  function insert_sny($id) {
     if ($this->input->post('shakha_id') && $this->input->post('shakha_id') != '') {
       $this->Shakha_model->insert_sankhya();
       $this->session->set_userdata('message', 'Sankhya added for your Shakha');
@@ -562,7 +594,7 @@ class Shakha extends Controller {
 
   //E-mail me the uploaded file
 
-  function _processUpload(& $filename) {
+  private function _processUpload(& $filename) {
 
     /*		if (!is_array($_FILES['contacts']))
     {
@@ -689,7 +721,7 @@ class Shakha extends Controller {
     $this->layout->view('shakha/finish_import', $d);
   }
 
-  function _chart_data($values) {
+  private function _chart_data($values) {
     // Port of JavaScript from http://code.google.com/apis/chart/
     // http://james.cridland.net/code
 
