@@ -88,10 +88,13 @@
          <?php echo '<p>',anchor('shakha/browse/'.$shakha_id. '/name/', 'List All Contacts'),'</p>';?>
          <?php echo '<p>',anchor('shakha/gata/'.$shakha_id, 'List Gatas'),'</p>';?>
 		 <?php echo '<p>',anchor('shakha/addss/'.$shakha_id, 'Add New Contact'),'</p>';?>
-		 <?php if($is_kkh) echo '<p>',anchor('shakha/upload_contacts/'.$shakha_id, 'Import Contacts'),'</p>';?>
-         <?php if($is_kkh) echo '<p>',anchor('shakha/add_sankhya/'.$shakha_id, 'Report Sankhya'),'</p>';?>
-         <?php if($is_kkh) echo '<p>',anchor('shakha/responsibilities/'.$shakha_id, 'Manage Responsibilities'),'</p>';?>
-         <?php if($is_kkh) echo '<p>',anchor('shakha/edit_shakha/'.$shakha_id, 'Change Shakha Details'),'</p>';?>
+		 <?php if($is_kkh):?>
+  		 <?php echo '<p>',anchor('shakha/upload_contacts/'.$shakha_id, 'Import Contacts'),'</p>';?>
+           <?php echo '<p>',anchor('shakha/add_sankhya/'.$shakha_id, 'Report Sankhya'),'</p>';?>
+           <?php echo '<p>',anchor('shakha/responsibilities/'.$shakha_id, 'Manage Responsibilities'),'</p>';?>
+           <?php echo '<p>',anchor('shakha/sny_count/'.$shakha_id, 'Report SNY Counts'),'</p>';?>
+           <?php echo '<p>',anchor('shakha/edit_shakha/'.$shakha_id, 'Change Shakha Details'),'</p>';?>
+         <?php endif; ?>
 	     <?php echo '<p>',anchor('shakha/statistics/'.$shakha_id, 'Shakha Statistics'),'</p>';?>
 	  <p>&nbsp;</p>
 	  <?php if($is_kkh) echo '<p>',anchor('shakha/email_lists/'.$shakha_id, 'View Email Lists'),'</p>';?>

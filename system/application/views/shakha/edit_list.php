@@ -190,17 +190,17 @@ Praudh only</td>
     </tr><?php endif; ?>
   </table>
   <p>&nbsp;</p>
-  <table>
-  	<tr><th>List Members</th></tr>
-  	<?php 
+  <table cellspacing="8" cellpadding="5">
+  	<tr><th colspan="3">List Members</th></tr>
+  	<?php
   		$count = count($emails);
   		$j = 0;
   		$max = ceil($count / 3);
   		for($i = 0; $i < $max; $i++): ?>
   	<tr><td>
   		<?php
-  			 if($j == $count): 
-  		 		echo ''; 
+  			 if($j == $count):
+  		 		echo '';
   		 	else:
   				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
   				$j++;
@@ -208,8 +208,8 @@ Praudh only</td>
   		</td>
   		<td>
   		<?php
-  			 if($j == $count): 
-  		 		echo ''; 
+  			 if($j == $count):
+  		 		echo '';
   		 	else:
   				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
   				$j++;
@@ -217,8 +217,8 @@ Praudh only</td>
   		</td>
   		<td>
   		<?php
-  			 if($j == $count): 
-  		 		echo ''; 
+  			 if($j == $count):
+  		 		echo '';
   		 	else:
   				echo anchor('profile/view/'.$emails[$j]['contact_id'], $emails[$j]['first_name'] . ' ' . $emails[$j]['last_name']);
   				$j++;

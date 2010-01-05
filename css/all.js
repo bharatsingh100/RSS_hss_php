@@ -84,5 +84,41 @@ var mylib =
 				.attr('src', api.make(opt)) 
 				.appendTo("#shakhas_chart");
 		}	
+	},
+	shakha :
+	{
+		sny_count : function()
+		{
+			var sny_form = $("#sny_count input[type=text]");
+			sny_form.blur( 
+				function() {
+					var participants = 0;
+					var par_male = 0;
+					var par_female = 0;
+					var counts = 0;
+					var counts_ss = 0;
+					var counts_s = 0;
+					sny_form.each(function(i){
+						if(i < 12){
+							participants += parseInt($(this).val());
+							if((i % 2) == 0) par_male += parseInt($(this).val());
+							if((i % 2) == 1) par_female += parseInt($(this).val());
+						} 
+						else if(i > 12){
+							counts += parseInt($(this).val());
+							if((i % 2) == 1) counts_ss += parseInt($(this).val());
+							if((i % 2) == 0) counts_s += parseInt($(this).val());
+						}
+					});
+					//console.log(participants);
+					$("#subtt_m").html(par_male);
+					$("#subtt_f").html(par_female);
+					$("#total").html(participants);
+					$("#counts_ss").html(counts_ss);
+					$("#counts_s").html(counts_s);
+					$("#counts").html(counts);
+					//console.log(counts);
+			});
+		}
 	}
 }

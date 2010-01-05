@@ -308,14 +308,14 @@ class Shakha extends Controller {
    */
   function sny_count($id) {
 
-    $v = $this->db->get_where('sny', array('shakha_id' => $id));
+    $v = $this->db->get_where('sny', array('shakha_id' => $id), 1);
 
     if ($v->num_rows()) {
       $data['sankhya'] = $v->row();
-      $data['contact'] = $this->db->get_where('swayamsevaks', array('contact_id' => $data['sankhya']->contact_id))->row();
+      //$data['contact'] = $this->db->get_where('swayamsevaks', array('contact_id' => $data['sankhya']->contact_id))->row();
     }
 
-    $data['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
+    $data['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $id), 1)->row();
 
     $data['pageTitle'] = 'Submit SNY Count';
 
@@ -357,14 +357,14 @@ class Shakha extends Controller {
   }
 
   //Insert or Update SNY Count
-  function insert_sny($id) {
+  function insert_sny_count($id) {
     if ($this->input->post('shakha_id') && $this->input->post('shakha_id') != '') {
-      $this->Shakha_model->insert_sankhya();
-      $this->session->set_userdata('message', 'Sankhya added for your Shakha');
-      redirect('shakha/view/' . $this->input->post('shakha_id'));
+      $this->Shakha_model->insert_sny_count();
+      $this->session->set_userdata('message', 'SNY Count added for your Shakha');
+      redirect('shakha/sny_count/' . $this->input->post('shakha_id'));
     }
     else {
-      redirect('shakha/add_sankhya/' . $id);
+      redirect('shakha/sny_count/' . $id);
     }
   }
 
@@ -379,11 +379,15 @@ class Shakha extends Controller {
     $data['pageTitle'] = $data['row']->name;
     $this->db->order_by('short_desc', 'desc');
     $vibhags = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', array('DOM_ID' => 2))->result();
+
     foreach ($vibhags as $vibhag)
       $data['vibhags'][$vibhag->REF_CODE] = $vibhag->short_desc;
+
     $nagars = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', array('DOM_ID' => 3))->result();
+
     foreach ($nagars as $nagar)
       $data['vibhags'][$nagar->REF_CODE] = $data['vibhags'][substr($nagar->REF_CODE, 0, 4)] . ' - ' . $nagar->short_desc . ' Nagar';
+
     ksort($data['vibhags']);
     $this->layout->view('shakha/edit_shakha', $data);
   }
@@ -419,8 +423,9 @@ class Shakha extends Controller {
 
     // Next blast through the result array and build out the rows
     foreach ($query as $row) {
-      foreach ($row as $item)
+      foreach ($row as $item) {
         $out .= $item . $delim;
+      }
 
       $out = rtrim($out);
       $out .= $newline;

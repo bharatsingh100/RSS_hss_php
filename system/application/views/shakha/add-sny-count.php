@@ -1,6 +1,6 @@
 <?php $set = isset($sankhyas) ? true : false ; ?>
 <h2><?php echo $shakha->name;?> - Report SNY Count</h2>
-<form id="sankhya" method="post"
+<form id="sny_count" method="post"
   action="/shakha/insert_sny_count/<?php echo $shakha->shakha_id; ?>">
   <?php echo form_hidden('shakha_id', $shakha->shakha_id); ?>
 
@@ -25,13 +25,13 @@
       </td>
       <td>
         <div align="center"><input name="bala_m" type="text" id="bala_m"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php if($set) echo $sankhya->bala_m; else echo '0';?>"
             maxlength="3" /></div>
       </td>
       <td>
         <div align="center"><input name="bala_f" type="text" id="bala_f"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->bala_f : '0');?>" maxlength="3" /></div>
       </td>
 	</tr>
@@ -41,13 +41,13 @@
       </td>
       <td>
         <div align="center"><input name="kishor_m" type="text" id="kishor_m"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->kishor_m : '0');?>"
             maxlength="3" /></div>
       </td>
       <td>
         <div align="center"><input name="kishor_f" type="text" id="kishor_f"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->kishor_f : '0');?>"
             maxlength="3" /></div>
       </td>
@@ -58,12 +58,12 @@
       </td>
       <td>
         <div align="center"><input name="yuva_m" type="text" id="yuva_m"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->yuva_m : '0');?>" maxlength="3" /></div>
       </td>
       <td>
         <div align="center"><input name="yuva_f" type="text" id="yuva_f"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->yuva_f : '0');?>" maxlength="3" /></div>
       </td>
     </tr>
@@ -73,13 +73,13 @@
       </td>
       <td>
         <div align="center"><input name="tarun_m" type="text" id="tarun_m"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->tarun_m : '0');?>"
             maxlength="3" /></div>
       </td>
       <td>
         <div align="center"><input name="tarun_f" type="text" id="tarun_f"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->tarun_f : '0');?>"
             maxlength="3" /></div>
       </td>
@@ -90,24 +90,42 @@
       </td>
       <td>
         <div align="center"><input name="praudh_m" type="text" id="praudh_m"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->praudh_m : '0');?>"
             maxlength="3" /></div>
       </td>
       <td>
         <div align="center"><input name="praudh_f" type="text" id="praudh_f"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->praudh_f : '0');?>"
             maxlength="3" /></div>
       </td>
-      </tr>
+    </tr>
     <tr>
       <td nowrap="nowrap">
-        <div align="right">Families</div>
+        <div align="right">Others</div>
+      </td>
+      <td>
+        <div align="center"><input name="others_m" type="text" id="others_m"
+            size="4"
+            value="<?php echo (($set) ? $sankhya->others_m : '0');?>"
+            maxlength="3" /></div>
+      </td>
+      <td>
+        <div align="center"><input name="others_f" type="text" id="others_f"
+            size="4"
+            value="<?php echo (($set) ? $sankhya->others_f : '0');?>"
+            maxlength="3" /></div>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap="nowrap">
+        <br /><div align="right">Total Families</div>
       </td>
       <td colspan="2">
+      	<br />
         <div align="center"><input name="families" type="text" id="families"
-            size="4" onblur="totalSankhya()"
+            size="4"
             value="<?php echo (($set) ? $sankhya->families : '0');?>"
             maxlength="3" /></div>
       </td>
@@ -124,8 +142,7 @@
       <td>
         <div align="center" id="subtt_f"></div>
       </td>
-      <!--<td>&nbsp;</td>
-    --></tr>
+    </tr>
     <tr>
       <td>
         <div align="right">
@@ -133,16 +150,14 @@
         </div>
       </td>
       <td colspan="2" align="center">
-        <div id="total"><?php echo (($set) ? $sankhya->total : '0');?></div>
+        <div id="total"><?php echo (($set) ? $sankhya->total : '');?></div>
       </td>
-      <!--<td align="center">&nbsp;</td>
-    --></tr>
+      </tr>
     <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
-      <!--<td>&nbsp;</td>
-    --></tr>
+      </tr>
     <tr>
       <td valign="top">
         <div align="right">Shakha Notes:</div>
@@ -154,8 +169,7 @@
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
-      <!--<td>&nbsp;</td>
-    --></tr>
+    </tr>
     <tr>
       <td colspan="2">
           <div align="center"><input type="submit" name="button" id="button"
@@ -169,7 +183,7 @@
       return $data = array(
               'name'        => $name,
               'id'          => $name,
-              'value'       => set_value($name,''),
+              'value'       => set_value($name,0),
               'maxlength'   => '8',
               'size'        => '10',
              );
@@ -200,6 +214,16 @@
   		<td><?php echo form_input(sny_text_field('week3_ss')); ?></td>
         <td><?php echo form_input(sny_text_field('week3_s')); ?></td>
   	</tr>
+  	<tr>
+  		<td><h3>Sub-Total</h3></td>
+  		<td id="counts_ss"></td>
+  		<td id="counts_s"></td>
+  	</tr>
+  	<tr>
+  		<td><h3>Total</h3></td>
+  		<td id="counts" colspan="2"></td>
+  	</tr>
+
   </tbody>
   </table>
 </form>
