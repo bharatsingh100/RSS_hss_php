@@ -1,14 +1,14 @@
 <?php
 
-class Sambhag_model extends Model 
+class Sambhag_model extends Model
 {
-   
+
     function Sambhag_model()
     {
         parent::Model();
     }
-	
-	
+
+
 	function add_email_list()
 	{
 		foreach($_POST as $key => $value)
@@ -23,9 +23,9 @@ class Sambhag_model extends Model
         if(!isset($d['mod3']) || $d['mod3'] == '') $d['mod3'] = 0;
 		$this->db->insert('lists', $d);
 		//$d['level'] = 'sh';
-		
+
 	}
-	
+
 	function add_responsibility()
 	{
 		foreach($_POST as $key => $val)
@@ -58,7 +58,7 @@ class Sambhag_model extends Model
 		}
 		return true;
 	}
-	
+
 	function get_swayamsevaks($num, $offset, $sambhag_id, $sort_by)
 	{
 		/*$shakhas = $this->db->get('shakhas', array('sambhag_id' => $sambhag_id))->result();
@@ -72,7 +72,7 @@ class Sambhag_model extends Model
 
 		return $query;
 	}
-	
+
 	function get_shakhas($sambhag_id, $active = false)
 	{
 		if($active) $this->db->where('shakha_status', 1);
@@ -82,22 +82,22 @@ class Sambhag_model extends Model
 			$shakha_ids[] = "$shakha->shakha_id";
 		return $shakha_ids;
 	}
-	
+
 	function getShakhaName($id)
 	{
 		$query = $this->db->select('name')->get_where('shakhas', array('shakha_id' => $id));
 		return $query->row()->name;
 	}
-	
+
 	function getSambhagStatistics($id)
 	{
 		//Get Vibhag Information
 		$this->db->where('DOM_ID', 2);
 		$this->db->like('REF_CODE', $id);
-		$this->db->order_by('short_desc', 'asc'); 
+		$this->db->order_by('short_desc', 'asc');
 		$vibhags = $this->db->select('REF_CODE as vibhag_id, short_desc as name')->get('Ref_Code')->result();
-		
-		
+
+
 		foreach($vibhags as &$vibhag) {
 			$vibhag->active_shakhas = $this->db->select('COUNT(shakha_id) as count')
 												->get_where('shakhas', array('shakha_status' => 1, 'vibhag_id' => $vibhag->vibhag_id))
@@ -108,29 +108,35 @@ class Sambhag_model extends Model
 			$vibhag->weekly_shakhas = $this->db->select('COUNT(shakha_id) as count')
 												->get_where('shakhas', array('shakha_status' => 1, 'vibhag_id' => $vibhag->vibhag_id, 'frequency' => 'WK'))
 												->row()->count;
-												
+            $vibhag->karyakartas = $this->db->query("SELECT count(distinct(swayamsevak_id)) as count
+														FROM `responsibilities`
+														WHERE vibhag_id = '{$vibhag->vibhag_id}'
+															OR nagar_id LIKE '{$vibhag->vibhag_id}%'
+															OR shakha_id IN (select shakha_id FROM shakhas WHERE vibhag_id = '{$vibhag->vibhag_id}')")
+												->row()->count;
+
 		}
 		//$data['total_shakhas'] = count($this->get_shakhas($id));
 		//$data['active_shakhas'] = count($this->get_shakhas($id, true));
 		//$data['sampark_kendras'] = $data['total_shakhas'] - $data['active_shakhas'];
-		
+
 		//$this->db->where(array('shakha_status' => 1, 'frequency' => 'WK', 'sambhag_id' => $id));
 		//$data['weekly_shakhas'] = $this->db->select('COUNT(shakha_id) as count')->get('shakhas')->row()->count;
-		
+
 		return $vibhags;
 	}
-	
+
 	function getSambhagInfo($id)
 	{
-		
+
 		//Get Vibhag Information
 		$this->db->where('DOM_ID', 2);
 		$this->db->like('REF_CODE', $id);
-		$this->db->order_by('short_desc', 'asc'); 
+		$this->db->order_by('short_desc', 'asc');
 		$v->vibhags = $this->db->select('REF_CODE, short_desc')->get('Ref_Code')->result();
 
 		//Get Vibhag Karyakarta Information
-		foreach($v->vibhags as & $temp) 
+		foreach($v->vibhags as & $temp)
 		{
 			$vibhag_id = $temp->REF_CODE;
 			$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
@@ -150,10 +156,10 @@ class Sambhag_model extends Model
 				}
 			}
 		}
-		
+
 		//Get Sambhag Name
 		$v->name = $this->getShortDesc($id);
-		
+
 		//Get Sambhag Karyakarta Information
 		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
 		$this->db->from('swayamsevaks');
@@ -171,23 +177,23 @@ class Sambhag_model extends Model
 				$i++;
 			}
 		}
-		
+
 		return $v;
 	}
-	
+
 
 	function getShortDesc($var1)
 	{
 		$this->db->select('short_desc');
 		$query = $this->db->get_where('Ref_Code', array('REF_CODE' => $var1));
-		
+
 		return ($query->num_rows()) ? $query->row()->short_desc : '';
 	}
 	function getRefCodes($var1)
 	{
 		return $this->db->get_where('Ref_Code', array('DOM_ID' => $var1));
 	}
-	
+
     //Get total counts of contacts for Vibhag by Categories
     function getSambhagContacts($id) {
 

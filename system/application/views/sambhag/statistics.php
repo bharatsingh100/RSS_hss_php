@@ -85,15 +85,17 @@
 		<th>Active Shakhas</th>
 		<th>Sampark Kendras</th>
 		<th>Weekly Shakhas</th>
+		<th>Karyakartas</th>
 	</tr>
-	<?php 
-		$active_shakhas = $sampark_kendras = $weekly_shakhas = 0;
+	<?php
+		$active_shakhas = $sampark_kendras = $weekly_shakhas = $karyakartas = 0;
 		foreach($stats as $vibhag): ?>
 	<tr>
 		<td><?php echo anchor('vibhag/statistics/'.$vibhag->vibhag_id, $vibhag->name); ?></td>
 		<td><?php echo $vibhag->active_shakhas; $active_shakhas +=  $vibhag->active_shakhas;?></td>
 		<td><?php echo $vibhag->sampark_kendras; $sampark_kendras += $vibhag->sampark_kendras;?></td>
 		<td><?php echo $vibhag->weekly_shakhas;  $weekly_shakhas += $vibhag->weekly_shakhas;?></td>
+		<td><?php echo $vibhag->karyakartas;  $karyakartas += $vibhag->karyakartas;?></td>
 	</tr>
 	<?php endforeach; ?>
 	<tr><td colspan="4">&nbsp;</tr>
@@ -102,6 +104,7 @@
 	    <td><?php echo $active_shakhas;?></td>
 	    <td><?php echo $sampark_kendras;?></td>
 	    <td><?php echo $weekly_shakhas;?></td>
+	    <td><?php echo $karyakartas;?></td>
 	</tr>
 </table><!--
 <strong>Active Shakhas:</strong> <?php //echo $stats['active_shakhas']; ?><br />

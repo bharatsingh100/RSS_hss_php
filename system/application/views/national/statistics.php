@@ -34,13 +34,13 @@
 	<?php
 		$active_shakhas = $sampark_kendras = $weekly_shakhas = $karyakartas = 0;
 		foreach($stats as $sambhag): ?>
-	<tr>
-		<td><?php echo anchor('sambhag/statistics/'.$sambhag->sambhag_id, $sambhag->name); ?></td>
-		<td><?php echo $sambhag->active_shakhas; $active_shakhas +=  $sambhag->active_shakhas;?></td>
-		<td><?php echo $sambhag->sampark_kendras; $sampark_kendras += $sambhag->sampark_kendras;?></td>
-		<td><?php echo $sambhag->weekly_shakhas;  $weekly_shakhas += $sambhag->weekly_shakhas;?></td>
-		<td><?php echo $sambhag->karyakartas;  $karyakartas += $sambhag->karyakartas;?></td>
-	</tr>
+      	<tr>
+      		<td><?php echo anchor('sambhag/statistics/'.$sambhag->sambhag_id, $sambhag->name); ?></td>
+      		<td><?php echo $sambhag->active_shakhas; $active_shakhas +=  $sambhag->active_shakhas;?></td>
+      		<td><?php echo $sambhag->sampark_kendras; $sampark_kendras += $sambhag->sampark_kendras;?></td>
+      		<td><?php echo $sambhag->weekly_shakhas;  $weekly_shakhas += $sambhag->weekly_shakhas;?></td>
+      		<td><?php echo $sambhag->karyakartas;  $karyakartas += $sambhag->karyakartas;?></td>
+      	</tr>
 	<?php endforeach; ?>
 	<tr><td colspan="4">&nbsp;</td></tr>
 	<tr>
