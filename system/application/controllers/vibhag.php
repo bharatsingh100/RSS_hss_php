@@ -403,6 +403,13 @@ class Vibhag extends Controller {
     $d['row'] = $this->Vibhag_model->getVibhagInfo($id);
     $this->layout->view('vibhag/add-shakha.php', $d);
   }
+
+  function activities($id) {
+    $data['activities'] = $this->activities->get_activities('vibhag', $id);
+    $data['row'] = $this->Shakha_model->getShakhaInfo($id);
+    $data['pageTitle'] = $data['row']->name . ' Activities';
+    $this->layout->view('shakha/view-activities', $data);
+  }
 }
 
 ?>

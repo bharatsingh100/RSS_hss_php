@@ -149,6 +149,18 @@ class Shakha extends Controller {
     $this->layout->view('shakha/view-activities', $data);
   }
 
+  function autocomplete(){
+    $this->db->select('company')->like('company',$this->input->get('q'));
+    $results = $this->db->get('swayamsevaks', 10);
+    $out = '';
+    foreach ($results->result() as $rs){
+      $out .= $rs->company . "\n";
+    }
+
+    return $out;
+
+  }
+
   function create_list($id, $error = '') {
     if ($error != '')
       $c['d'] = $error;

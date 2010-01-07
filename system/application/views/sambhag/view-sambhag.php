@@ -1,13 +1,18 @@
 <h2><?=$row->name?> Sambhag</h2>
-<?php 
+<?php
 if(isset($row->kk))
 {
 	echo '<h3>Responsibilities:</h3>';
+	$karyakartas = array();
+	$out = '';
 	foreach ($row->kk as $kk)
 	{
-		echo '<p><strong>',$kk->resp_title.'</strong>: ',anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name),'</p>';
+	  $karyakartas[$kk->resp_title][] = anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name);
 	}
-	echo '<p>&nbsp;</p>';
+	foreach($karyakartas as $responsibility => $names) {
+	  $out .= '<p><strong>'.$responsibility.'</strong>: '. implode(', ', $names) .'</p>';
+	}
+	echo $out;
 }
 ?>
 <h3>Vibhags:</h3>
@@ -17,7 +22,7 @@ foreach($row->vibhags as $vibhag)
 {
 	echo '<li>'.anchor('vibhag/view/'.$vibhag->REF_CODE, $vibhag->short_desc);
 	//echo ($shakha->shakha_status == 0) ? '<font color="red"> (Unactive)</font>': '';
-	echo "</li>\n"; 
+	echo "</li>\n";
 }
 echo "</ol>\n" */
 ?>
@@ -27,13 +32,13 @@ echo "</ol>\n" */
     <th>Vibhag</th>
     <th>Karyavah</th>
     <th>Sah-Karyavah</th>
-    <th>Sanghchalak</th>	
+    <th>Sanghchalak</th>
   </tr>
 <?php $i = 1; foreach($row->vibhags as $vibhag) { ?>
   <tr>
   	<td valign="top"><?=$i++?></td>
     <td valign="top"><?=anchor('vibhag/view/'.$vibhag->REF_CODE, $vibhag->short_desc)?></td>
-    <?php if(isset($vibhag->kk)) 
+    <?php if(isset($vibhag->kk))
 	{
 		echo '<td valign="top">';
 		foreach($vibhag->kk as $kk)

@@ -1,13 +1,18 @@
 <h2><?=$row->name?></h2>
-<?php 
+<?php
 if(isset($row->kk))
 {
 	echo '<h3>Responsibilities:</h3>';
+	$karyakartas = array();
+	$out = '';
 	foreach ($row->kk as $kk)
 	{
-		echo '<p><strong>',$kk->resp_title.'</strong>: ',anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name),'</p>';
+	  $karyakartas[$kk->resp_title][] = anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name);
 	}
-	echo '<p>&nbsp;</p>';
+	foreach($karyakartas as $responsibility => $names) {
+	  $out .= '<p><strong>'.$responsibility.'</strong>: '. implode(', ', $names) .'</p>';
+	}
+	echo $out;
 }
 ?>
 <h3>Sambhags:</h3>
@@ -17,13 +22,13 @@ if(isset($row->kk))
     <th>Sambhag</th>
     <th>Karyavah</th>
     <th>Sah-Karyavah</th>
-    <th>Sanghchalak</th>	
+    <th>Sanghchalak</th>
   </tr>
 <?php $i = 1; foreach($row->sambhags as $sambhag) { ?>
   <tr>
   	<td valign="top"><?=$i++?></td>
     <td valign="top"><?=anchor('sambhag/view/'.$sambhag->REF_CODE, $sambhag->short_desc)?></td>
-    <?php if(isset($sambhag->kk)) 
+    <?php if(isset($sambhag->kk))
 	{
 		echo '<td valign="top">';
 		foreach($sambhag->kk as $kk)

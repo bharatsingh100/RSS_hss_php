@@ -1,12 +1,18 @@
 <h2><?=$row->name?> Vibhag</h2>
-<?php 
+<?php
 if(isset($row->kk))
 {
 	echo '<h3>Responsibilities:</h3>';
+	$karyakartas = array();
+	$out = '';
 	foreach ($row->kk as $kk)
 	{
-		echo '<p><strong>'.$kk->resp_title.'</strong>: '.anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name).'</p>';
+	  $karyakartas[$kk->resp_title][] = anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name);
 	}
+	foreach($karyakartas as $responsibility => $names) {
+	  $out .= '<p><strong>'.$responsibility.'</strong>: '. implode(', ', $names) .'</p>';
+	}
+	echo $out;
 }
 ?>
 <?php if(isset($row->nagars)) : ?>
@@ -23,7 +29,7 @@ if(isset($row->kk))
   <tr>
   	<td valign="top"><?=$i++?></td>
     <td valign="top"><?=anchor('nagar/view/'.$nagar->nagar_id, $nagar->name)?></td>
-    <?php 	if(isset($nagar->kk)) 
+    <?php 	if(isset($nagar->kk))
 	{
 		echo '<td valign="top">';
 		foreach($nagar->kk as $kk)
@@ -53,15 +59,15 @@ if(isset($row->kk))
     <th>Karyavah</th>
     <th>Mukhya Shikshak</th>
   </tr>
-<?php 
-	$i = 1; 
+<?php
+	$i = 1;
 	foreach($row->shakhas as $shakha) {
 		if($shakha->shakha_status == 0) continue;
 ?>
   <tr>
   	<td valign="top"><?=$i++?></td>
     <td valign="top"><?=anchor('shakha/view/'.$shakha->shakha_id, $shakha->name)?><?php echo ($shakha->shakha_status == 0) ? '<font color="red"> (Inactive)</font>': '';?></td>
-    <?php 	if(isset($shakha->kk)) 
+    <?php 	if(isset($shakha->kk))
 	{
 		echo '<td valign="top">';
 		foreach($shakha->kk as $kk)
@@ -87,15 +93,15 @@ if(isset($row->kk))
     <th>Karyavah</th>
     <th>Mukhya Shikshak</th>
   </tr>
-<?php 
-	$i = 1; 
+<?php
+	$i = 1;
 	foreach($row->shakhas as $shakha) {
 		if($shakha->shakha_status == 1) continue;
 ?>
   <tr>
   	<td valign="top"><?=$i++?></td>
     <td valign="top"><?=anchor('shakha/view/'.$shakha->shakha_id, $shakha->name)?></td>
-    <?php 	if(isset($shakha->kk)) 
+    <?php 	if(isset($shakha->kk))
 	{
 		echo '<td valign="top">';
 		foreach($shakha->kk as $kk)
