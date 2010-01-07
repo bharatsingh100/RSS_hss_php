@@ -10,7 +10,7 @@ class Sambhag extends Controller
 			$this->session->set_userdata('redirect', $this->uri->uri_string());
 			redirect('user');
 		}
-		
+
 		//Check Permissions
 		$perm = array('browse', 'add_vibhag','responsibilities','statistics','email_lists','create_list');
 		if(in_array($this->uri->segment(2), $perm)){
@@ -20,25 +20,25 @@ class Sambhag extends Controller
 				redirect('sambhag/view/'.$this->uri->segment(3));
 			}
 		}
-		
-		//$this->output->enable_profiler(TRUE);
+
+		$this->output->enable_profiler($this->config->item('debug'));
 		$this->load->model('Sambhag_model');
 		$this->load->library('layout');
 		$this->layout->setLayout("layout_sambhag");
 
 		//$rs = $this->db->get_where('shakhas', array('shakha_id' => $this->uri->segment(3)))->row();
-		$id = $this->uri->segment(3);	
-/*		$this->session->set_userdata('bc_vibhag', $this->Sambhag_model->getShortDesc($id));	
+		$id = $this->uri->segment(3);
+/*		$this->session->set_userdata('bc_vibhag', $this->Sambhag_model->getShortDesc($id));
 		$this->session->set_userdata('bc_vibhag_id', $id);
 		$sid = str_split($id, 2);*/
-		$this->session->set_userdata('bc_sambhag', $this->Sambhag_model->getShortDesc($id));			
+		$this->session->set_userdata('bc_sambhag', $this->Sambhag_model->getShortDesc($id));
 		$this->session->set_userdata('bc_sambhag_id', $id);
-		
+
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 		$this->output->set_header('Pragma: no-cache');
-			
+
     }
-	
+
 	function email_lists($id)
 	{
         $this->db->select('id,address,level_id,status,style,size,mod1,mod2,mod3');
@@ -83,8 +83,8 @@ class Sambhag extends Controller
 		//TODO: Create view for View Lists
 		$this->layout->view('sambhag/email_lists', $d);
 	}
-	
-	
+
+
 /*	function email_lists($id)
 	{
         $this->db->select('id,address,level_id,status,style,size,mod1,mod2,mod3');
@@ -132,11 +132,11 @@ class Sambhag extends Controller
     	{
 		if($error != '')
 			$c['data'] = $error;
-        	
+
 		$c['lists'] = $this->db->get_where('lists', array('level_id' => $list_id))->row();
 		$c['sambhag'] = $this->Sambhag_model->getSambhagInfo($c['lists']->level_id);
 		$c['pageTitle'] = 'Edit E-mail list';
-		$this->layout->view('sambhag/edit_list', $c);	
+		$this->layout->view('sambhag/edit_list', $c);
     	}*/
 
 	function edit_list($id, $list_id, $error = '')
@@ -155,28 +155,28 @@ class Sambhag extends Controller
 				$this->session->set_userdata('message', 'Your password should be at least 5 characters long.');
 				redirect('sambhag/edit_list/'.$id.'/'.$list_id);
 			}
-			
+
 			foreach($_POST as $key => $val)
 				$d[$key] = $val;
-			
+
 			unset($d['button']);
 			if(!isset($d['mod3']) || $d['mod3'] == '') $d['mod3'] = 0;
 			if(!isset($d['mod2']) || $d['mod2'] == '') $d['mod2'] = 0;
 			$d['members'] = serialize($d['members']);
 			$this->db->update('lists', $d, array('id' => $list_id));
-			
+
 			$this->session->set_userdata('message', 'Your list was updated successfully.');
 			redirect('sambhag/email_lists/'.$id);
-			
+
 		}
 
-        	
+
 		$c['lists'] = $this->db->get_where('lists', array('id' => $list_id))->row();
 		$c['sambhag'] = $this->Sambhag_model->getSambhagInfo($c['lists']->level_id);
 		$c['pageTitle'] = 'Edit E-mail list';
-		$this->layout->view('sambhag/edit_list', $c);	
+		$this->layout->view('sambhag/edit_list', $c);
     }
-	
+
 	function create_list($id, $error = '')
 	{
 		if($error != '')
@@ -185,7 +185,7 @@ class Sambhag extends Controller
 		$c['pageTitle'] = 'Create new e-mail list';
 		$this->layout->view('sambhag/create_list', $c);
 	}
-	
+
 	function del_list($id, $list_id)
 	{
 		if(isset($_POST['button2']))
@@ -197,7 +197,7 @@ class Sambhag extends Controller
 		}
 		else redirect('sambhag/email_lists/'.$id);
 	}
-	
+
 	function add_email_list()
 	{
 		$ers = false;
@@ -205,10 +205,10 @@ class Sambhag extends Controller
 
 		foreach($_POST as $key => &$value){
 			if($key == 'members'){
-				foreach($value as $v) 
+				foreach($value as $v)
 					$error['members'][] = $v; }
 			$error[$key] = $value;}
-		
+
 		if(!isset($error['address']) || $error['address'] == '')
 		{
 			$error['msg'][] = 'You must enter the List Name';
@@ -219,7 +219,7 @@ class Sambhag extends Controller
 			$error['msg'][] = 'Your must enter a password.';
 			$ers = true;
 		}
-		if(!is_array($error['members']) || !count($error['members'])) 
+		if(!is_array($error['members']) || !count($error['members']))
 		//Count returns 0 is variable is not set or array is empty
 		{
 			$error['msg'][] = 'You must select at least one member for your list';
@@ -236,13 +236,13 @@ class Sambhag extends Controller
 			$this->session->set_userdata('message', 'Please correct the errors.');
 			$this->create_list($this->input->post('level_id'), $error);
 		}
-		else 
+		else
 		{
 			$this->Sambhag_model->add_email_list();
 			$this->session->set_userdata('message', 'Your list '.$this->input->post('address').'@hssusa.org has been requested.');
 			redirect('sambhag/email_lists/'.$this->input->post('level_id'));
 		}
-		
+
 		//TODO: Add hidden shakha id parameter to from page
 		//$d['level'] = 'sh';
 		//level = 0-Shakha 1-sambhag 2-sambhag
@@ -250,7 +250,7 @@ class Sambhag extends Controller
 		//members = 0 All Swayamsevaks | 1 Bala swayamsevaks | 2 Kishor Swayamsevaks | 3 Yuva Swayamsevaks
 		// 4 Tarun Swayamsevaks | 5 Praudh swayamsevaks | 6 All Karyakartas
 	}
-	
+
 	function statistics($id)
 	{
 
@@ -296,7 +296,7 @@ class Sambhag extends Controller
 		$this->layout->view('sambhag/add_responsibility', $data);
 	}
 
-		
+
  /*	function csv_out($id)
 	{
 		$this->output->enable_profiler(FALSE);
@@ -315,7 +315,7 @@ class Sambhag extends Controller
 
 		/*for($i = 1; $i < $data['query']->num_rows(); $i++)
 			$temp[$i]->Shakha = $sh[$temp[$i]->Shakha];
-			
+
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=". date("M-d_H-i") .".csv");
 		$this->load->view('sambhag/csv', $data);
@@ -349,13 +349,13 @@ class Sambhag extends Controller
 		$this->output->set_header("Content-disposition: csv; filename=". date("M-d_H-i") .".csv");
 		$this->load->view('sambhag/csv', $data);
 	}
-	
+
 	function browse($id = '', $order = 'name') {
 		//if($id == '') $id = $this->session->userdata('sambhag_id');
-		
+
 		$shakha_ids = $this->Sambhag_model->get_shakhas($id);
 		$shakha_ids = '('.implode(',',$shakha_ids).')';
-		
+
 		$this->load->library('pagination');
 		$config['base_url'] = base_url()."sambhag/browse/$id/$order/";
     	$config['total_rows'] = $this->db->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids)->num_rows();//$this->db->count_all('swayamsevaks');
@@ -365,16 +365,16 @@ class Sambhag extends Controller
 		$config['uri_segment'] = 5;
 //		$config['post_url'] = $data['order'].'/'.$data['orderDir'];
 		$this->pagination->initialize($config);
-		
+
 		$data['results'] = $this->Sambhag_model->get_swayamsevaks($config['per_page'], $this->uri->segment(5), $id, $order);
 		$data['pageTitle'] = 'Browse Swayamsevaks';
 		$data['sambhag_name'] = $this->Sambhag_model->getShortDesc($id);
-	    	
+
 		$this->load->library('table');
     		$this->table->set_heading('Name', 'City', 'Phone', 'E-mail', 'Gana', 'Shakha');
 		$this->layout->view('sambhag/list_ss', $data);
 	}
-		
+
 	function view($id)
 	{
 
@@ -390,13 +390,13 @@ class Sambhag extends Controller
 		$data['query'] = $this->db->query("SELECT s.first_name as FirstName, s.last_name as LastName, s.email Email,
 											s.city as City, s.state as State, sh.name as Shakha,
 											rc.short_desc as Nagar, rc0.short_desc as Vibhag, rc1.short_desc as Sambhag, rc2.short_desc as Responsibility
-											FROM swayamsevaks s, responsibilities r 
+											FROM swayamsevaks s, responsibilities r
 											LEFT JOIN shakhas sh ON r.shakha_id = sh.shakha_id
 											LEFT JOIN Ref_Code rc ON r.nagar_id = rc.REF_CODE AND rc.DOM_ID = 3
 											LEFT JOIN Ref_Code rc0 ON r.vibhag_id = rc0.REF_CODE AND rc0.DOM_ID = 2
 											LEFT JOIN Ref_Code rc1 ON r.sambhag_id = rc1.REF_CODE AND rc1.DOM_ID = 1
 											LEFT JOIN Ref_Code rc2 ON r.responsibility = rc2.REF_CODE AND rc2.DOM_ID = 4
-											WHERE s.shakha_id IN (SELECT shakha_id FROM shakhas WHERE sambhag_id LIKE '{$id}') 
+											WHERE s.shakha_id IN (SELECT shakha_id FROM shakhas WHERE sambhag_id LIKE '{$id}')
 											AND r.swayamsevak_id = s.contact_id
 											ORDER BY Shakha, Nagar, Vibhag, Sambhag ASC;");
 
