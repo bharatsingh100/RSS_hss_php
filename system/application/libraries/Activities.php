@@ -148,7 +148,7 @@ class Activities
 
         case 'sny' :
           $temp .= " {$event->verb} SNY Count";
-          $temp .= ' of ' . $this->_get_object_link($event->object_id2);
+          $temp .= ' of ' . $this->_get_object_link($event->object_id);
           break;
 
         case 'note' :

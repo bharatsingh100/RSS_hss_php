@@ -160,7 +160,7 @@ class Shakha_model extends Model
 
     //Update activities table
     $contact_id = $this->session->userdata('contact_id') ? $this->session->userdata('contact_id') : 0;
-    $this->activities->add_activity($contact_id, $this->db->insert_id(), 'sny', 'updated', $data, $data['shakha_id']);
+    $this->activities->add_activity($contact_id, $data['shakha_id'], 'sny', 'updated', $data);
   }
 
   function update_shakha($id)
