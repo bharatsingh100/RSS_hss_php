@@ -1,4 +1,4 @@
-<?php $set = isset($sankhyas) ? true : false ; ?>
+<?php $set = isset($sankhya) ? true : false ; ?>
 <h2><?php echo $shakha->name;?> - Report SNY Count</h2>
 <form id="sny_count" method="post"
   action="/shakha/insert_sny_count/<?php echo $shakha->shakha_id; ?>">
@@ -179,11 +179,13 @@
   </table>
 
   <?php
-    function sny_text_field($name){
+    function sny_text_field($name, $sankhya){
+      $value = isset($sankhya->{$name}) ? (int)$sankhya->{$name} : 0;
+
       return $data = array(
               'name'        => $name,
               'id'          => $name,
-              'value'       => set_value($name,0),
+              'value'       => $value,
               'maxlength'   => '8',
               'size'        => '10',
              );
@@ -201,27 +203,27 @@
   	</tr>
   	<tr>
   		<td>Week 1</td>
-  		<td><?php echo form_input(sny_text_field('week1_ss')); ?></td>
-  		<td><?php echo form_input(sny_text_field('week1_s')); ?></td>
+  		<td><?php echo form_input(sny_text_field('week1_ss', $sankhya)); ?></td>
+  		<td><?php echo form_input(sny_text_field('week1_s', $sankhya)); ?></td>
   	</tr>
   	<tr>
   		<td>Week 2</td>
-  		<td><?php echo form_input(sny_text_field('week2_ss')); ?></td>
-        <td><?php echo form_input(sny_text_field('week2_s')); ?></td>
+  		<td><?php echo form_input(sny_text_field('week2_ss', $sankhya)); ?></td>
+        <td><?php echo form_input(sny_text_field('week2_s', $sankhya)); ?></td>
   	</tr>
   	<tr>
   		<td>Week 3</td>
-  		<td><?php echo form_input(sny_text_field('week3_ss')); ?></td>
-        <td><?php echo form_input(sny_text_field('week3_s')); ?></td>
+  		<td><?php echo form_input(sny_text_field('week3_ss', $sankhya)); ?></td>
+        <td><?php echo form_input(sny_text_field('week3_s', $sankhya)); ?></td>
   	</tr>
   	<tr>
   		<td><h3>Sub-Total</h3></td>
-  		<td id="counts_ss"></td>
-  		<td id="counts_s"></td>
+  		<td id="counts_ss"><?php echo $sankhya->total_ss; ?></td>
+  		<td id="counts_s"><?php echo $sankhya->total_s; ?></td>
   	</tr>
   	<tr>
   		<td><h3>Total</h3></td>
-  		<td id="counts" colspan="2"></td>
+  		<td id="counts" colspan="2"><?php echo $sankhya->total_ss + $sankhya->total_s; ?></td>
   	</tr>
 
   </tbody>

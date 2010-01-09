@@ -320,11 +320,13 @@ class Shakha extends Controller {
    */
   function sny_count($id) {
 
-    $v = $this->db->get_where('sny', array('shakha_id' => $id), 1);
+    $record = $this->db->get_where('sny', array('shakha_id' => $id), 1);
 
-    if ($v->num_rows()) {
-      $data['sankhya'] = $v->row();
-      //$data['contact'] = $this->db->get_where('swayamsevaks', array('contact_id' => $data['sankhya']->contact_id))->row();
+    if ($record->num_rows()) {
+      $data['sankhya'] = $record->row();
+
+      $this->db->where('contact_id', $data['sankhya']->contact_id);
+      $data['contact'] = $this->db->get('swayamsevaks')->row();
     }
 
     $data['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $id), 1)->row();
@@ -337,7 +339,15 @@ class Shakha extends Controller {
   private function _getShakhaDate($id) {
     $shakha = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
 
-    $wd = array("Sunday" => 0, "Monday" => 1, "Tuesday" => 2, "Wednesday" => 3, "Thursday" => 4, "Friday" => 5, "Saturday" => 6);
+    $wd = array(
+      "Sunday" => 0,
+      "Monday" => 1,
+      "Tuesday" => 2,
+      "Wednesday" => 3,
+      "Thursday" => 4,
+      "Friday" => 5,
+      "Saturday" => 6
+    );
 
     $day_number = $wd[$shakha->frequency_day];
     $t = getdate();
