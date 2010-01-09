@@ -179,8 +179,9 @@
   </table>
 
   <?php
+    if(!$set) {$sankhya = NULL;}
     function sny_text_field($name, $sankhya){
-      $value = isset($sankhya->{$name}) ? (int)$sankhya->{$name} : 0;
+      $value = isset($set, $sankhya->{$name}) ? (int)$sankhya->{$name} : 0;
 
       return $data = array(
               'name'        => $name,
@@ -218,12 +219,13 @@
   	</tr>
   	<tr>
   		<td><h3>Sub-Total</h3></td>
-  		<td id="counts_ss"><?php echo $sankhya->total_ss; ?></td>
-  		<td id="counts_s"><?php echo $sankhya->total_s; ?></td>
+  		<td id="counts_ss"><?php echo $set ? $sankhya->total_ss : ''; ?></td>
+  		<td id="counts_s"><?php echo $set ? $sankhya->total_s : ''; ?></td>
   	</tr>
   	<tr>
   		<td><h3>Total</h3></td>
-  		<td id="counts" colspan="2"><?php echo $sankhya->total_ss + $sankhya->total_s; ?></td>
+  		<td id="counts" colspan="2">
+  		<?php echo $set ? $sankhya->total_ss + $sankhya->total_s : ''; ?></td>
   	</tr>
 
   </tbody>
