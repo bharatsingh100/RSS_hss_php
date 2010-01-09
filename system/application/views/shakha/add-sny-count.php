@@ -181,7 +181,7 @@
   <?php
     if(!$set) {$sankhya = NULL;}
     function sny_text_field($name, $sankhya){
-      $value = isset($set, $sankhya->{$name}) ? (int)$sankhya->{$name} : 0;
+      $value = isset($sankhya->{$name}) ? (int)$sankhya->{$name} : 0;
 
       return $data = array(
               'name'        => $name,

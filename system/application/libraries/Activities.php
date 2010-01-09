@@ -146,6 +146,11 @@ class Activities
           $temp .= ' for ' . anchor("shakha/add_sankhya/{$event->object_id2}/{$d['date']}", $d['date']) . '.';
           break;
 
+        case 'sny' :
+          $temp .= " {$event->verb} SNY Count";
+          $temp .= ' of ' . $this->_get_object_link($event->object_id2);
+          break;
+
         case 'note' :
           //In this case only notes are requested and nothing else
           if($type === 'note') {
