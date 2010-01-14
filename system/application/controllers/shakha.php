@@ -257,6 +257,34 @@ class Shakha extends Controller {
     $this->layout->view('shakha/statistics', $v);
   }
 
+  function sny_stats($id) {
+    $yr = date('Y');
+    $ag['shishu'] = $yr - 6;
+    $ag['bala'] = $yr - 12;
+    $ag['kishor'] = $yr - 19;
+    $ag['yuva'] = $yr - 25;
+    $ag['tarun'] = $yr - 50;
+    $v['shakha'] = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
+    $v['families'] = $this->db->select('DISTINCT household_id', false)->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
+    $v['contacts'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
+    $v['swayamsevaks'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id, 'gender' => 'M'))->num_rows();
+    $v['sevikas'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id, 'gender' => 'F'))->num_rows();
+    $v['shishu'] = $this->db->get_where('swayamsevaks', 'birth_year > ' . $ag['shishu'] . ' AND shakha_id =' . $id)->num_rows();
+    $v['bala'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN ' . $ag['bala'] . ' AND ' . $ag['shishu'] . ' AND shakha_id =' . $id)->num_rows();
+    $v['kishor'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN ' . $ag['kishor'] . ' AND ' . $ag['bala'] . ' AND shakha_id =' . $id)->num_rows();
+    $v['yuva'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN ' . $ag['yuva'] . ' AND ' . $ag['kishor'] . ' AND shakha_id =' . $id)->num_rows();
+    $v['tarun'] = $this->db->get_where('swayamsevaks', 'birth_year BETWEEN ' . $ag['tarun'] . ' AND ' . $ag['yuva'] . ' AND shakha_id =' . $id)->num_rows();
+    $v['praudh'] = $this->db->get_where('swayamsevaks', 'birth_year < ' . $ag['tarun'] . ' AND shakha_id =' . $id)->num_rows();
+    $v['phone'] = $this->db->get_where('swayamsevaks', '(ph_mobile != \'\' OR ph_home != \'\' OR ph_work != \'\') AND shakha_id =' . $id)->num_rows();
+    $v['email'] = $this->db->get_where('swayamsevaks', 'email != \'\' AND email_status = \'Active\' AND shakha_id =' . $id)->num_rows();
+    $v['email_unactive'] = $this->db->get_where('swayamsevaks', 'email != \'\' AND email_status != \'Active\' AND shakha_id =' . $id)->num_rows();
+    $v['sankhyas'] = $this->db->order_by('date', 'desc')->get_where('sankhyas', array('shakha_id' => $id))->result();
+    $v['pageTitle'] = $v['shakha']->name . ' Shakha Statistics';
+    $v['invalid'] = $this->db->select('contact_id,first_name,last_name,email')->where('shakha_id', $id)->get_where('swayamsevaks', "email_status IN ('Unsubscribed','Bounced')")->result();
+
+    $this->layout->view('shakha/sny_statistics', $v);
+  }
+
   function del_responsibility($shakha_id, $ss_id, $resp_id) {
     $this->Shakha_model->delete_responsibility($shakha_id, $ss_id, $resp_id);
     //Remove Karyakarta from his gata members.

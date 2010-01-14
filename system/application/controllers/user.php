@@ -23,21 +23,24 @@ class User extends Controller
 			$data['pageTitle'] = 'User Login';
 			$this->layout->view('user/login', $data);
 		}
-		
+
 	}
 
 	function logout()
 	{
 		$this->session->sess_destroy();
-		$this->session->set_userdata('message', 'You have successfully logged out!');
+		//$this->session->set_userdata('message', 'You have successfully logged out!');
 		$data['pageTitle'] = 'Logged Out';
 		$this->layout->view('user/login', $data);
 	}
 	function login()
 	{
 
-		if($this->session->userdata('redirect'))
-			$redirect_url = $this->session->ro_userdata('redirect');
+	    //Capture the redirect URL before session is manipulated
+		if($this->session->userdata('redirect')) {
+		  $redirect_url = $this->session->ro_userdata('redirect');
+		}
+
 		if($this->session->userdata('logged_in')){// == $this->input->post('username')) {
 			//User is already logged in.
 			redirect('profile/view/' . $this->session->userdata('contact_id'));
@@ -58,6 +61,7 @@ class User extends Controller
 
 		    }
 
+		    //Redirect user to the page that they were alrady going to
 		    if(isset($redirect_url))
 				  redirect($redirect_url);
 			  else
@@ -195,9 +199,9 @@ class User extends Controller
 	}
 
 
-	function _logincheck($user = '', $password = '')
+	private function _logincheck($user = '', $password = '')
 	{
-		if($user == '' || $password == '')
+		if(empty($user) || empty($password))
 		{
 			$this->session->set_userdata('message', 'Your password or email address field was blank. Try again');
 			return false;
@@ -206,15 +210,33 @@ class User extends Controller
 		$query = $this->db->get_where('swayamsevaks', array('email' => $user));
 		if($query->num_rows() > 0)
 		{
-			$row = $query->row();
+		    $row = NULL;
+		    $contact_id = array();
+
+		    //FIXME : Remove hack once we remove duplicate emails and profiles
+		    foreach($query->result() as $record) {
+		      $contact_id[] = $record->contact_id;
+		      if($record->password == dohash($password)) {
+		        $row = $record;
+		        break;
+		      }
+		    }
+
 			//Only Karyakartas are allowed to access this system
-			$t = $this->db->get_where('responsibilities', array('swayamsevak_id' => $row->contact_id));
-			if($t->num_rows() == 0)
+			//Check if the person logging in is a karyakarta
+			if(count($contact_id) > 0)
 			{
-				$this->session->set_userdata('message', 'Your are not allowed to access this system. Please contact us for more info.');
-				return false;
+			    $this->db->where_in('swayamsevak_id', $contact_id);
+			    $t = $this->db->get('responsibilities', 1);
+
+			    if($t->num_rows() == 0) {
+			      $this->session->set_userdata('message', 'Your are not allowed to access this system. Please contact us for more info.');
+				  return false;
+			    }
 			}
-			if($row->password != dohash($password))
+
+			//Return message if the password didn't match
+			if(is_null($row))
 			{
 				//$this->session->set_flashdata('message', 'Your password did\'t match our records.');
 				$this->session->set_userdata('message', 'Your password did\'t match our records.');
