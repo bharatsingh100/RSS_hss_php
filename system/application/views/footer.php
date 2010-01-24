@@ -14,6 +14,7 @@
 <script type="text/javascript" src="/css/all.js"></script>
 <script type="text/javascript" src="/css/jgcharts.pack.js"></script>
 <script type="text/javascript" src="/css/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="/css/jquery.tablesorter.min.js"></script>
 <script type="text/javascript">
 <!--
 	<?php /* Execute Javascript function from all.js based on URL */ ?>
@@ -21,7 +22,9 @@
 
 	if(typeof(mylib.<?php echo $this->uri->segment(1); ?>) !== "undefined") {
     	if(typeof(mylib.<?php echo $url_parts; ?>) !== "undefined") {
-    		mylib.<?php echo $url_parts;; ?>();
+        	$(document).ready(function(){
+    			mylib.<?php echo $url_parts;; ?>();
+        	});
     	}
 	}
 

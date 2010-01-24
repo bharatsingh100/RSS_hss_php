@@ -87,6 +87,10 @@ var mylib =
 	},
 	shakha :
 	{
+		sny_statistics: function()
+		{
+			$("#sny_statistics").tablesorter({sortList: [[1,1], [2,1]]});
+		},
 		sny_count : function()
 		{
 			var sny_form = $("#sny_count input[type=text]");

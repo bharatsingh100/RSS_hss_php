@@ -429,6 +429,28 @@ class Shakha_model extends Model
     //var_dump($result);
     //die();
   }
+
+  function sny_statistics($shakha_id)
+  {
+    $results = array();
+
+    $this->db->select('sh.name, sh.city, sh.state, sh.vibhag_id, sh.nagar_id, sh.sambhag_id, sny.*');
+    $this->db->from('sny');
+    $this->db->join('shakhas sh', 'sh.shakha_id = sny.shakha_id');
+    $this->db->order_by('sh.sambhag_id, sh.vibhag_id');
+    $results['counts'] = $this->db->get()->result();
+
+    //Get Short Description names of Nagar / Vibhag and Sambhag
+    $results['descriptions'] = array();
+    $this->db->select('REF_CODE, short_desc, DOM_ID');
+    $records = $this->db->get('Ref_Code')->result();
+
+    foreach($records as $record) {
+      $results['descriptions'][$record->REF_CODE . $record->DOM_ID] = $record->short_desc;
+    }
+
+    return $results;
+  }
 }
 
 ?>

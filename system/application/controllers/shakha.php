@@ -260,12 +260,23 @@ class Shakha extends Controller {
   function sny_stats($id) {
     $this->output->enable_profiler(false);
     $this->load->dbutil();
-    //$this->db->select('contact_id, household_id, contact_type, gana, first_name, last_name, gender, birth_year, company, position, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, ssv_completed, notes');
-    $data['query'] = $this->db->get('sny');
+
+    $this->db->select('sh.name, sh.city, sh.state, sh.vibhag_id, sh.nagar_id, sh.sambhag_id, sny.*');
+    $this->db->from('sny');
+    $this->db->join('shakhas sh', 'sh.shakha_id = sny.shakha_id');
+
+    $data['query'] = $this->db->get();
     $this->output->set_header("Content-type: application/vnd.ms-excel");
     $this->output->set_header("Content-disposition: csv; filename=SNY_Stats_" . date("M-d_H-i") . ".csv");
     $this->load->view('shakha/csv', $data);
     //$this->layout->view('shakha/sny_statistics', $v);
+  }
+
+  function sny_statistics($shakha_id) {
+
+    $data['counts'] = $this->Shakha_model->sny_statistics($shakha_id);
+    $data['pageTitle'] = 'SNY Statistics';
+    $this->layout->view('shakha/sny_statistics', $data);
   }
 
   function del_responsibility($shakha_id, $ss_id, $resp_id) {
