@@ -37,5 +37,5 @@ Total SuryaNamaskars by Sevikas: <?php echo $counts['totals']->s_counts?><br />
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php print_r($counts['totals']); ?>
+<?php //print_r($counts['totals']); ?>
 
