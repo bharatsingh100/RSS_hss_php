@@ -449,6 +449,9 @@ class Shakha_model extends Model
       $results['descriptions'][$record->REF_CODE . $record->DOM_ID] = $record->short_desc;
     }
 
+    //Total Counts
+    $this->db->select('sum(total) as participants, sum(total_ss) as ss_counts, sum(total_s) as s_counts');
+    $results['totals'] = $this->db->get('sny')->row();
     return $results;
   }
 }

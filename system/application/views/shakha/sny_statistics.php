@@ -1,6 +1,12 @@
 <h2>SNY - Statistics</h2>
 <?php echo anchor('shakha/sny_stats/'.$this->uri->segment(3), 'Complete SNY Stats in Excel Format');?>
 <p></p>
+<h3>Totals</h3>
+Participants: <?php echo $counts['totals']->participants?><br />
+Total SuryaNamaskars: <?php echo $counts['totals']->s_counts + $counts['totals']->ss_counts?><br />
+Total SuryaNamaskars by Swayamsevaks: <?php echo $counts['totals']->ss_counts?><br />
+Total SuryaNamaskars by Sevikas: <?php echo $counts['totals']->s_counts?><br />
+<p></p>
 <h3>Click the header to sort table by different columns:</h3>
 <table id="sny_statistics" cellspacing=10>
 	<thead>
@@ -31,4 +37,5 @@
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php //print_r($counts); ?>
+<?php print_r($counts['totals']); ?>
+

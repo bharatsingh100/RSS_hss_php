@@ -89,8 +89,9 @@ var mylib =
 	{
 		sny_statistics: function()
 		{
-			$("#sny_statistics").tablesorter({sortList: [[1,1], [2,1]]});
+			$("#sny_statistics").tablesorter({sortList: [[2,1], [3,1]]});
 		},
+		
 		sny_count : function()
 		{
 			var sny_form = $("#sny_count input[type=text]");
