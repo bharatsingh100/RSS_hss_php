@@ -10,8 +10,9 @@ class Shakha_model extends Model
 
   function add_email_list()
   {
-    foreach($_POST as $key => $value)
-    $d[$key] = $value;
+    foreach($_POST as $key => $value){
+    	$d[$key] = $value;
+    }
     unset($d['button']);
     $d['address'] = strtolower($d['address']);
     $d['members'] = serialize($d['members']);
@@ -47,8 +48,9 @@ class Shakha_model extends Model
 
   function add_responsibility()
   {
-    foreach($_POST as $key => $val)
-    $data[$key] = trim($val);
+    foreach($_POST as $key => $val){
+    	$data[$key] = trim($val);
+    }
     $data['swayamsevak_id'] = $data['name'];
     $data['responsibility'] = $data['resp'];
     unset($data['button']);
@@ -97,8 +99,9 @@ class Shakha_model extends Model
 
   function insert_sankhya()
   {
-    foreach($_POST as $key => $val)
-    $data[$key] = trim($val);
+    foreach($_POST as $key => $val){
+    	$data[$key] = trim($val);
+    }
     $data['contact_id'] = $this->session->userdata('contact_id');
     if(empty($data['contact_id']) || $data['contact_id'] == '' ) $data['contact_id'] = 0;
     if(empty($data['shakha_id']) || $data['shakha_id'] == '' ) $data['shakha_id'] = 0;
@@ -165,8 +168,9 @@ class Shakha_model extends Model
 
   function update_shakha($id)
   {
-    foreach($_POST as $key => $val)
-    $data[$key] = trim($val);
+    foreach($_POST as $key => $val){
+    	$data[$key] = trim($val);
+    }
 
     $data['sambhag_id'] = substr($data['vibhag_id'], 0, 2);
     $data['nagar_id'] = '';
