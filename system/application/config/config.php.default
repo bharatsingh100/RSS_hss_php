@@ -231,11 +231,11 @@ $config['encryption_key'] = "Vishwa Mangal Kamana Ke Hum Hai Maun Pujari";
 |
 */
 $config['sess_cookie_name']		= 'ci_session';
-$config['sess_expiration']		= 3600;
+$config['sess_expiration']		= 0;
 $config['sess_encrypt_cookie']	= FALSE;
 $config['sess_use_database']	= TRUE;
 $config['sess_table_name']		= 'ci_sessions';
-$config['sess_match_ip']		= TRUE;
+$config['sess_match_ip']		= FALSE;
 $config['sess_match_useragent']	= TRUE;
 
 // [OB] additional config items: Set to 'database' to keep userdata exclusively on server database.
@@ -245,8 +245,8 @@ $config['sess_data_cookie']         = 'ci_session_data';
 $config['sess_database']            = 'default';
 $config['sess_timeout']             = 36000; 
 $config['sess_destroy_on_timeout']  = TRUE; 
-$config['sess_update_interval']     = 180; 
-$config['sess_gc_probability']      = 100;
+$config['sess_update_interval']     = 1800; 
+$config['sess_gc_probability']      = 95;
 $config['sess_http_only']           = FALSE; // PHP 5.2+ or better only!
 $config['sess_forwarded_ip']        = FALSE;
 $config['sess_secure']              = FALSE;
