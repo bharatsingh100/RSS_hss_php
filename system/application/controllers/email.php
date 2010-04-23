@@ -505,21 +505,28 @@ class Email extends Controller
 
       foreach($lists as $list)
       {
-        //print_r($list);
         $list_name = $list->address . $host;
 
-        $file = $path . 'synch/' . $list_name;
+        $file   = $path . 'synch/' . $list_name;
         $emails = $this->Email_model->get_email_addresses($list->id);
 
         sort($emails);
 
         $q['size'] = count($emails);
         $q['emails'] = gzcompress(serialize($emails), 1);
+
+        // Delete email addresses that are not valid.
+        for ($i = 0; $i < $q['size']; $i++) {
+        	if (!$this->isValidEmail($emails[$i])) {
+        		unset($emails[$i]);
+        	}
+        }
+
+        // Save list of email addresses to the DB.
         $this->db->where('id',$list->id);
         $this->db->update('lists',$q);
-        //print_r($emails);
-        //continue;
-        //Write to the file list of email addresses
+
+        // Write to the file list of email addresses.
         if(count($emails) && write_file($file, implode("\n",$emails))) {
         	shell_exec("chmod 0666 $file");
         }
