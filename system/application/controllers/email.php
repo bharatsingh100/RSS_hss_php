@@ -512,17 +512,17 @@ class Email extends Controller
 
         sort($emails);
 
-        $q['size'] = count($emails);
-        $q['emails'] = gzcompress(serialize($emails), 1);
-
         // Delete email addresses that are not valid.
-        for ($i = 0; $i < $q['size']; $i++) {
+        $list_size = count($emails);
+        for ($i = 0; $i < $list_size; $i++) {
         	if (!$this->isValidEmail($emails[$i])) {
         		unset($emails[$i]);
         	}
         }
 
         // Save list of email addresses to the DB.
+        $q['size'] = count($emails);
+        $q['emails'] = gzcompress(serialize($emails), 1);
         $this->db->where('id',$list->id);
         $this->db->update('lists',$q);
 
