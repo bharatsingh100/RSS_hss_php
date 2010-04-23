@@ -57,7 +57,7 @@ class Email extends Controller
   //Testing E-mail
   function email_test() {
 
-    $this->email->from('your@example.com', 'Your Name');
+    $this->email->from('sampark@hssusa.org', 'Sampark System');
     $this->email->to('zzzabhi@gmail.com');
     //$this->email->cc('another@another-example.com');
     //$this->email->bcc('them@their-example.com');
@@ -152,15 +152,15 @@ class Email extends Controller
       {
         if(in_array($shakha->shakha_id, $exists)) continue;
 
-        $data['total'] = $data['shishu_m'] = $data['shishu_f'] = 0;
-        $data['bala_f'] = $data['bala_m'] = $data['kishor_m'] = 0;
-        $data['kishor_f'] = $data['yuva_m'] = $data['yuva_f'] = 0;
-        $data['tarun_m'] = $data['tarun_f'] = $data['praudh_m'] = $data['praudh_f'] = 0;
+        $data['total']      = $data['shishu_m']   = $data['shishu_f'] = 0;
+        $data['bala_f']     = $data['bala_m']     = $data['kishor_m'] = 0;
+        $data['kishor_f']   = $data['yuva_m']     = $data['yuva_f']   = 0;
+        $data['tarun_m']    = $data['tarun_f']    = $data['praudh_m'] = $data['praudh_f'] = 0;
         $data['contact_id'] = 0;//$this->session->userdata('0');
-        $data['ip'] = $this->input->ip_address();
-        $data['date'] = date('Y-m-d');
-        $data['shakha_id'] = $shakha->shakha_id;
-        $data['families'] = 0;
+        $data['ip']         = $this->input->ip_address();
+        $data['date']       = date('Y-m-d');
+        $data['shakha_id']  = $shakha->shakha_id;
+        $data['families']   = 0;
         $this->db->insert('sankhyas', $data);
       }
     }
@@ -337,10 +337,10 @@ class Email extends Controller
       $lists = $lists->result();
       foreach($lists as $list)
       {
-        $conf = ($list->style) ? 'unmoderated' : 'moderated';
-        $conf_file = $p.$conf.'_config.txt ';
-        $file = $p.'configs/'.$list->address.$host;
-        $cmd = 'cp '.$conf_file.$file;
+        $conf       = ($list->style) ? 'unmoderated' : 'moderated';
+        $conf_file  = $p.$conf.'_config.txt ';
+        $file       = $p.'configs/'.$list->address.$host;
+        $cmd        = 'cp '.$conf_file.$file;
         shell_exec($cmd);
         $t = $this->db->select('email')->get_where('swayamsevaks', array('contact_id' => $list->mod1))->row();
         $mods = "moderator = ['$t->email'";
@@ -368,10 +368,10 @@ class Email extends Controller
         fwrite($fh, $mods);
         fclose($fh);
 
-        $file = $p.'configs_pass/'.$list->address.$host;
-        $fh = fopen($file, 'w') or die("Can't open file");
-        $txt = "import sha\r\n";
-        $txt .= "mlist.mod_password = sha.new('" . $list->mod_pass . '\').hexdigest()';
+        $file   = $p.'configs_pass/'.$list->address.$host;
+        $fh     = fopen($file, 'w') or die("Can't open file");
+        $txt    = "import sha\r\n";
+        $txt   .= "mlist.mod_password = sha.new('" . $list->mod_pass . '\').hexdigest()';
         shell_exec('chmod 0666 '.$file);
         fwrite($fh, $txt);
         fclose($fh);
@@ -497,8 +497,9 @@ class Email extends Controller
       //print_r($lists);
       //Create a List of E-mail Lists
       $l = '';
-      foreach($lists as $list)
-      $l .= $list->address . $host . "\n";
+      foreach($lists as $list) {
+      	$l .= $list->address . $host . "\n";
+      }
       echo write_file($path.'elists.txt', $l);
       echo shell_exec('chmod 0666 ' . $path . 'elists.txt');
 
@@ -519,8 +520,9 @@ class Email extends Controller
         //print_r($emails);
         //continue;
         //Write to the file list of email addresses
-        if(count($emails) && write_file($file, implode("\n",$emails)))
-        shell_exec("chmod 0666 $file");
+        if(count($emails) && write_file($file, implode("\n",$emails))) {
+        	shell_exec("chmod 0666 $file");
+        }
 
       }
     }
