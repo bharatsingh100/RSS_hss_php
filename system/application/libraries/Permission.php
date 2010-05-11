@@ -40,10 +40,10 @@ class Permission
 		if($temp->num_rows()) $this->sh_resp = $temp->row()->responsibility;
 
 		//IS_ADMIN
-		$a = array(1, 4717,1852); 
-		//Abhi Gupta & Ramesh Subramaniam & Ajeet Tailor 
+		$a = array(1, 4717, 1852, 2832); 
+		//Abhi Gupta & Ramesh Subramaniam & Ajeet Tailor & Rajesh Acharya
 		//Super Admin (CID = 1)
-		$this->is_admin = in_array($this->cid,$a) ? true : false;
+		$this->is_admin = in_array($this->cid, $a);
 
 		//IS_NT_KK
 		$rs = $this->CI->db->get_where('responsibilities', array('swayamsevak_id' => $this->cid, 'level' => 'NT'));
