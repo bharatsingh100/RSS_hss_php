@@ -619,14 +619,14 @@ class Shakha extends Controller {
 
   function add_family($id) {
     //Redirect back to form if the Name is not set
-    if (isset ($_POST) && trim($_POST['name']) == '')
+    if (isset ($_POST) && trim($_POST['name']) == '') {
       redirect('shakha/addss/' . $this->input->post('shakha_id'));
+    }
 
     $hhid = (isset ($_POST['household_id'])) ? $_POST['household_id'] : '';
     $data = $this->Shakha_model->insert_ss();
     $this->session->set_userdata('message', $this->input->post('name') . ' successfully added to the database.');
-    if (isset ($_POST['add_family'])) {
-      //redirect('shakha/addss/' . $this->input->post('shakha_id') . "/$data");
+    if ($this->input->post('add_family')) {
       $data['household_id'] = (($hhid != '') ? $hhid : $data['household_id']);
       $this->addss($this->input->post('shakha_id'), $data);
     }
