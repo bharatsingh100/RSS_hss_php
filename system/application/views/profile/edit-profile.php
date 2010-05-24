@@ -4,8 +4,8 @@
 <?=form_hidden('household_id', $m->household_id);?>
 <?=form_hidden('contact_id', $m->contact_id);?>
 
-<h2><?=$shakha_name?></h2>
-		     <h3>Update Information for <?=$m->first_name;?> <?=$m->last_name;?></h3>
+<h2><?=$m->first_name;?> <?=$m->last_name;?></h2>
+		     <h3>Profile Information</h3>
 		     <table width="100%" border="0" cellpadding="2" cellspacing="4">
                <tr>
                  <td width="19%"><div align="right"><strong>Name
