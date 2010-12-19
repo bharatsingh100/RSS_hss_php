@@ -1,5 +1,5 @@
 <h2>SNY - Statistics</h2>
-<?php echo anchor('shakha/sny_stats/'.$this->uri->segment(3), 'Complete SNY Stats in Excel Format');?>
+<?php echo anchor('shakha/sny_stats/'.$this->uri->segment(3) . "/{$year}", 'Complete SNY Stats in Excel Format');?>
 <p></p>
 <h3>Totals</h3>
 Participants: <?php echo $counts['totals']->participants?><br />

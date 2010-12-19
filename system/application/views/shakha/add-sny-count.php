@@ -3,6 +3,7 @@
 <form id="sny_count" method="post"
   action="/shakha/insert_sny_count/<?php echo $shakha->shakha_id; ?>">
   <?php echo form_hidden('shakha_id', $shakha->shakha_id); ?>
+  <?php echo form_hidden('year', $year); ?>
 
   <?php if($set && $contact) {
       echo '<strong>Last Updated By: </strong>';

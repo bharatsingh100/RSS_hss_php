@@ -136,6 +136,13 @@ class Shakha_model extends Model
       $data[$key] = $this->input->post($key);
     }
 
+    // Create Table name from Year
+    $table = 'sny_' . $data['year'];
+
+    // These values are not stored in DB
+    unset($data['year']);
+    unset($data['button']);
+
     $data['contact_id'] = $this->session->userdata('contact_id');
     if(empty($data['contact_id']) || $data['contact_id'] == '' ) $data['contact_id'] = 0;
     if(empty($data['shakha_id']) || $data['shakha_id'] == '' ) $data['shakha_id'] = 0;
@@ -149,16 +156,15 @@ class Shakha_model extends Model
     $data['total_ss'] = $data['week1_ss'] + $data['week2_ss'] + $data['week3_ss'];
     $data['total_s'] = $data['week1_s'] + $data['week2_s'] + $data['week3_s'];
 
-    unset($data['button']);
 
     //If sankhya for that week already exists then update
-    $exists = $this->db->get_where('sny', array('shakha_id' => $data['shakha_id']), 1);
+    $exists = $this->db->get_where($table, array('shakha_id' => $data['shakha_id']), 1);
     if($exists->num_rows()) {
       $this->db->where('shakha_id', $data['shakha_id']);
-      $this->db->update('sny', $data);
+      $this->db->update($table, $data);
     }
     else {
-      $this->db->insert('sny', $data);
+      $this->db->insert($table, $data);
     }
 
     //Update activities table
@@ -430,16 +436,16 @@ class Shakha_model extends Model
     $this->db->order_by('first_name');
     $result = $this->db->get_where('swayamsevaks', 'email IN ' . $emails)->result_array();
     return $result;
-    //var_dump($result);
-    //die();
   }
 
-  function sny_statistics($shakha_id)
+  function sny_statistics($shakha_id, $year)
   {
     $results = array();
 
+    $table = "sny_{$year}";
+
     $this->db->select('sh.name, sh.city, sh.state, sh.vibhag_id, sh.nagar_id, sh.sambhag_id, sny.*');
-    $this->db->from('sny');
+    $this->db->from("{$table} sny");
     $this->db->join('shakhas sh', 'sh.shakha_id = sny.shakha_id');
     $this->db->order_by('sh.sambhag_id, sh.vibhag_id');
     $results['counts'] = $this->db->get()->result();
@@ -455,7 +461,7 @@ class Shakha_model extends Model
 
     //Total Counts
     $this->db->select('sum(total) as participants, sum(total_ss) as ss_counts, sum(total_s) as s_counts');
-    $results['totals'] = $this->db->get('sny')->row();
+    $results['totals'] = $this->db->get($table)->row();
     return $results;
   }
 }

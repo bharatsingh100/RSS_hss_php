@@ -1,6 +1,7 @@
 <?php
 class Shakha extends Controller {
 
+
   function Shakha() {
     parent :: Controller();
 
@@ -17,6 +18,7 @@ class Shakha extends Controller {
     $this->load->library('layout');
     $this->layout->setLayout("layout_shakha");
 
+    $this->sny_year = $this->config->item('sny_year');
 
     //Check Permissions
     //$perml = Array of functions for lower shakha level permissions
@@ -257,12 +259,15 @@ class Shakha extends Controller {
     $this->layout->view('shakha/statistics', $v);
   }
 
-  function sny_stats($id) {
+  function sny_stats($id, $year = NULL) {
     $this->output->enable_profiler(false);
     $this->load->dbutil();
 
+    // Year maybe missing because it is not passed in via URL
+    $year = empty($year) ? $this->config->item('sny_year') : $year;
+
     $this->db->select('sh.name, sh.city, sh.state, sh.vibhag_id, sh.nagar_id, sh.sambhag_id, sny.*');
-    $this->db->from('sny');
+    $this->db->from("sny_{$year} sny");
     $this->db->join('shakhas sh', 'sh.shakha_id = sny.shakha_id');
 
     $data['query'] = $this->db->get();
@@ -272,9 +277,13 @@ class Shakha extends Controller {
     //$this->layout->view('shakha/sny_statistics', $v);
   }
 
-  function sny_statistics($shakha_id) {
+  function sny_statistics($shakha_id, $year = NULL) {
 
-    $data['counts'] = $this->Shakha_model->sny_statistics($shakha_id);
+    // Year maybe missing because it is not passed in via URL
+    $year = empty($year) ? $this->config->item('sny_year') : $year;
+
+    $data['counts'] = $this->Shakha_model->sny_statistics($shakha_id, $year);
+    $data['year']   = $year;
     $data['pageTitle'] = 'SNY Statistics';
     $this->layout->view('shakha/sny_statistics', $data);
   }
@@ -339,10 +348,13 @@ class Shakha extends Controller {
   /**
    * Add SNY Count for each Shakha
    * @param $id Shakha ID
+   * @param $year 4 Digits of the SNY Year
    */
-  function sny_count($id) {
+  function sny_count($id, $year = NULL) {
 
-    $record = $this->db->get_where('sny', array('shakha_id' => $id), 1);
+    $data['year'] = empty($year) ? $this->config->item('sny_year') : $year;
+
+    $record = $this->db->get_where('sny_' . $data['year'], array('shakha_id' => $id), 1);
 
     if ($record->num_rows()) {
       $data['sankhya'] = $record->row();

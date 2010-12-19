@@ -98,6 +98,7 @@
 	     <?php echo '<p>',anchor('shakha/statistics/'.$shakha_id, 'Shakha Statistics'),'</p>';?>
 	     <p>&nbsp;</p>
 	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id, 'SNY Statistics'),'</p>';?>
+	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2010', 'SNY Statistics (Last Year)'),'</p>';?>
 	  <p>&nbsp;</p>
 	  <?php if($is_kkh) echo '<p>',anchor('shakha/email_lists/'.$shakha_id, 'View Email Lists'),'</p>';?>
 	  <?php if($is_kkh) echo '<p>',anchor('shakha/create_list/'.$shakha_id, 'Request E-mail List'),'</p>';?>

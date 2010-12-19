@@ -325,4 +325,7 @@ $config['rewrite_short_tags'] = FALSE;
 //Trun Profiler On/Off
 $config['debug'] = FALSE;
 
+// SNY Year
+$config['sny_year'] = 2011;
+
 ?>
