@@ -3,9 +3,9 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Permission
 {
-    private $CI;
+  private $CI;
 	private $cid;
-	private $sh_resp = 0; //Shakha Responsibility ID
+	private $sh_resp = array(); //Shakha Responsibility array 
 	private $is_admin = false;
 	private $is_nt_kk = false;
 	private $is_sambhag_kk;
@@ -37,7 +37,11 @@ class Permission
 		//Sort Responsibility by order so that highest one is used
 		$this->CI->db->order_by('responsibility');
 		$temp = $this->CI->db->get_where('responsibilities', array('swayamsevak_id' => $this->cid, 'level' => 'SH'));
-		if($temp->num_rows()) $this->sh_resp = $temp->row()->responsibility;
+    if($temp->num_rows() > 0){
+      foreach ($temp->result() as $row) {
+        $this->sh_resp[] = $row->responsibility;
+      }
+    }
 
 		//IS_ADMIN
 		$a = array(1, 4717, 1852, 2832); 
@@ -84,8 +88,8 @@ class Permission
 	{
 		$rs = $this->CI->db->get_where('shakhas', array('shakha_id' => $id))->row();
 		//if($this->is_vibhag_kk($rs->vibhag_id)) return true;
-
-		if (in_array($this->sh_resp, $this->shakha_kkh_respons) && $this->shakha_id == $id){
+    
+		if (count(array_intersect($this->shakha_kkh_respons, $this->sh_resp)) && $this->shakha_id == $id){
 			$this->is_shakha_kkh = true;
 		}
 		elseif ($rs->nagar_id != '' && $this->is_nagar_kk($rs->nagar_id)){
@@ -111,7 +115,7 @@ class Permission
 		'011','090','091','100','101','110','120','130','131','140', '150', '151', '160', '180', '190' '999','140');
 		*/
 
-		$this->is_shakha_kkl = (((!in_array($this->sh_resp, $this->shakha_kkh_respons) && $this->shakha_id == $id) || $this->is_shakha_kkh($id)) ? true : false);
+		$this->is_shakha_kkl = (((!count(array_intersect($this->shakha_kkh_respons, $this->sh_resp)) && $this->shakha_id == $id) || $this->is_shakha_kkh($id)) ? true : false);
 		return $this->is_shakha_kkl;
 	}
 
