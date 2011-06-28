@@ -207,7 +207,7 @@ class User extends Controller
 			return false;
 		}
 
-		$query = $this->db->get_where('swayamsevaks', array('email' => $user));
+		$query = $this->db->get_where('swayamsevaks', array('email' => $user, 'password' => dohash($password)));
 		if($query->num_rows() > 0)
 		{
 		    $row = NULL;
