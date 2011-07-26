@@ -280,7 +280,13 @@ class User extends Controller
 		}
 		else
 		{
-			$this->session->set_userdata('message', 'Your email address was not found in our database.');
+      $query = $this->db->get_where('swayamsevaks', array('email' => $user));
+      if ($query->num_rows() == 0) {
+			  $this->session->set_userdata('message', 'Your email address was not found in our database.');
+      } else {
+			  $this->session->set_userdata('message', 'Your password did not match our records. Try again.');
+      }
+
 			return false;
 		}
 
