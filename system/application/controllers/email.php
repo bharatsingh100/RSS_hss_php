@@ -337,10 +337,12 @@ class Email extends Controller
       $lists = $lists->result();
       foreach($lists as $list)
       {
+	if (empty($list->address)) { continue; }
+
         $conf       = ($list->style) ? 'unmoderated' : 'moderated';
         $conf_file  = $p.$conf.'_config.txt ';
         $file       = $p.'configs/'.$list->address.$host;
-        $cmd        = 'cp '.$conf_file.$file;
+        $cmd        = 'cp '.$conf_file. ' ' .$file;
         shell_exec($cmd);
         $t = $this->db->select('email')->get_where('swayamsevaks', array('contact_id' => $list->mod1))->row();
         $mods = "moderator = ['$t->email'";
@@ -364,7 +366,7 @@ class Email extends Controller
         }
         else $mods .= "]\n";
         //Append moderaters to config file
-        $fh = fopen($file, 'a') or die("can't open file");
+        $fh = fopen($file, 'a') or die("can't open file $file");
         fwrite($fh, $mods);
         fclose($fh);
 
