@@ -542,9 +542,9 @@ class Email extends Controller
         }
         
         // Write to the file list of email addresses.
-        //if(count($emails) && write_file($file, implode("\n",$emails))) {
-        //	shell_exec("chmod 0666 $file");
-        //}
+        if(count($emails) && write_file($file, implode("\n",$emails))) {
+        	shell_exec("chmod 0666 $file");
+        }
 
       }
     }
