@@ -428,13 +428,11 @@ class Shakha_model extends Model
   }
 
   function list_members($list_id) {
-    $l = $this->db->get_where('lists', array('id' => $list_id))->row();
-    $emails = unserialize(gzuncompress($l->emails));
-    //var_dump($emails);
-    $emails = '(\'' . implode("','", $emails) . "')";
-    $this->db->select('contact_id, first_name, last_name');
+    $this->db->select('s.contact_id, s.first_name, s.last_name');
+    $this->db->from('swayamsevaks s');
     $this->db->order_by('first_name');
-    $result = $this->db->get_where('swayamsevaks', 'email IN ' . $emails)->result_array();
+    $this->db->join('list_contacts l', 'l.contact_id = s.contact_id AND l.list_id = ' . $list_id);
+    $result = $this->db->get()->result_array();
     return $result;
   }
 

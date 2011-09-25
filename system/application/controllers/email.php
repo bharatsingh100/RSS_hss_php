@@ -510,8 +510,9 @@ class Email extends Controller
         $list_name = $list->address . $host;
 
         $file   = $path . 'synch/' . $list_name;
-        $emails = $this->Email_model->get_email_addresses($list->id);
+        $contacts = $this->Email_model->get_email_addresses($list->id);
 
+        $emails = array_values($contacts);
         sort($emails);
 
         // Delete email addresses that are not valid.
@@ -528,10 +529,22 @@ class Email extends Controller
         $this->db->where('id',$list->id);
         $this->db->update('lists',$q);
 
-        // Write to the file list of email addresses.
-        if(count($emails) && write_file($file, implode("\n",$emails))) {
-        	shell_exec("chmod 0666 $file");
+        // Save mapping of Lists and Contact IDs
+        // Delete existing records from the list.
+        $this->db->delete('list_contacts', array('list_id' => $list->id));
+        foreach ($contacts as $id => $email) {
+          $record = array(
+            'list_id'     => $list->id,
+            'contact_id'  => $id,
+            'status'      => 'Active',
+          );
+          $this->db->insert('list_contacts', $record);
         }
+        
+        // Write to the file list of email addresses.
+        //if(count($emails) && write_file($file, implode("\n",$emails))) {
+        //	shell_exec("chmod 0666 $file");
+        //}
 
       }
     }

@@ -40,7 +40,7 @@ class Email_model extends Model
 		if(in_array('allss', $members)) {
 			$this->get_email_addresses_common_sql();
 			$t = $this->clean_email_array($this->db->where('shakha_id', $lid)->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 			
 			//Include Vibhag and Nagar Team in the All Swayamsevak List
 			$this->get_email_addresses_common_sql();
@@ -50,7 +50,7 @@ class Email_model extends Model
 			else
 				$this->db->where("r.vibhag_id = '{$vibhag_id}' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 
 		if(in_array('allkk', $members)) {
@@ -81,14 +81,14 @@ class Email_model extends Model
 			$this->get_email_addresses_common_sql();
 			$this->db->where('s.shakha_id IN ' . $shakha_ids);
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 			
 			//Include Vibhag Team
 			$this->get_email_addresses_common_sql();
 			$this->db->from('responsibilities r');
 			$this->db->where("r.vibhag_id = '{$vibhag_id}' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 
 		if(in_array('allkk', $members)) {
@@ -122,7 +122,7 @@ class Email_model extends Model
 			$this->get_email_addresses_common_sql();
 			$this->db->where('s.shakha_id IN ' . $shakha_ids);
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 			//Add Sambhag Team
 			$members[] = 'sambhagTeamAll';
 		}
@@ -133,7 +133,7 @@ class Email_model extends Model
 			$this->db->where('s.shakha_id IN ' . $shakha_ids);
 			$this->db->where('s.contact_type', 'GC');
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 		
 		//Vibhag Team
@@ -151,7 +151,7 @@ class Email_model extends Model
 			$this->db->from('responsibilities r');
 			$this->db->where("r.sambhag_id = '{$sambhag_id}' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 
 		//National Team in Vibhag
@@ -161,7 +161,7 @@ class Email_model extends Model
 			$this->db->from('responsibilities r');
 			$this->db->where("r.level = 'NT' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 		
 		//Sambhag Team in Vibhag
@@ -171,7 +171,7 @@ class Email_model extends Model
 			$this->db->from('responsibilities r');
 			$this->db->where("r.level = 'SA' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 		
 		//All Shakha Karyakartas in Vibhag
@@ -181,7 +181,7 @@ class Email_model extends Model
 			$this->db->from('responsibilities r');
 			$this->db->where("r.level = 'SH' AND r.swayamsevak_id = s.contact_id");
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 		
 		//All Mukhya Shikshaks and Karyavahs in Vibhag
@@ -191,7 +191,7 @@ class Email_model extends Model
 			$this->db->from('responsibilities r');
 			$this->db->where("r.level = 'SH' AND r.swayamsevak_id = s.contact_id AND r.responsibility IN (020,021,030,031)");
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 		
 		return array_unique($temp);
@@ -214,7 +214,7 @@ class Email_model extends Model
 			$this->get_email_addresses_common_sql();
 			$this->db->where('s.shakha_id IN ' . $shakha_ids);
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 
 		if(in_array('allkk', $members)) {
@@ -236,7 +236,7 @@ class Email_model extends Model
 		if(in_array('allss', $members)) {
 			$this->get_email_addresses_common_sql();
 			$t = $this->clean_email_array($this->db->get());
-			if(is_array($t)) $temp = array_merge($temp, $t);
+			if(is_array($t)) { $temp = $temp + $t; }
 		}
 
 		if(in_array('allkk', $members)) {
@@ -275,7 +275,7 @@ class Email_model extends Model
 	
 	function get_email_addresses_common_sql() {
 		$this->db->distinct();
-		$this->db->select('s.email');
+		$this->db->select('s.email, s.contact_id');
 		$this->db->from('swayamsevaks s');
 		$this->db->where('email_status', 'Active');
 	}
@@ -284,7 +284,7 @@ class Email_model extends Model
 		if($result->num_rows()) {
 			$temp = array();
 			foreach ($result->result_array() as $r)
-				$temp[] = $r['email'];
+				$temp[$r['contact_id']] = $r['email'];
 			return $temp;
 		}
 		return NULL;
