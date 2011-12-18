@@ -97,9 +97,12 @@
          <?php endif; ?>
 	     <?php echo '<p>',anchor('shakha/statistics/'.$shakha_id, 'Shakha Statistics'),'</p>';?>
 	     <p>&nbsp;</p>
-	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2011', 'SNY Statistics'),'</p>';?>
-	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2010', 'SNY Statistics (Last Year)'),'</p>';?>
-	     <?php if($is_kkh) echo '<p>To Update 2011 SNY Stats for your Shakha, e-mail SNY team sny@hssus.org</p>';?>
+             <?php echo '<p>',anchor('shakha/sny_count/'.$shakha_id, 'Report SNY Counts'),'</p>';?>
+	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2012', 'SNY Statistics'),'</p>';?>
+	     <p>&nbsp;</p>
+	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2011', '2011 - SNY Statistics'),'</p>';?>
+	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2010', '2010 - SNY Statistics'),'</p>';?>
+	     <?php //if($is_kkh) echo '<p>To Update 2011 SNY Stats for your Shakha, e-mail SNY team sny@hssus.org</p>';?>
 
 	  <p>&nbsp;</p>
 	  <?php if($is_kkh) echo '<p>',anchor('shakha/email_lists/'.$shakha_id, 'View Email Lists'),'</p>';?>
