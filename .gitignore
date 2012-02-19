@@ -1,0 +1,5 @@
+# Ignore Log files
+system/logs/*
+system/application/config/database.php
+system/application/config/config.php
+.htaccess
