@@ -24,6 +24,7 @@ if(isset($row->kk))
     <th>Nagar</th>
     <th>Karyavah</th>
     <th>Sah-Karyavah</th>
+    <th>Sanghchalak</th>
   </tr>
 <?php $i = 1; foreach($row->nagars as $nagar) { ?>
   <tr>
@@ -37,7 +38,10 @@ if(isset($row->kk))
 		echo '</td><td valign="top">';
 		foreach($nagar->kk as $kk)
 			if($kk->responsibility == '021') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
-		echo '</td>';
+		echo '</td><td valign="top">';
+    foreach($nagar->kk as $kk)
+      if($kk->responsibility == '010') echo anchor('profile/view/'.$kk->contact_id, $kk->first_name.' '.$kk->last_name) . '<br />';
+    echo '</td>';
 	}
 	else { ?>
     <td>&nbsp;</td>
