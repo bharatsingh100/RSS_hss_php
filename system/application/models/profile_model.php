@@ -129,12 +129,41 @@ class Profile_model extends Model
 
 	function getResponsibilities($id)
 	{
+		// Map to help generate links for Responsibility Level
+		$column_map = array(
+			'VI' => 'vibhag',
+			'SH' => 'shakha',
+			'NA' => 'nagar',
+			'SA' => 'sambhag',
+			'NT' => 'national'
+		);
+
 		$query = $this->db->get_where('responsibilities', array('swayamsevak_id' => $id));
 		$count = $query->num_rows();
-		for($i = 0; $i < $count; $i++)
+		for ($i = 0; $i < $count; $i++)
 		{
+			$res_level_column = $column_map[$query->row($i)->level];
 			$query->row($i)->resp_title = $this->getShortDesc($query->row($i)->responsibility);
 			$query->row($i)->level = $this->getShortDesc($query->row($i)->level);
+
+			// Generate link for Responsibility level e.g., Vivkeananda Shakha
+			$query->row($i)->level_link = '';
+			if ($res_level_column !== 'national') {
+				$column_name = $res_level_column . '_id';
+				if ($res_level_column !== 'shakha') {
+					$level_title = $this->getShortDesc($query->row($i)->$column_name);
+				}
+				else {
+					// Get Shakha Name
+					$level_title = $this->db->select('name')
+													->get_where('shakhas', array('shakha_id' => $query->row($i)->$column_name))->row()->name;
+					// Strip out Shakha from Shakha Name
+					if (($pos = strpos(strtolower($level_title), 'shakha')) !== FALSE) {
+						$level_title = trim(substr($level_title, 0, $pos));
+					}
+				}
+				$query->row($i)->level_link = anchor("{$res_level_column}/view/" . $query->row($i)->{"{$res_level_column}_id"}, $level_title);
+			}
 		}
 		return $query->result();
 	}

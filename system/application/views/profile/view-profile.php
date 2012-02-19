@@ -70,8 +70,9 @@ echo strlen($row->gana) ? '&#8212;'.$row->gana : '';
 		 if(!empty($resp))
 		 {
 		   echo '<h3>Sangh Responsibilities: </h3>';
-		   foreach ($resp as $temp){
-		     echo $temp->level.' '.$temp->resp_title . '<br />';
+		   foreach ($resp as $temp) {
+		     $output = $temp->level_link . ' ' . $temp->level.' '.$temp->resp_title . '<br />';
+         echo trim($output);
 		   }
 		   echo '<br />';
 		 }
