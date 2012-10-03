@@ -1,0 +1,19 @@
+# Cron Jobs to run as Root or user with mailman access
+
+# Synch e-mails with Mailman software
+30 * * * * /var/www/web2/scripts/synch_emails.sh >/dev/null 2>&1
+
+# Synch email configuration with Mailman
+15 * * * * /var/www/web2/scripts/config_list.sh >/dev/null 2>&1
+
+# Remove bounced or invalid e-mails from Sampark System
+0 * * * * /var/www/web2/scripts/removed_emails.sh >/dev/null 2>&1
+
+# Cron jobs to generate files to synchronize with mailman
+50 * * * * /var/www/web2/scripts/cron_scripts.sh > /dev/null 2>&1
+
+# Cron job to backup database
+0 */2 * * * /var/www/web2/scripts/backup.sh > /dev/null 2>&1
+
+# Cron job to send Sankhya Reminder to Shakhas by e-mail
+22 20 * * * wget -O - -q --no-check-certificate https://sampark.hssusa.org/email/sankhya_reminder > /dev/null 2>&1
