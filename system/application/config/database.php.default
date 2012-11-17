@@ -35,9 +35,9 @@ $active_group = "default";
 $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
-$db['default']['username'] = "web2u1";
-$db['default']['password'] = "manu0420";
-$db['default']['database'] = "web2db1";
+$db['default']['username'] = "roto";
+$db['default']['password'] = "root";
+$db['default']['database'] = "crmhss";
 $db['default']['dbdriver'] = "mysqli";
 $db['default']['dbprefix'] = "";
 //Commenting out when upgrading to 1.6
