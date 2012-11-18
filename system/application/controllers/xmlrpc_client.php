@@ -82,18 +82,14 @@ class Xmlrpc_client extends Controller {
             print(json_encode($rs->result_array()));
     }
 
-	/*
 	function getShakhaContacts($shakha_id) {
-
-		$this->db->select('swayamsevaks.contact_id, swayamsevaks.first_name, swayamsevaks.last_name, responsibilities.responsibility');
-		$this->db->from('swayamsevaks');
-		$this->db->order_by('responsibilities.responsibility');
-		$this->db->join('responsibilities', "responsibilities.shakha_id = $shakha_id AND (responsibilities.responsibility = 020 OR responsibilities.responsibility = 030) AND responsibilities.swayamsevak_id = swayamsevaks.contact_id");
+		$this->output->enable_profiler(FALSE);
+		$this->db->select('contact_id, household_id, contact_type, gana, first_name, last_name, gender, birth_year, company, position, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, ssv_completed, notes');
+		$this->db->get_where('swayamsevaks', array('shakha_id' => $shakha_id));
+		$this->db->order_by('last_name');
 		$rs = $this->db->get();
-        print_r(json_encode($rs->result_array()));
-
-	}*/
-
-
+		$this->output->set_header('Content-Type: application/json');
+		print(json_encode($rs->result_array()));
+	}
 }
 ?>
