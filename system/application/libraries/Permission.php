@@ -5,7 +5,7 @@ class Permission
 {
   private $CI;
 	private $cid;
-	private $sh_resp = array(); //Shakha Responsibility array 
+	private $sh_resp = array(); //Shakha Responsibility array
 	private $is_admin = false;
 	private $is_nt_kk = false;
 	private $is_sambhag_kk;
@@ -23,7 +23,9 @@ class Permission
 	//150 - Sampark Pramukh
 	//151 - Sah-Sampark Pramukh
 	//230 - SNY Pramukh
-	private $shakha_kkh_respons = array('020','021','030','031','170', '150', '151', '230');
+	//240 - Dharma Bee Pramukh
+	//250 - SV150 Pramukh
+	private $shakha_kkh_respons = array('020','021','030','031','170', '150', '151', '230', '240', '250');
 
     function Permission()
     {
@@ -44,7 +46,7 @@ class Permission
     }
 
 		//IS_ADMIN
-		$a = array(1, 4717, 1852, 2832); 
+		$a = array(1, 4717, 1852, 2832);
 		//Abhi Gupta & Ramesh Subramaniam & Ajeet Tailor & Rajesh Acharya
 		//Super Admin (CID = 1)
 		$this->is_admin = in_array($this->cid, $a);
@@ -88,7 +90,7 @@ class Permission
 	{
 		$rs = $this->CI->db->get_where('shakhas', array('shakha_id' => $id))->row();
 		//if($this->is_vibhag_kk($rs->vibhag_id)) return true;
-    
+
 		if (count(array_intersect($this->shakha_kkh_respons, $this->sh_resp)) && $this->shakha_id == $id){
 			$this->is_shakha_kkh = true;
 		}

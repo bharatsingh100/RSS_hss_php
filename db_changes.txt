@@ -124,3 +124,10 @@ INSERT INTO `crmhss_crm`.`Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc
 # `ip_add` varchar(15) NOT NULL,
 # PRIMARY KEY  (`id`)
 ##) 
+
+# Add new responsibilities: Dharma Bee, SV150 and Sadasya (Yelloji)
+INSERT INTO `Ref_Code` (`REF_ID`, `DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`)
+VALUES
+  (00190, 4, '240', 'Dharma Bee Pramukh', '', '2013-01-09 00:07:06', 'System'),
+  (00191, 4, '250', 'SV150 Pramukh', '', '2013-01-09 00:07:06', 'System'),
+  (00192, 4, '260', 'Sadasya', '', '2013-01-09 00:07:06', 'System');
