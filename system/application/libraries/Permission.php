@@ -46,8 +46,8 @@ class Permission
     }
 
 		//IS_ADMIN
-		$a = array(1, 4717, 1852, 2832);
-		//Abhi Gupta & Ramesh Subramaniam & Ajeet Tailor & Rajesh Acharya
+		$a = array(1, 4717, 2832, 11275, 11274);
+		//Abhi Gupta, Ramesh Subramaniam, Rajesh Acharya, Vani Ji, Sharvani Ji
 		//Super Admin (CID = 1)
 		$this->is_admin = in_array($this->cid, $a);
 
