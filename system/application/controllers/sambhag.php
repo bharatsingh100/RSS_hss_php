@@ -387,7 +387,7 @@ class Sambhag extends Controller
 	{
 		$this->load->dbutil();
 
-		$data['query'] = $this->db->query("SELECT s.first_name as FirstName, s.last_name as LastName, s.email Email,
+		$data['query'] = $this->db->query("SELECT s.first_name as FirstName, s.last_name as LastName, s.email Email, s.ph_mobile Mobile, s.ph_home Home, s.ph_work Work,
 											s.city as City, s.state as State, sh.name as Shakha,
 											rc.short_desc as Nagar, rc0.short_desc as Vibhag, rc1.short_desc as Sambhag, rc2.short_desc as Responsibility
 											FROM swayamsevaks s, responsibilities r
