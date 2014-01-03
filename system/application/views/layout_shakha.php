@@ -92,14 +92,14 @@
   		 <?php echo '<p>',anchor('shakha/upload_contacts/'.$shakha_id, 'Import Contacts'),'</p>';?>
            <?php echo '<p>',anchor('shakha/add_sankhya/'.$shakha_id, 'Report Sankhya'),'</p>';?>
            <?php echo '<p>',anchor('shakha/responsibilities/'.$shakha_id, 'Manage Responsibilities'),'</p>';?>
-           <!-- <?php //echo '<p>',anchor('shakha/sny_count/'.$shakha_id, 'Report SNY Counts'),'</p>';?> -->
            <?php echo '<p>',anchor('shakha/edit_shakha/'.$shakha_id, 'Change Shakha Details'),'</p>';?>
          <?php endif; ?>
 	     <?php echo '<p>',anchor('shakha/statistics/'.$shakha_id, 'Shakha Statistics'),'</p>';?>
 	     <p>&nbsp;</p>
-             <!-- <?php echo '<p>',anchor('shakha/sny_count/'.$shakha_id, 'Report SNY Counts'),'</p>';?> -->
-	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2012', '2012 - SNY Statistics'),'</p>';?>
+             <?php echo '<p>',anchor('shakha/sny_count/'.$shakha_id, 'Report SNY Counts'),'</p>';?>
+	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2014', '2014 - SNY Statistics'),'</p>';?>
 	     <!-- <p>&nbsp;</p> -->
+	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2012', '2012 - SNY Statistics'),'</p>';?>
 	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2011', '2011 - SNY Statistics'),'</p>';?>
 	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2010', '2010 - SNY Statistics'),'</p>';?>
 	     <?php //if($is_kkh) echo '<p>To Update 2011 SNY Stats for your Shakha, e-mail SNY team sny@hssus.org</p>';?>
