@@ -3,3 +3,9 @@ system/logs/*
 system/application/config/database.php
 system/application/config/config.php
 .htaccess
+emails/elists.txt
+emails/create-lists.txt
+emails/bounced/*
+emails/synch/*
+emails/configs/*
+emails/configs_pass/*
