@@ -238,7 +238,7 @@ class Email extends Controller
    while ($file = readdir($dir_handle)) {
    if($file == "." || $file == "..") continue;
 
-   $fh = fopen($path.$file, 'r') or die("Can't open file $file");
+   $fh = fopen(str_replace(" ", "\x20", $path.$file), 'r') or die("Can't open file $file");
 
    $theData = '';
    while(!feof($fh)) $theData .= fgets($fh);
@@ -271,7 +271,7 @@ class Email extends Controller
       if($file == "." || $file == "..") continue;
       //$list = explode('_', $file);
       //$list = $list[0];
-      $fh = fopen($path.$file, 'r') or die("Can't open file $file");
+      $fh = fopen(str_replace(" ", "\x20", $path.$file), 'r') or die("Can't open file $file");
       //$theData = fgets($fh);
       $theData = '';
       while(!feof($fh)) $theData .= fgets($fh);
@@ -314,7 +314,7 @@ class Email extends Controller
         $new_lists[] = strtolower($list->address.$host);
         $new_email_lists = implode("\n",$new_lists);
         $file = $p.'create-lists.txt';
-        $fh = fopen($file, 'w') or die("Can't open file");
+        $fh = fopen(str_replace(" ", "\x20", $file), 'w') or die("Can't open file");
         fwrite($fh, $new_email_lists);
         fclose($fh);
         shell_exec('chmod 0666 '.$file);
@@ -366,12 +366,12 @@ class Email extends Controller
         }
         else $mods .= "]\n";
         //Append moderaters to config file
-        $fh = fopen($file, 'a') or die("can't open file $file");
+        $fh = fopen(str_replace(" ", "\x20", $file), 'a') or die("can't open file $file");
         fwrite($fh, $mods);
         fclose($fh);
 
         $file   = $p.'configs_pass/'.$list->address.$host;
-        $fh     = fopen($file, 'w') or die("Can't open file");
+        $fh     = fopen(str_replace(" ", "\x20", $file), 'w') or die("Can't open file");
         $txt    = "import sha\r\n";
         $txt   .= "mlist.mod_password = sha.new('" . $list->mod_pass . '\').hexdigest()';
         shell_exec('chmod 0666 '.$file);
