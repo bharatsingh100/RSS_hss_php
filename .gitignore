@@ -9,3 +9,4 @@ emails/bounced/*
 emails/synch/*
 emails/configs/*
 emails/configs_pass/*
+*.sublime*

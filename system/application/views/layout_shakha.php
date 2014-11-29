@@ -97,8 +97,9 @@
 	     <?php echo '<p>',anchor('shakha/statistics/'.$shakha_id, 'Shakha Statistics'),'</p>';?>
 	     <p>&nbsp;</p>
              <?php echo '<p>',anchor('shakha/sny_count/'.$shakha_id, 'Report SNY Counts'),'</p>';?>
-	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2014', '2014 - SNY Statistics'),'</p>';?>
+	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2015', '2015 - SNY Statistics'),'</p>';?>
 	     <!-- <p>&nbsp;</p> -->
+       <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2014', '2014 - SNY Statistics'),'</p>';?>
 	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2012', '2012 - SNY Statistics'),'</p>';?>
 	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2011', '2011 - SNY Statistics'),'</p>';?>
 	     <?php echo '<p>',anchor('shakha/sny_statistics/'.$shakha_id . '/2010', '2010 - SNY Statistics'),'</p>';?>

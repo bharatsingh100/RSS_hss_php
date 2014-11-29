@@ -326,6 +326,6 @@ $config['rewrite_short_tags'] = FALSE;
 $config['debug'] = FALSE;
 
 // SNY Year
-$config['sny_year'] = 2012;
+$config['sny_year'] = 2015;
 
 ?>
