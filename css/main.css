@@ -209,3 +209,7 @@ select {
 .float-right {
 	float: right;
 }
+
+#email-error{
+	color:red;
+	} 

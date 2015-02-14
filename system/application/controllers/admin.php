@@ -7,6 +7,8 @@ class Admin extends Controller
 		$this->load->library('layout');
 		$this->layout->setLayout("layout_admin");
 		$this->output->enable_profiler($this->config->item('debug'));
+		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0'); 
+		$this->output->set_header('Pragma: no-cache'); 
 
     }
 
