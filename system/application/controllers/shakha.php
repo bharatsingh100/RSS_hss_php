@@ -844,6 +844,61 @@ class Shakha extends Controller {
               echo json_encode($message);
          }
   }
+
+    function add_quick_form($id) { 
+
+       $redirectUrlArray = explode(site_url(),$_SERVER['HTTP_REFERER']);
+       $emailId = $this->input->post('email');
+       $contactNumber = trim($_POST['ph_mobile']);
+        if (isset ($_POST) && trim($_POST['name']) == '') {
+             $this->session->set_userdata('emailError','Invalid Name');
+             redirect($redirectUrlArray[1]);
+             die();
+        }
+
+        if(!preg_match ('/^([a-zA-Z ]+)$/', $_POST['name'])){
+             $this->session->set_userdata('emailError','Invalid Name');
+             redirect($redirectUrlArray[1]);
+             die();
+            }     
+
+        
+        if($emailId != ''){
+            if (!filter_var($emailId, FILTER_VALIDATE_EMAIL)) {
+                 $this->session->set_userdata('emailError','Invalid Email ID');  
+                 redirect($redirectUrlArray[1]);
+                 die();   
+                    }
+
+            $this->db->select('contact_id');
+            $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
+
+             if($query->num_rows() > 0){
+                 $this->session->set_userdata('emailError',' Email ID already registered');      
+                 redirect($redirectUrlArray[1]);
+                 die();
+               }
+           }
+
+        if($contactNumber != ''){
+           if(!preg_match ('/^([0-9]+)$/', $contactNumber)){
+               $this->session->set_userdata('emailError','Invalid Mobile Number');
+               redirect($redirectUrlArray[1]);
+               die();
+             }
+
+           if(strlen($contactNumber) >10 || strlen($contactNumber) <10){
+                $this->session->set_userdata('emailError','Invalid Mobile Number');
+                redirect($redirectUrlArray[1]);
+                die();
+            }
+        }     
+     
+      $hhid = (isset ($_POST['household_id'])) ? $_POST['household_id'] : '';
+      $data = $this->Shakha_model->insert_ss();
+      redirect('/profile/view/' . $data['newUserId']);
+      
+  }
 }
 
 ?>

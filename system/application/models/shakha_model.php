@@ -273,6 +273,7 @@ class Shakha_model extends Model
     unset($data['add_family']);
 
     if($this->db->insert('swayamsevaks', $data)) {
+      $data['newUserId'] = $this->db->insert_id();
       $contact_id = $this->session->userdata('contact_id') ? $this->session->userdata('contact_id') : 0;
       $this->activities->add_activity($contact_id, $this->db->insert_id(), 'profile', 'added', $data, $data['shakha_id']);
     }

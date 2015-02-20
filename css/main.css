@@ -94,7 +94,7 @@ a:hover {
 	color: #333;
 	/*border-top: 2px solid #FF9900;*/
 	/*background-color: #EFF0F9;*/
-	margin: 15px 0px 15px 0px;
+	margin: 0px 0px 15px 0px;
 	padding: 10px 10px 10px 10px;
 	width: 185px;
 	display: inline;
@@ -213,3 +213,30 @@ select {
 #email-error{
 	color:red;
 	} 
+
+#p_addcontact{
+font-size: 1em !important;
+}	
+
+#span_shakhaname{
+color:#FF6600;
+}
+
+#btn_addcontact{
+ margin-left: 35px;
+ margin-top: 5px !important;
+ width:100px;
+}
+
+#add_karyakarta input{
+margin-top:5px;	
+}
+
+.form_error{
+	border: 2px solid red;
+	border-radius: 5px;
+}
+
+.span_error_font{
+	font-size: 0.8em !important;
+}	
