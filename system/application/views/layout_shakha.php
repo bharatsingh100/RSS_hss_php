@@ -88,9 +88,9 @@
               <input type="text" id="k_email" name="email" placeholder="Enter Email" />
               <input type="text" id="k_mobile" name="ph_mobile" placeholder="Enter Mobile Number" />  
               <input type="hidden" name="shakha_id" value="<?php echo $this->session->userdata('shakha_id') ?>" />  
-              <input type="hidden" name="contact_type" value="RA" />          
-              <input type="hidden" name="gana" value="5" />          
-              <input type="hidden" name="state" value="NJ" />          
+              <input type="hidden" name="contact_type" value="<?php echo $this->session->userdata('contact_type') ?>" />          
+              <input type="hidden" name="gana" value="<?php echo $this->session->userdata('gana') ?>" />          
+              <input type="hidden" name="state" value="<?php echo $this->session->userdata('state') ?>" />          
               <input type="button" id="btn_addcontact" value="Add Contact" />
             </form>
          <br />
