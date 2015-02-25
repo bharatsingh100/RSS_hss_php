@@ -1,7 +1,7 @@
 <?php
 class Search extends Controller
 {
-    function Search()
+     function Search()
     {
         parent::Controller();
 		if(!$this->session->userdata('logged_in'))
@@ -17,6 +17,7 @@ class Search extends Controller
 				$this->session->set_userdata('message', 'Your are not allowed to access the requested URL');
 				redirect('profile/view/'.$this->session->userdata('contact_id'));
 		}
+		$this->load->library('Ajax_pagination');
 			
 		$this->output->enable_profiler($this->config->item('debug'));
 //		$this->load->model('Profile_model');
@@ -45,72 +46,106 @@ class Search extends Controller
 	
 	function index($term = '') 
 	{
-
 		if($term == '' && isset($_POST['term'])) { $term = $_POST['term']; $this->session->set_userdata('term', $term); }
 		if($term == 'Search...' || strlen($term) <= 3 || $term == '')
 		{
 			$this->session->set_userdata('message', 'Please enter a meaningful search term, with at least 4 characters.');
 			redirect($this->session->ro_userdata('redirect_url'));
 		}
-		
-		$this->load->library('pagination');
-		$limit = $_POST['limit'];
-		$lim = explode('_', $limit);
-		switch($lim[0]){
-			case 'SH': 
-				$limit = "shakha_id = $lim[1]";
-				$this->session->set_userdata('within', 'SH');
-				break;
-			case 'VI': 
-				$limit = $this->_get_shakhas($lim[1], 'vibhag_id');
-				$this->session->set_userdata('within', 'VI');				
-				break;
-			case 'SA': 
-				$limit = $this->_get_shakhas($lim[1], 'sambhag_id');
-				$this->session->set_userdata('within', 'SA');				
-				break;
-			case 'NT': 
-				$limit = 1;
-				$this->session->set_userdata('within', 'NT');	
-				break;
-		}
-		$config['base_url'] = base_url()."/search/index/$term/";
-    	$config['total_rows'] = $this->db->where($limit, NULL, FALSE)->get('swayamsevaks');
-    	$config['per_page'] = '30';
-    	$config['full_tag_open'] = '<p>';
-    	$config['full_tag_close'] = '</p>';
-		$config['uri_segment'] = 5;
-//		$config['post_url'] = $data['order'].'/'.$data['orderDir'];
-		$this->pagination->initialize($config);
-		$data['results'] = $this->_search($config['per_page'], $this->uri->segment(5), $limit, $term);
-		$data['pageTitle'] = 'Search Results';
+		$data['term'] = $_POST['term'];
 		$this->layout->view('search/index', $data);
+
+	}	
+
+	function getShakha($keyword){	
+	   $page = $this->input->post('page');
+	    if(!$page):
+		    $offset = 0;
+		else:            
+		    $offset = $page;
+		endif;	
+		$shakhaTotalQuery = $this->db->select('shakha_id')									 
+							         ->like('name',$keyword,'after')
+							         ->get('shakhas'); 
+
+		$shakhaQuery = $this->db->select('name,shakha_id,city,state')								
+						        ->like('name',$keyword,'after')
+					            ->limit(10,$offset)
+			         	        ->get('shakhas');	
+		
+		$data['getTotalData'] = $shakhaTotalQuery->num_rows();
+        $data['perPage'] = '10';
+        $data['shakhaDetails'] = $shakhaQuery->result_array();
+        $data['keyword'] = $keyword;        
+        echo $this->load->view('search/shakha',$data);
+
 	}
-	
-	function _search($num, $offset, $limit, $term)
-	{
-		//$term = explode(' ', $term);
-		//foreach(
-		$this->db->select('contact_id, CONCAT(first_name, \' \', last_name) as name, city, state, ph_home as phone, ph_home, ph_mobile, ph_work, email', FALSE);
-//		$this->db->order_by($sort_by, 'asc');
-		$this->db->where("MATCH(first_name, last_name, company, position, city, notes, email) AGAINST ('+($term)' IN BOOLEAN MODE) ");
-		if($limit !== 1) $this->db->where($limit, NULL, FALSE);
-		$query = $this->db->get('swayamsevaks', $num, $offset);
-				 
-		return $query;
+
+	function getSwayamsevak($keyword){
+       $page = $this->input->post('page');
+        if(!$page):
+            $offset = 0;
+        else:            
+            $offset = $page;
+        endif;
+		$swayamsevaksTotalQuery = $this->db->select('contact_id')						                 						         					         
+								           ->like('swayamsevaks.first_name',$keyword,'after')
+								           ->or_like('swayamsevaks.last_name',$keyword,'after')						        
+					                       ->get('swayamsevaks');	
+
+        $swayamsevaksQuery = $this->db->select('swayamsevaks.contact_id,swayamsevaks.first_name, swayamsevaks.last_name,shakhas.name,swayamsevaks.state')
+						              ->from('swayamsevaks')
+						              ->join('shakhas', 'swayamsevaks.shakha_id = shakhas.shakha_id')						         
+						              ->like('swayamsevaks.first_name',$keyword,'after')
+						              ->or_like('swayamsevaks.last_name',$keyword,'after')
+						              ->limit(10,$offset)
+			                          ->get();	                    
+		
+        $data['getTotalData'] = $swayamsevaksTotalQuery->num_rows();
+        $data['perPage'] = '10';
+        $data['swayamsevaksDetails'] = $swayamsevaksQuery->result_array();
+        $data['keyword'] = $keyword;       
+		echo $this->load->view('search/swayamsevak',  $data);
 	}
-	
-	
-	function _get_shakhas($id, $type)
-	{
-		//$shakha_ids = $this->get_shakhas($vibhag_id);
-		$this->db->where($type, $id);
-		$shakhas = $this->db->select('shakha_id')->get('shakhas')->result();
-		$shakha_id = '';
-		foreach($shakhas as $shakha)
-			$shakha_id[] = $shakha->shakha_id;
-		$shakhas = 'shakha_id IN ('.implode(',',$shakha_id).')';
-		return $shakhas;
+
+	function auto_suggest($keyword){ 
+		if(strlen(trim($keyword)) >= 3){
+			
+			$shakhaQuery = $this->db->select('name,shakha_id')									 
+							         ->like('name',$keyword,'after')
+							         ->get('shakhas');
+			$shakhaResult = $shakhaQuery->result_array();
+
+			$swayamsevaksQuery = $this->db->select('swayamsevaks.contact_id,swayamsevaks.first_name, swayamsevaks.last_name,shakhas.name,swayamsevaks.state')
+						         ->from('swayamsevaks')
+						         ->join('shakhas', 'swayamsevaks.shakha_id = shakhas.shakha_id')						         
+						         ->like('swayamsevaks.first_name',$keyword,'after')
+						         ->or_like('swayamsevaks.last_name',$keyword,'after')
+			                     ->get();
+			
+			$swayamsevaksResult = $swayamsevaksQuery->result_array();			
+			$response = array();
+			
+
+			if(count($swayamsevaksResult)){ 
+				foreach ($swayamsevaksResult as $key => $value) {
+				         $response[] = ['title'=>
+				                        $value['first_name']." ".$value['last_name']."(".$value['state'].") - ".$value['name'],
+				                        'id' => $value['contact_id'],
+				                        'type'=>'user'];					
+					
+				}
+			
+			}
+
+			if(count($shakhaResult)){ 
+				foreach ($shakhaResult as $key => $value) {
+					$response[] = ['title'=>$value['name'],'id'=>$value['shakha_id'],'type'=>'shakha'];
+				}			
+			}
+			echo json_encode($response);			
+		}
+		
 	}
 }
 

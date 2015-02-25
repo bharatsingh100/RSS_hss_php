@@ -241,3 +241,53 @@ margin-top:5px;
 	font-size: 0.8em !important;
 	margin-left:5px;
 }	
+
+#swayamsevak-list table, #swayamsevak-list th, #swayamsevak-list td,#shakha-list table, #shakha-list th, #shakha-list td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#swayamsevak-list th, #shakha-list th{
+	background: #004175;
+	color:white;
+	padding:5px;
+}
+
+#swayamsevak-list table, #shakha-list table{
+	width: 100%;
+	margin-bottom: 3%;
+}
+
+#swayamsevak-list td, #shakha-list td {
+  text-align:center;
+  padding:5px;
+}
+
+#swayamsevak-list table a:hover, #shakha-list table a:hover{
+  color:#FF6600;
+}
+
+#swayamsevak-list table tr:nth-child(even), #shakha-list table tr:nth-child(even) {
+	background: #CCC
+}
+
+#swayamsevak-list table tr:nth-child(odd), #shakha-list table tr:nth-child(odd) {
+	background: #FFF
+}
+
+div.page-links > a{
+    color: #004175 !important;
+}
+
+div.page-links b {
+    color: #808080;
+}
+
+.page-links {
+    text-align: center;
+}
+
+#rightcolumn > span#autosuggest-error {
+    font-size: 0.87em;
+    color:red;    
+}

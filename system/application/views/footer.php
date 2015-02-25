@@ -10,11 +10,12 @@
 
    </div>
    <!-- End Wrapper -->
-<script type="text/javascript" src="/css/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="/css/all.js"></script>
 <script type="text/javascript" src="/css/jgcharts.pack.js"></script>
 <script type="text/javascript" src="/css/jquery.autocomplete.js"></script>
 <script type="text/javascript" src="/css/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="<?=site_url();?>javascript/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="<?=site_url();?>javascript/jquery-ui.js"></script>
 <script type="text/javascript">
 <!--
 	<?php /* Execute Javascript function from all.js based on URL */ ?>
