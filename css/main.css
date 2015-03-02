@@ -94,7 +94,7 @@ a:hover {
 	color: #333;
 	/*border-top: 2px solid #FF9900;*/
 	/*background-color: #EFF0F9;*/
-	margin: 15px 0px 15px 0px;
+	margin: 0px 0px 15px 0px;
 	padding: 10px 10px 10px 10px;
 	width: 185px;
 	display: inline;
@@ -208,4 +208,86 @@ select {
 
 .float-right {
 	float: right;
+}
+
+#email-error{
+	color:red;
+	} 
+
+#p_addcontact{
+font-size: 1em !important;
+}	
+
+#span_shakhaname{
+color:#FF6600;
+}
+
+#btn_addcontact{
+ margin-left: 35px;
+ margin-top: 5px !important;
+ width:100px;
+}
+
+#add_karyakarta input{
+margin-top:5px;	
+}
+
+.form_error{
+	border: 2px solid red;
+	border-radius: 5px;
+}
+
+.span_error_font{
+	font-size: 0.8em !important;
+	margin-left:5px;
+}	
+
+#swayamsevak-list table, #swayamsevak-list th, #swayamsevak-list td,#shakha-list table, #shakha-list th, #shakha-list td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#swayamsevak-list th, #shakha-list th{
+	background: #004175;
+	color:white;
+	padding:5px;
+}
+
+#swayamsevak-list table, #shakha-list table{
+	width: 100%;
+	margin-bottom: 3%;
+}
+
+#swayamsevak-list td, #shakha-list td {
+  text-align:center;
+  padding:5px;
+}
+
+#swayamsevak-list table a:hover, #shakha-list table a:hover{
+  color:#FF6600;
+}
+
+#swayamsevak-list table tr:nth-child(even), #shakha-list table tr:nth-child(even) {
+	background: #CCC
+}
+
+#swayamsevak-list table tr:nth-child(odd), #shakha-list table tr:nth-child(odd) {
+	background: #FFF
+}
+
+div.page-links > a{
+    color: #004175 !important;
+}
+
+div.page-links b {
+    color: #808080;
+}
+
+.page-links {
+    text-align: center;
+}
+
+#rightcolumn > span#autosuggest-error {
+    font-size: 0.87em;
+    color:red;    
 }

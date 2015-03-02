@@ -7,8 +7,11 @@
         <?php if($this->session->userdata('message')): ?>
         <span style="float:left; color:#FFCC33; font-weight: bolder; padding: 2px 0px 0px 10px;"><?=$this->session->ro_userdata('message');?></span>
         <?php endif;?>
-		<?=mdate("%l, %F %j%S", time())?><?php echo ' | <strong>' . $this->session->userdata('email') . '</strong> | ';?>
+		<?=mdate("%l, %F %j%S", time())?>
+    <?php if($this->session->userdata('logged_in')):
+     echo ' | <strong>' . $this->session->userdata('email') . '</strong> | ';?>
 		<?=anchor('user/logout', 'Logout')?>
+    <?php endif;?>
         </div>
          <!-- Begin Header -->
          <br />

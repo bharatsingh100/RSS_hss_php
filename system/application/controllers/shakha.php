@@ -530,7 +530,11 @@ class Shakha extends Controller {
     $this->layout->view('shakha/list_ss', $data);
   }
 
-  function view($id) {
+  function view($id = null) {
+   if($id == null){
+    redirect($this->session->userdata('redirect_url'));
+    die();
+  } 
     $data['row'] = $this->Shakha_model->getShakhaInfo($id);
     $data['pageTitle'] = $data['row']->name;
     $this->layout->view('shakha/view-shakha', $data);
@@ -610,8 +614,11 @@ class Shakha extends Controller {
     $this->layout->view('shakha/gata', $data); */
   }
 
-  function addss($id, $var = '') {
-    $data['shakha_name'] = $this->Shakha_model->getShakhaName($id);
+  function addss($id = null, $var = '') {
+    if(empty($id)){      
+      redirect($this->session->userdata('redirect_url'));
+    }else{
+    $data['shakha_name'] = $this->Shakha_model->getShakhaName($id);   
     if ($var != '')
       $data['family'] = $var;
     $data['states'] = $this->Shakha_model->getStates();
@@ -623,6 +630,7 @@ class Shakha extends Controller {
     $data['pageTitle'] = 'Add New Contact';
     $this->layout->view('shakha/add-swayamsevak', $data);
   }
+  }
 
   function add_family_member($shakha_id, $id) {
     $results = $this->db->get_where('swayamsevaks', array('contact_id' => $id))->row_array();
@@ -630,11 +638,23 @@ class Shakha extends Controller {
   }
 
   function add_family($id) {
+ 
     //Redirect back to form if the Name is not set
     if (isset ($_POST) && trim($_POST['name']) == '') {
       redirect('shakha/addss/' . $this->input->post('shakha_id'));
     }
-
+      // validate email id already registered or no
+    $emailId = $this->input->post('email');
+    if($emailId != ''){
+      $this->db->select('contact_id');
+      $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
+      if($query->num_rows() > 0){
+      $this->session->set_userdata('message',' Email ID is already registered.');      
+     redirect('shakha/addss/' . $this->input->post('shakha_id'));
+     die();
+     }
+ }
+     
     $hhid = (isset ($_POST['household_id'])) ? $_POST['household_id'] : '';
     $data = $this->Shakha_model->insert_ss();
     $this->session->set_userdata('message', $this->input->post('name') . ' successfully added to the database.');
@@ -642,9 +662,11 @@ class Shakha extends Controller {
       $data['household_id'] = (($hhid != '') ? $hhid : $data['household_id']);
       $this->addss($this->input->post('shakha_id'), $data);
     }
-    else
+    else{
       redirect('shakha/addss/' . $this->input->post('shakha_id'));
-  }
+    }
+  
+}
 
   function import_contacts($id) {
     $data['pageTitle'] = 'Import Contacts';
@@ -808,6 +830,74 @@ class Shakha extends Controller {
     // Return the chart data - and let the Y axis to show the maximum value
     //return $chartData."&chxt=y&chxl=1:|0|".$maxValue;
     return $chartData . "&chxl=1:|0|" . $maxValue;
+  }
+
+  function validate_email($emailId = null){
+      $emailId = $this->input->post('email');
+      $this->db->select('contact_id');
+      $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
+          if($query->num_rows() > 0){
+              $message = array("error" => "Email ID is already registered");
+              echo json_encode($message);
+         }else{
+              $message = array("error" => "");
+              echo json_encode($message);
+         }
+  }
+
+    function add_quick_form($id) { 
+
+       $redirectUrlArray = explode(site_url(),$_SERVER['HTTP_REFERER']);
+       $emailId = $this->input->post('email');
+       $contactNumber = trim($_POST['ph_mobile']);
+        if (isset ($_POST) && trim($_POST['name']) == '') {
+             $this->session->set_userdata('emailError','Invalid Name');
+             redirect($redirectUrlArray[1]);
+             die();
+        }
+
+        if(!preg_match ('/^([a-zA-Z ]+)$/', $_POST['name'])){
+             $this->session->set_userdata('emailError','Invalid Name');
+             redirect($redirectUrlArray[1]);
+             die();
+            }     
+
+        
+        if($emailId != ''){
+            if (!filter_var($emailId, FILTER_VALIDATE_EMAIL)) {
+                 $this->session->set_userdata('emailError','Invalid Email ID');  
+                 redirect($redirectUrlArray[1]);
+                 die();   
+                    }
+
+            $this->db->select('contact_id');
+            $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
+
+             if($query->num_rows() > 0){
+                 $this->session->set_userdata('emailError',' Email ID already registered');      
+                 redirect($redirectUrlArray[1]);
+                 die();
+               }
+           }
+
+        if($contactNumber != ''){
+           if(!preg_match ('/^([0-9]+)$/', $contactNumber)){
+               $this->session->set_userdata('emailError','Invalid Mobile Number');
+               redirect($redirectUrlArray[1]);
+               die();
+             }
+
+           if(strlen($contactNumber) >10 || strlen($contactNumber) <10){
+                $this->session->set_userdata('emailError','Invalid Mobile Number');
+                redirect($redirectUrlArray[1]);
+                die();
+            }
+        }     
+     
+      $hhid = (isset ($_POST['household_id'])) ? $_POST['household_id'] : '';
+      $data = $this->Shakha_model->insert_ss();
+      redirect('/profile/view/' . $data['newUserId']);
+      
   }
 }
 

@@ -1,6 +1,7 @@
 <?php $fam = (isset($family)) ? true : false; ?>
 <?php //if($fam) print_r($family); ?>
-<?=form_open('shakha/add_family/'.$shakha_id)?>
+<?php $attributes = array('id' => 'addContactForm'); ?>
+<?=form_open('shakha/add_family/'.$shakha_id,$attributes)?>
 <?=form_hidden('shakha_id', $shakha_id);?>
 <?php if($fam) echo form_hidden('household_id', $family['household_id']); ?>
 
@@ -83,7 +84,7 @@
                <tr>
                  <td valign="top"><div align="right"><strong>E-mail:</strong></div></td>
                <td colspan="3"><label>
-                   <input name="email" type="text" id="email" size="35" maxlength="60" />
+                   <input name="email" type="text" id="email" size="35" maxlength="60" /><span id="email-error"></span>
                <br />
                  <span class="style2">(Email Addresses must be unique. Two contacts cannot share same e-mail address)                   </span></label></td>
                </tr>
@@ -186,3 +187,5 @@
 <p>&nbsp;</p>
 		     <p>&nbsp;</p>
 <?=form_close(); ?>
+<script type="text/javascript" src="<?=site_url();?>javascript/validateEmail.js"></script>
+

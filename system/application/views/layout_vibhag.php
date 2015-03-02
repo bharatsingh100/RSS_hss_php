@@ -62,22 +62,13 @@
 				<?php if($this->uri->segment(1) == 'search'){
                 echo 'value="'.$this->uri->segment(4).'"';}
             else
-                echo 'value="Search for..."';
+                echo 'placeholder="Search for..."';
             ?>
-              size="18" onclick="this.value = ''" id="term" />&nbsp;<input type="submit" name="submit" id="submit" value="Go" />
+              size="18" id="term" autocomplete="off" />&nbsp;<input type="submit" name="submit" id="submit" value="Go" />
               <br />
-              Within:&nbsp;<select name="limit" id="limit">
-              	<option <?php if($this->session->userdata('within') == 'SH') echo ' selected="selected" '; ?> value="<?='SH_'.$this->session->userdata('shakha_id')?>">My Shakha&nbsp;</option>
-                <option <?php if($this->session->userdata('within') == 'VI') echo ' selected="selected" '; ?> value="<?='VI_'.$this->session->userdata('vibhag_id')?>">My Vibhag&nbsp;</option>
-                <?php //if($this->permission->is_sambhag_kk($this->session->userdata('sambhag_id'))):?>
-                <option <?php if($this->session->userdata('within') == 'SA') echo ' selected="selected" '; ?> value="<?='SA_'.$this->session->userdata('sambhag_id')?>">My Sambhag&nbsp;</option><?php // endif; ?>
-                 <?php //if($this->permission->is_nt_kk()):?>
-                <option <?php if($this->session->userdata('within') == 'NT') echo ' selected="selected" '; ?> value="<?='NT_'?>">Everything&nbsp;</option><?php //endif; ?>
-              </select>
               <?php $this->session->set_userdata('redirect_url', $this->uri->uri_string());?>
-
             </form>
-         <br />
+         <span id="autosuggest-error"></span><br/>
 		 <hr />
          <?php endif; ?>
          <br />
@@ -95,5 +86,5 @@
          </div>
 
 		 <!-- End Right Column -->
-
+         <script  type="text/javascript" src="<?=site_url();?>javascript/customautocomplete.js">  </script>
 		 <?php require_once 'footer.php';?>
