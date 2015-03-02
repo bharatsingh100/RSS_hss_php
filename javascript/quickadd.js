@@ -27,7 +27,7 @@ $('#k_email').blur(function(){
   if($.trim($('#k_email').val()) != ''){   
      $.ajax({
                 type: "POST",
-                url: "/sampark/shakha/validate_email",
+                url: "/shakha/validate_email",
                 data:{email:$('#k_email').val()},
                 dataType : "json",                                     
                 success:function(result) {
