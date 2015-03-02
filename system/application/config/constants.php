@@ -18,6 +18,9 @@ define('FILE_WRITE_MODE', 0666);
 define('DIR_READ_MODE', 0755);
 define('DIR_WRITE_MODE', 0777);
 
+define('defaultGana', '5');
+define('defaultContactType', 'RA');
+
 /*
 |--------------------------------------------------------------------------
 | File Stream Modes
