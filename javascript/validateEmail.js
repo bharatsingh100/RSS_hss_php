@@ -10,7 +10,7 @@ $( "#addContactForm" ).submit(function( event ) {
   if($('#email').val() != ''){   
      $.ajax({
                 type: "POST",
-                url: "/sampark/shakha/validate_email",
+                url: "/shakha/validate_email",
                 data:{email:$('#email').val()},
                 dataType : "json",                                     
                 success:function(result) {

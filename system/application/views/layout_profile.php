@@ -68,6 +68,23 @@
             </form>
          <span id="autosuggest-error"></span><br/>
 		     <hr />
+         <span id="email-error" class="span_error_font">
+            <?php if(!empty($this->session->userdata('emailError'))){
+                     echo $this->session->userdata('emailError'); $this->session->unset_userdata('emailError');
+                   } ?></span>
+            <p id="p_addcontact">Add new contact to <span id="span_shakhaname"><?php echo $this->session->userdata('bc_shakha') ?></span></p>
+            <form name="add_karyakarta" autocomplete="off" method="post" id="add_karyakarta" action="<?php echo '/shakha/add_quick_form/'.$this->session->userdata('shakha_id') ?>"/>
+              <input type="text" id="k_name" name="name" placeholder="Enter Name" required />
+              <input type="text" id="k_email" name="email" placeholder="Enter Email" />
+              <input type="text" id="k_mobile" name="ph_mobile" placeholder="Enter Mobile Number" />  
+              <input type="hidden" name="shakha_id" value="<?php echo $this->session->userdata('shakha_id') ?>" />  
+              <input type="hidden" name="contact_type" value="<?php echo defaultContactType; ?>" />          
+              <input type="hidden" name="gana" value="<?php echo defaultGana;  ?>" />          
+              <input type="hidden" name="state" value="<?php echo $this->session->userdata('state') ?>" />          
+              <input type="button" id="btn_addcontact" value="Add Contact" />
+            </form>
+         <br />
+         <hr />
          <?php endif; ?>
          <br />
          <?php if($this->permission->allow_profile_edit($this->uri->segment(3))): ?>
@@ -79,5 +96,6 @@
          <p><?=anchor('profile/change_password/' . $this->uri->segment(3), 'Change Password')?></p>
 		 <?php endif; ?>
          </div>
+     <script type="text/javascript" src="<?=site_url();?>javascript/quickadd.js"></script>    
      <script  type="text/javascript" src="<?=site_url();?>javascript/customautocomplete.js">  </script>
 		 <?php require_once 'footer.php';?>

@@ -1,8 +1,8 @@
 function log( id,type ) {
           if(type == "shakha"){            
-            window.location='/sampark/shakha/view/'+id;
+            window.location='/shakha/view/'+id;
           }else{            
-            window.location='/sampark/profile/view/'+id;
+            window.location='/profile/view/'+id;
           }        
         }
       jQuery.noConflict();
@@ -11,7 +11,7 @@ function log( id,type ) {
         jQuery( "#term" ).autocomplete({          
            source: function(request, response) {
                 $.ajax({
-                url: "/sampark/search/auto_suggest/"+request.term,                
+                url: "/search/auto_suggest/"+request.term,                
                 dataType: "json",
                 type: "GET",
                 success: function(data){                   

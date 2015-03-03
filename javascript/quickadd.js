@@ -10,7 +10,7 @@ $('#k_name').keydown(function (e) {
 					  e.preventDefault();
 					 } else {
     					var key = e.keyCode;
-    					if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+    					if (!((key == 8) || (key == 9) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
     					e.preventDefault();
 					  } }
 					});
@@ -27,7 +27,7 @@ $('#k_email').blur(function(){
   if($.trim($('#k_email').val()) != ''){   
      $.ajax({
                 type: "POST",
-                url: "/sampark/shakha/validate_email",
+                url: "/shakha/validate_email",
                 data:{email:$('#k_email').val()},
                 dataType : "json",                                     
                 success:function(result) {
