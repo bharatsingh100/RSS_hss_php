@@ -43,18 +43,25 @@ class Search extends Controller
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 		$this->output->set_header('Pragma: no-cache');
     }
-	
-	function index($term = '') 
-	{
-		if($term == '' && isset($_POST['term'])) { $term = $_POST['term']; $this->session->set_userdata('term', $term); }
-		if($term == 'Search...' || strlen($term) <= 3 || $term == '')
-		{
+
+    function searchRedirect(){
+		if($_POST['term'] == 'Search...' || strlen($_POST['term']) <= 3 || $_POST['term'] == ''){
 			$this->session->set_userdata('message', 'Please enter a meaningful search term, with at least 4 characters.');
 			redirect($this->session->ro_userdata('redirect_url'));
+		}else{
+			redirect('search/index/'.$_POST['term']);			
 		}
-		$data['term'] = $_POST['term'];
-		$this->layout->view('search/index', $data);
 
+	}
+	
+	function index($term = ''){
+		if($term == '' || empty($term)){
+			$this->session->set_userdata('message', 'Please enter a meaningful search term, with at least 4 characters.');
+			redirect($this->session->ro_userdata('redirect_url'));		 
+		  }
+		$this->session->set_userdata('term', $term);
+		$data['term'] = $term;
+		$this->layout->view('search/index', $data);
 	}	
 
 	function getShakha($keyword){	
@@ -70,11 +77,11 @@ class Search extends Controller
 
 		$shakhaQuery = $this->db->select('name,shakha_id,city,state')								
 						        ->like('name',$keyword,'after')
-					            ->limit(10,$offset)
+					            ->limit(50,$offset)
 			         	        ->get('shakhas');	
 		
 		$data['getTotalData'] = $shakhaTotalQuery->num_rows();
-        $data['perPage'] = '10';
+        $data['perPage'] = '50';
         $data['shakhaDetails'] = $shakhaQuery->result_array();
         $data['keyword'] = $keyword;        
         echo $this->load->view('search/shakha',$data);
@@ -98,11 +105,11 @@ class Search extends Controller
 						              ->join('shakhas', 'swayamsevaks.shakha_id = shakhas.shakha_id')						         
 						              ->like('swayamsevaks.first_name',$keyword,'after')
 						              ->or_like('swayamsevaks.last_name',$keyword,'after')
-						              ->limit(10,$offset)
+						              ->limit(50,$offset)
 			                          ->get();	                    
 		
         $data['getTotalData'] = $swayamsevaksTotalQuery->num_rows();
-        $data['perPage'] = '10';
+        $data['perPage'] = '50';
         $data['swayamsevaksDetails'] = $swayamsevaksQuery->result_array();
         $data['keyword'] = $keyword;       
 		echo $this->load->view('search/swayamsevak',  $data);
@@ -139,8 +146,8 @@ class Search extends Controller
 			}
 
 			if(count($shakhaResult)){ 
-				foreach ($shakhaResult as $key => $value) {
-					$response[] = ['title'=>$value['name'],'id'=>$value['shakha_id'],'type'=>'shakha'];
+				foreach ($shakhaResult as $key => $value) {					
+					$response[] = ['title'=>$value['name']."(".$value['state'].")",'id'=>$value['shakha_id'],'type'=>'shakha'];
 				}			
 			}
 			echo json_encode($response);			

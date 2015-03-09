@@ -296,3 +296,17 @@ div.page-links b {
     font-size: 0.87em;
     color:red;    
 }
+
+#rightcolumn #form1 #term {
+    font-size: 1.2em;
+    margin-left: -13px;
+    width: 160px;
+}
+
+#rightcolumn #form1 label {
+    margin-left: -10px;
+}
+
+#rightcolumn #form1 #submit {
+    margin-left: 0px;
+}
