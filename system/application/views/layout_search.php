@@ -47,7 +47,6 @@
 		 <!-- Begin Right Column -->
 		 <div id="rightcolumn">
          <form id="form1" name="form1" method="post" action="/search/searchRedirect">
-              <label>Search</label>
               <input type="text" name="term"
 				<?php if($this->uri->segment(1) == 'search'){
                 echo 'value="'.$this->uri->segment(4).'"';}
