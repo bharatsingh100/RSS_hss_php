@@ -207,7 +207,7 @@ class User extends Controller
 			return false;
 		}
 
-		$query = $this->db->get_where('swayamsevaks', array('email' => $user, 'password' => dohash($password)));
+		$query = $this->db->query("SELECT * FROM swayamsevaks WHERE email = '$user' AND password != ''");
 		if($query->num_rows() > 0)
 		{
 		    $row = NULL;
@@ -215,10 +215,8 @@ class User extends Controller
 
 		    //FIXME : Remove hack once we remove duplicate emails and profiles
 		    foreach($query->result() as $record) {
-		      $contact_id[] = $record->contact_id;
 		      if($record->password == dohash($password)) {
-		        $row = $record;
-		        break;
+		      	$contact_id[$record->contact_id] = $record;
 		      }
 		    }
 
@@ -226,12 +224,21 @@ class User extends Controller
 			//Check if the person logging in is a karyakarta
 			if(count($contact_id) > 0)
 			{
-			    $this->db->where_in('swayamsevak_id', $contact_id);
+                            //$sql = "SELECT * FROM (`responsibilities`) WHERE `swayamsevak_id` IN (1) ORDER BY FIELD (level, 'NT', 'SA', 'VI', 'NA', 'SH') LIMIT 1"
+// set this to false so that _protect_identifiers skips escaping:
+$this->db->_protect_identifiers = FALSE;
+			    $this->db->where_in('swayamsevak_id', array_keys($contact_id))->order_by("FIELD (level, 'NT', 'SA', 'VI', 'NA', 'SH')");
 			    $t = $this->db->get('responsibilities', 1);
-
+// set this to false so that _protect_identifiers skips escaping:
+$this->db->_protect_identifiers = TRUE;
+//print($t);
+//print_r($this->db->last_query()); die();
 			    if($t->num_rows() == 0) {
-			      $this->session->set_userdata('message', 'Your are not allowed to access this system. Please contact us for more info.');
+			      $this->session->set_userdata('message', 'Your are not allowed to access this system. Please contact your Karyavah to get access.');
 				  return false;
+			    }
+			    else {
+			    	$row = $contact_id[$t->row()->swayamsevak_id];
 			    }
 			}
 
@@ -280,12 +287,12 @@ class User extends Controller
 		}
 		else
 		{
-      $query = $this->db->get_where('swayamsevaks', array('email' => $user));
-      if ($query->num_rows() == 0) {
-			  $this->session->set_userdata('message', 'Your email address was not found in our database.');
-      } else {
-			  $this->session->set_userdata('message', 'Your password did not match our records. Try again.');
-      }
+			$query = $this->db->get_where('swayamsevaks', array('email' => $user));
+			if ($query->num_rows() == 0) {
+				  $this->session->set_userdata('message', 'Your email address was not found in our database.');
+			} else {
+				  $this->session->set_userdata('message', 'Your password did not match our records. Try again.');
+			}
 
 			return false;
 		}
