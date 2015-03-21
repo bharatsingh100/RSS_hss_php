@@ -93,7 +93,10 @@ class User extends Controller
 			else
 			{
 				$ci = $this->input->post('contact_id');
-				$this->db->where('contact_id', $ci);
+				$contact = $this->db->select('email')->get_where('swayamsevaks', array('contact_id' => $ci))->row();
+
+				// Update all contacts with same email id with same password
+				$this->db->where('email', $contact->email);
 				$m['passwordmd5'] = md5(trim($this->input->post('pass1')));
 				$m['password'] = sha1(trim($this->input->post('pass1')));
 				$this->db->update('swayamsevaks', $m);
@@ -224,15 +227,14 @@ class User extends Controller
 			//Check if the person logging in is a karyakarta
 			if(count($contact_id) > 0)
 			{
-                            //$sql = "SELECT * FROM (`responsibilities`) WHERE `swayamsevak_id` IN (1) ORDER BY FIELD (level, 'NT', 'SA', 'VI', 'NA', 'SH') LIMIT 1"
-// set this to false so that _protect_identifiers skips escaping:
-$this->db->_protect_identifiers = FALSE;
+				// set this to false so that _protect_identifiers skips escaping:
+				$this->db->_protect_identifiers = FALSE;
+				// Search for contact and order by hiearchy of permissions to only
+				// allow login for user with higest responsibility.
 			    $this->db->where_in('swayamsevak_id', array_keys($contact_id))->order_by("FIELD (level, 'NT', 'SA', 'VI', 'NA', 'SH')");
 			    $t = $this->db->get('responsibilities', 1);
-// set this to false so that _protect_identifiers skips escaping:
-$this->db->_protect_identifiers = TRUE;
-//print($t);
-//print_r($this->db->last_query()); die();
+				$this->db->_protect_identifiers = TRUE;
+
 			    if($t->num_rows() == 0) {
 			      $this->session->set_userdata('message', 'Your are not allowed to access this system. Please contact your Karyavah to get access.');
 				  return false;
