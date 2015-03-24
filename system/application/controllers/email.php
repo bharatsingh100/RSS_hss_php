@@ -14,7 +14,7 @@ class Email extends Controller
     $this->load->library('email');
     $this->userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
     $this->userdir = $this->userdir[2];
-    $this->docpath = __DIR__ . '/';
+    $this->docpath = $_SERVER['DOCUMENT_ROOT'] . '/';
     $this->output->enable_profiler($this->config->item('debug'));
   }
 
@@ -343,7 +343,8 @@ class Email extends Controller
         $conf_file  = $p.$conf.'_config.txt ';
         $file       = $p.'configs/'.$list->address.$host;
         $cmd        = 'cp '.$conf_file. ' ' .$file;
-        shell_exec($cmd);
+        file_put_contents($file, file_get_contents($conf_file));
+
         $t = $this->db->select('email')->get_where('swayamsevaks', array('contact_id' => $list->mod1))->row();
         $mods = "moderator = ['$t->email'";
         if($list->mod2)
