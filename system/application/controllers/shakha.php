@@ -688,7 +688,7 @@ class Shakha extends Controller {
     }*/
     //$userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
     //$userdir = $userdir[2];
-    $target_path = '/var/www/web2/uploads/';
+    $target_path = __DIR__ . '/../uploads/';
 
     //$target_path = "/home/$userdir/uploads/";
     $filename = time() . '_' . $_FILES['contacts']['name'];

@@ -14,7 +14,7 @@ class Email extends Controller
     $this->load->library('email');
     $this->userdir = explode('/',$_SERVER['DOCUMENT_ROOT']);
     $this->userdir = $this->userdir[2];
-    $this->docpath = '/var/www/web2/web/';
+    $this->docpath = __DIR__ . '/';
     $this->output->enable_profiler($this->config->item('debug'));
   }
 
