@@ -29,3 +29,10 @@ RedirectMatch 403 /\.svn.*$
 
 #Add Deflate
 AddOutputFilterByType DEFLATE text/html text/plain text/xml application/x-javascript text/javascript text/css application/xml
+
+#<FilesMatch "crmhssdb_latest.sql.gz">
+#AuthName "Member Only"
+#AuthType Basic
+#AuthUserFile /var/www/web2/web/.htpasswd_access
+#require valid-user
+#</FilesMatch>
