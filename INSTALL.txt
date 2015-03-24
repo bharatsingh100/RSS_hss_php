@@ -1,0 +1,1 @@
+- Create emails/configs, emails/configs_pass, emails/bounced, emails/synch folder and give write permissions
