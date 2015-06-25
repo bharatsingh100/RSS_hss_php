@@ -340,7 +340,7 @@ class Email extends Controller
 	if (empty($list->address)) { continue; }
 
         $conf       = ($list->style) ? 'unmoderated' : 'moderated';
-        $conf_file  = $p.$conf.'_config.txt ';
+        $conf_file  = $p.$conf.'_config.txt';
         $file       = $p.'configs/'.$list->address.$host;
         $cmd        = 'cp '.$conf_file. ' ' .$file;
         file_put_contents($file, file_get_contents($conf_file));
