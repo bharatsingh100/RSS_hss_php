@@ -174,7 +174,7 @@ class Profile extends Controller
 		if($this->input->post('password'))
 		{
 			$oldpass = $this->db->select('password')->get_where('swayamsevaks', array('contact_id' => $id))->row()->password;
-			if(trim($oldpass) != '' && sha1(trim($this->input->post('old_pass'))) != $oldpass)
+			if(!$this->permission->is_admin() && trim($oldpass) != '' && sha1(trim($this->input->post('old_pass'))) != $oldpass)
 			{
 				$this->session->set_userdata('message', 'Your old password didn\'t match. Please try again.');
 				redirect('profile/change_password/'.$id);
