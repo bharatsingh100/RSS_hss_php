@@ -309,18 +309,19 @@ class Email extends Controller
     if($lists->num_rows())
     {
       $lists = $lists->result();
-      foreach($lists as $list)
-      {
+      foreach($lists as $list) {
         $new_lists[] = strtolower($list->address.$host);
-        $new_email_lists = implode("\n",$new_lists);
-        $file = $p.'create-lists.txt';
-        $fh = fopen(str_replace(" ", "\x20", $file), 'w') or die("Can't open file");
-        fwrite($fh, $new_email_lists);
-        fclose($fh);
-        shell_exec('chmod 0666 '.$file);
       }
+
+      $new_email_lists = implode("\n",$new_lists);
+      $file = $p.'create-lists.txt';
+      $fh = fopen(str_replace(" ", "\x20", $file), 'w') or die("Can't open file");
+      fwrite($fh, $new_email_lists);
+      fclose($fh);
+      shell_exec('chmod 0666 '.$file);
     }
   }
+
   /**
    * Generate mailman config files for each list
    */
