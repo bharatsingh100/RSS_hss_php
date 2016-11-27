@@ -4,8 +4,7 @@
 	margin: 0;
 }
 body {
-	/*font-family: "Trebuchet MS", Helvetica, Arial; */
-	font-family: "Segoe UI [10]", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	font-size: 14px;
 	line-height: 140%;
 	background-color: #EBEBEB;
