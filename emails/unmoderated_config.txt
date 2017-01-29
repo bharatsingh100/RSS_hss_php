@@ -1,3 +1,5 @@
+from_is_list = 1
+dmarc_moderation_action = 1
 anonymous_list = False
 first_strip_reply_to = False
 umbrella_list = False
