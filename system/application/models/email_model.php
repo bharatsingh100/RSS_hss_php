@@ -253,7 +253,7 @@ class Email_model extends Model
 		
 		//Get List Info
 		$list = $this->db->get_where('lists', array('id' => $lid))->row();
-		print_r($list); print_r($lid); die();
+		//print_r($list); print_r($lid); die();
 		$contact_ids = array();
 		if($list->owner > 0) $contact_ids[] = $list->owner;
 		if($list->mod1 > 0) $contact_ids[] = $list->mod1;
@@ -281,7 +281,7 @@ class Email_model extends Model
 	}
 	
 	function clean_email_array($result) {
-		if($result->num_rows()) {
+		if($result && $result->num_rows()) {
 			$temp = array();
 			foreach ($result->result_array() as $r)
 				$temp[$r['contact_id']] = $r['email'];

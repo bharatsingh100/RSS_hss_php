@@ -504,8 +504,8 @@ class Email extends Controller
       foreach($lists as $list) {
       	$l .= $list->address . $host . "\n";
       }
-      echo write_file($path.'elists.txt', $l);
-      echo shell_exec('chmod 0666 ' . $path . 'elists.txt');
+      write_file($path.'elists.txt', $l);
+      shell_exec('chmod 0666 ' . $path . 'elists.txt');
 
       foreach($lists as $list)
       {
