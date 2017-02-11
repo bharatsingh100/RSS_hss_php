@@ -1,0 +1,40 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+
+samaprk-dev-mailhog:
+  image: phpdockerio/mailhog:latest
+  container_name: samaprk-dev-mailhog
+  ports:
+    - "8021:8025"
+
+samaprk-dev-mysql:
+  image: mysql:5.7
+  container_name: samaprk-dev-mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_DATABASE=sampark_dev
+    - MYSQL_USER=sampark_dev
+    - MYSQL_PASSWORD=sampark_dev
+
+samaprk-dev-webserver:
+  image: phpdockerio/nginx:latest
+  container_name: samaprk-dev-webserver
+  volumes:
+      - ..:/var/www/samaprk-dev
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  ports:
+   - "8020:80"
+  links:
+   - samaprk-dev-php-fpm
+
+samaprk-dev-php-fpm:
+  build: .
+  dockerfile: php-fpm/Dockerfile
+  container_name: samaprk-dev-php-fpm
+  volumes:
+    - ..:/var/www/samaprk-dev
+    - ./php-fpm/php-ini-overrides.ini:/etc/php5/fpm/conf.d/99-overrides.ini
+  links:
+    - samaprk-dev-mailhog
+    - samaprk-dev-mysql
