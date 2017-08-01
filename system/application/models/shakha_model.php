@@ -222,12 +222,16 @@ class Shakha_model extends Model
     if($query->num_rows())
     {
       $i = 0;
+      $temp->kk = null;
       foreach($query->result() as $row)
       {
-        $temp->kk->$i = $row;
-        $temp->kk->$i->responsibility = $row->responsibility;
-        $temp->kk->$i->resp_title = $this->getShortDesc($row->responsibility);
-        $i++;
+        if ($row) {
+          $temp->kk->$i = null;
+          $temp->kk->$i = $row;
+          $temp->kk->$i->responsibility = $row->responsibility;
+          $temp->kk->$i->resp_title = $this->getShortDesc($row->responsibility);
+          $i++;
+        }
       }
     }
     $this->db->order_by('date', 'desc');

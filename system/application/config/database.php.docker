@@ -34,10 +34,10 @@
 $active_group = "default";
 $active_record = TRUE;
 
-$db['default']['hostname'] = "localhost";
-$db['default']['username'] = "sampark_dev";
-$db['default']['password'] = "sampark_dev";
-$db['default']['database'] = "sampark_dev";
+$db['default']['hostname'] = "mysql";
+$db['default']['username'] = "default";
+$db['default']['password'] = "secret";
+$db['default']['database'] = "default";
 $db['default']['dbdriver'] = "mysqli";
 $db['default']['dbprefix'] = "";
 //Commenting out when upgrading to 1.6

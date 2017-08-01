@@ -11,7 +11,7 @@
 |	http://www.your-site.com/
 |
 */
-$config['base_url']	= "http://localhost:8020/";
+$config['base_url']	= "http://localhost/";
 
 /*
 |--------------------------------------------------------------------------
@@ -233,13 +233,13 @@ $config['encryption_key'] = "Vishwa Mangal Kamana Ke Hum Hai Maun Pujari";
 $config['sess_cookie_name']		= 'ci_session';
 $config['sess_expiration']		= 0;
 $config['sess_encrypt_cookie']	= FALSE;
-$config['sess_use_database']	= TRUE;
+$config['sess_use_database']	= FALSE;
 $config['sess_table_name']		= 'ci_sessions';
 $config['sess_match_ip']		= FALSE;
 $config['sess_match_useragent']	= TRUE;
 
 // [OB] additional config items: Set to 'database' to keep userdata exclusively on server database.
-$config['sess_storage']             = 'database';
+//$config['sess_storage']             = 'database';
 $config['sess_data_cookie']         = 'ci_session_data';
 // [OB] additional config items: You can leave these as defaults for a standard session
 $config['sess_database']            = 'default';
