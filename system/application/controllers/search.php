@@ -95,16 +95,17 @@ class Search extends Controller
         else:            
             $offset = $page;
         endif;
+        list($first_name, $last_name) = explode(' ', $keyword);
 		$swayamsevaksTotalQuery = $this->db->select('contact_id')						                 						         					         
-								           ->like('swayamsevaks.first_name',$keyword,'after')
-								           ->or_like('swayamsevaks.last_name',$keyword,'after')						        
+								           ->like('swayamsevaks.first_name',$first_name,'after')
+								           ->or_like('swayamsevaks.last_name',$last_name,'after')						        
 					                       ->get('swayamsevaks');	
 
         $swayamsevaksQuery = $this->db->select('swayamsevaks.contact_id,swayamsevaks.first_name, swayamsevaks.last_name,shakhas.name,swayamsevaks.state')
 						              ->from('swayamsevaks')
 						              ->join('shakhas', 'swayamsevaks.shakha_id = shakhas.shakha_id')						         
-						              ->like('swayamsevaks.first_name',$keyword,'after')
-						              ->or_like('swayamsevaks.last_name',$keyword,'after')
+						              ->like('swayamsevaks.first_name',$first_name,'after')
+						              ->or_like('swayamsevaks.last_name',$last_name,'after')
 						              ->limit(50,$offset)
 			                          ->get();	                    
 		
@@ -117,17 +118,23 @@ class Search extends Controller
 
 	function auto_suggest($keyword){ 
 		if(strlen(trim($keyword)) >= 3){
+		$keyword = urldecode($keyword);
 			
 			$shakhaQuery = $this->db->select('name,shakha_id')									 
 							         ->like('name',$keyword,'after')
 							         ->get('shakhas');
 			$shakhaResult = $shakhaQuery->result_array();
-
+		list($first_name, $last_name) = explode(' ', $keyword);
+		$last_name = empty($last_name) ? $keyword : $last_name;
+		//print_r($last_name);
+		//print_r($first_name); die();
 			$swayamsevaksQuery = $this->db->select('swayamsevaks.contact_id,swayamsevaks.first_name, swayamsevaks.last_name,shakhas.name,swayamsevaks.state')
 						         ->from('swayamsevaks')
 						         ->join('shakhas', 'swayamsevaks.shakha_id = shakhas.shakha_id')						         
-						         ->like('swayamsevaks.first_name',$keyword,'after')
-						         ->or_like('swayamsevaks.last_name',$keyword,'after')
+						         //->like('swayamsevaks.first_name',$first_name,'after')
+						         ->where('swayamsevaks.first_name SOUNDS LIKE ',$first_name)
+						         ->or_where('swayamsevaks.last_name SOUNDS LIKE ',$last_name)
+						         //->or_like('swayamsevaks.last_name',$last_name,'after')
 			                     ->get();
 			
 			$swayamsevaksResult = $swayamsevaksQuery->result_array();			
