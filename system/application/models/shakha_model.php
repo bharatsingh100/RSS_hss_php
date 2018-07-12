@@ -15,6 +15,7 @@ class Shakha_model extends Model
     }
     unset($d['button']);
     $d['address'] = strtolower($d['address']);
+    $d['address'] = filter_var($d['address'], FILTER_SANITIZE_EMAIL);
     $d['members'] = serialize($d['members']);
     $d['status'] = 'Creating';
     $d['owner'] = $this->session->userdata('contact_id');
