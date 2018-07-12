@@ -298,11 +298,6 @@ class Email extends Controller
     //$host = '_hssusa.org';
     $host = '@lists.hssusa.org';
 
-    //Mark Old Lists as Active
-    $this->db->where('status','Creating');
-    $this->db->where('modified < ', date('Y-m-d H:i:s', strtotime('1 hour ago')));
-    $this->db->update('lists', array('status' => 'Active'));
-
     $lists = $this->db->get_where('lists', array('status' => 'Creating'));
     //$p = '/home/'.$this->userdir.'/www/emails/';
     $p = $this->docpath . 'emails/';
@@ -315,11 +310,16 @@ class Email extends Controller
 
       $new_email_lists = implode("\n",$new_lists);
       $file = $p.'create-lists.txt';
-      $fh = fopen(str_replace(" ", "\x20", $file), 'w') or die("Can't open file");
+      $fh = fopen($file, 'w') or die("Can't open file");
       fwrite($fh, $new_email_lists);
       fclose($fh);
       shell_exec('chmod 0666 '.$file);
     }
+    //Mark created Lists as Active after an hour
+    $this->db->where('status','Creating');
+    $this->db->where('modified < ', date('Y-m-d H:i:s', strtotime('1 hour ago')));
+    $this->db->update('lists', array('status' => 'Active'));
+
   }
 
   /**
