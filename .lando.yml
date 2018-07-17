@@ -1,0 +1,9 @@
+name: sampark
+recipe: lamp
+config:
+  php: 5.6
+  webroot: .
+services:
+  appserver:
+    run_as_root:
+      - "a2disconf javascript-common"
