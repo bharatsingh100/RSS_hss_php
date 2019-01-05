@@ -47,8 +47,9 @@ class User extends Controller
 		}
 		elseif($this->_logincheck($this->input->post('username'), $this->input->post('password')))
 		{
-		    if($this->input->post('username') == $this->input->post('password'))
-			    redirect('profile/change_password/' . $this->session->userdata('contact_id'));
+		    if($this->input->post('username') == $this->input->post('password')) {
+				redirect('profile/change_password/' . $this->session->userdata('contact_id'));
+			}
 		    else { //Add MD5 hash of password if wrong or not present (Shouldn't need this After Some Time)
 		      $this->db->select('passwordmd5');
 		      $pass = $this->db->get_where('swayamsevaks', array('contact_id' => $this->session->userdata('contact_id')));
@@ -218,7 +219,9 @@ class User extends Controller
 
 		    //FIXME : Remove hack once we remove duplicate emails and profiles
 		    foreach($query->result() as $record) {
-		      if($record->password == dohash($password)) {
+			  // The password is compared is username because some duplicate
+			  // accounts may have their email id set to be password initially.
+		      if($record->password == dohash($password) || $record->password == dohash($user)) {
 		      	$contact_id[$record->contact_id] = $record;
 		      }
 		    }
@@ -234,8 +237,12 @@ class User extends Controller
 			    $this->db->where_in('swayamsevak_id', array_keys($contact_id))->order_by("FIELD (level, 'NT', 'SA', 'VI', 'NA', 'SH')");
 			    $t = $this->db->get('responsibilities', 1);
 				$this->db->_protect_identifiers = TRUE;
-
-			    if($t->num_rows() == 0) {
+				
+				// Let the admins enter the system even if they have been removed of 
+				// all of their responsibilities. @See Permissons Helper for 
+				// name of Admins.
+				$is_admin = (bool) count(array_intersect_key($contact_id, array_flip(array(1, 4717, 2832, 11275, 11274))));
+			    if($t->num_rows() == 0 && !$is_admin) {
 			      $this->session->set_userdata('message', 'Your are not allowed to access this system. Please contact your Karyavah to get access.');
 				  return false;
 			    }
