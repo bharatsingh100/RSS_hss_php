@@ -35,7 +35,6 @@ class User extends Controller
 	}
 	function login()
 	{
-
 	    //Capture the redirect URL before session is manipulated
 		if($this->session->userdata('redirect')) {
 		  $redirect_url = $this->session->ro_userdata('redirect');
@@ -241,13 +240,14 @@ class User extends Controller
 				// Let the admins enter the system even if they have been removed of 
 				// all of their responsibilities. @See Permissons Helper for 
 				// name of Admins.
-				$is_admin = (bool) count(array_intersect_key($contact_id, array_flip(array(1, 4717, 2832, 11275, 11274))));
+				$admin_id = array_intersect_key($contact_id, array_flip(array(1, 4717, 2832, 11275, 11274)));
+				$is_admin = (bool) count($admin_id);
 			    if($t->num_rows() == 0 && !$is_admin) {
 			      $this->session->set_userdata('message', 'Your are not allowed to access this system. Please contact your Karyavah to get access.');
 				  return false;
 			    }
 			    else {
-			    	$row = $contact_id[$t->row()->swayamsevak_id];
+			    	$row = $is_admin ? array_pop($admin_id) : $contact_id[$t->row()->swayamsevak_id];
 			    }
 			}
 
@@ -260,8 +260,6 @@ class User extends Controller
 			}
 			else
 			{
-				//Destroy old session
-				$this->session->sess_destroy();
 
 				//Create a fresh, brand new session
 				$this->session->sess_create();
