@@ -359,7 +359,7 @@ class Sambhag extends Controller
 		$this->load->library('pagination');
 		$config['base_url'] = base_url()."sambhag/browse/$id/$order/";
     	$config['total_rows'] = $this->db->get_where('swayamsevaks', 'shakha_id IN ' . $shakha_ids)->num_rows();//$this->db->count_all('swayamsevaks');
-    	$config['per_page'] = '35';
+    	$config['per_page'] = '3000';
     	$config['full_tag_open'] = '<p>';
     	$config['full_tag_close'] = '</p>';
 		$config['uri_segment'] = 5;
