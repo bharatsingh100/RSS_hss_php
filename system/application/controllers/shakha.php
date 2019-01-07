@@ -514,7 +514,7 @@ class Shakha extends Controller {
     $config['base_url'] = base_url() . "shakha/browse/$id/$order/";
     $config['total_rows'] = $this->db->get_where('swayamsevaks', array('shakha_id' => $id))->num_rows();
     //$this->db->count_all('swayamsevaks');
-    $config['per_page'] = '35';
+    $config['per_page'] = '3000';
     $config['full_tag_open'] = '<p>';
     $config['full_tag_close'] = '</p>';
     $config['uri_segment'] = 5;
