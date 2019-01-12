@@ -155,8 +155,20 @@ select {
 	padding: 0px;
 }
 #leftcolumn ol, #leftcolumn ul {
-	margin-left: 30px;
+	margin-left: 30px !important;
 }
+
+#leftcolumn dt {
+	font-size: 1.3em;
+    font-weight: bold;
+    line-height: 2em;
+}
+
+#leftcolumn dd {
+	margin-left: 15px;
+    line-height: 1.8em;
+}
+
 #tb tr td, #tb tr th {
 	padding: 2px 8px 2px 8px;
 }
