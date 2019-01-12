@@ -90,24 +90,25 @@ class Search extends Controller
 
     function getSwayamsevak($keyword){
         $page = $this->input->post('page');
-        if(!$page):
-            $offset = 0;
-        else:
-            $offset = $page;
-        endif;
-        list($first_name, $last_name) = explode(' ', $keyword);
-        $swayamsevaksTotalQuery = $this->db->select('contact_id')
-            ->like('swayamsevaks.first_name',$first_name,'after')
-            ->or_like('swayamsevaks.last_name',$last_name,'after')
-            ->get('swayamsevaks');
+        $offset = (!$page) ? 0 : $page;
 
-        $swayamsevaksQuery = $this->db->select('swayamsevaks.contact_id,swayamsevaks.first_name, swayamsevaks.last_name,shakhas.name,swayamsevaks.state')
+        list($first_name, $last_name) = explode(' ', $keyword);
+
+        $this->db->select('contact_id')
+            ->where('swayamsevaks.first_name SOUNDS LIKE ',$first_name);
+        if (!empty($last_name)) {
+            $this->db->where('swayamsevaks.last_name SOUNDS LIKE ',$last_name);
+        }
+        $swayamsevaksTotalQuery = $this->db->get('swayamsevaks');
+
+       $this->db->select('swayamsevaks.contact_id,swayamsevaks.first_name, swayamsevaks.last_name,shakhas.name,swayamsevaks.state')
             ->from('swayamsevaks')
             ->join('shakhas', 'swayamsevaks.shakha_id = shakhas.shakha_id')
-            ->like('swayamsevaks.first_name',$first_name,'after')
-            ->or_like('swayamsevaks.last_name',$last_name,'after')
-            ->limit(50,$offset)
-            ->get();
+            ->where('swayamsevaks.first_name SOUNDS LIKE ',$first_name);
+        if (!empty($last_name)) {
+            $this->db->where('swayamsevaks.last_name SOUNDS LIKE ',$last_name);
+        }
+        $swayamsevaksQuery = $this->db->limit(50,$offset)->get();
 
         $data['getTotalData'] = $swayamsevaksTotalQuery->num_rows();
         $data['perPage'] = '50';
