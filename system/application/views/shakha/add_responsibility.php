@@ -8,7 +8,7 @@ $shakha_id = $row->shakha_id;
 //echo $this->ajax->auto_complete_field('name', array('url'=> "/ajax/resp_autocomplete/$shakha_id", 'paramName' => 'value'));
 
 //Show Responsibilities that are relevant to the Shakha context
-$allowed_res = array('010','011', '020','021','030','031','040','050','060', '061','070','080','090', '091','100','130','140','150','160','170','180','190','200','210','211','220','221', '230','999', '240', '250', '260');
+$allowed_res = array('010','011', '020','021','030','031','040','050','060', '061','070','080','090', '091','100','130','140','150','160','170','180','190','200','210','211','220','221', '230','999', '240', '250', '260','270', '272');
 if(isset($row->kk))
 {
 	echo '<h3>Current Responsibilities</h3>';
