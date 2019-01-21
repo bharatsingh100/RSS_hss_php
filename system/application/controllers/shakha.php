@@ -899,6 +899,7 @@ class Shakha extends Controller {
       redirect('/profile/view/' . $data['newUserId']);
       
   }
+
 }
 
 ?>

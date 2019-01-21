@@ -35,9 +35,9 @@ $active_group = "default";
 $active_record = TRUE;
 
 $db['default']['hostname'] = "database";
-$db['default']['username'] = "default";
-$db['default']['password'] = "secret";
-$db['default']['database'] = "default";
+$db['default']['username'] = "lamp";
+$db['default']['password'] = "lamp";
+$db['default']['database'] = "lamp";
 $db['default']['dbdriver'] = "mysqli";
 $db['default']['dbprefix'] = "";
 //Commenting out when upgrading to 1.6

@@ -131,3 +131,15 @@ VALUES
   (00190, 4, '240', 'Dharma Bee Pramukh', '', '2013-01-09 00:07:06', 'System'),
   (00191, 4, '250', 'SV150 Pramukh', '', '2013-01-09 00:07:06', 'System'),
   (00192, 4, '260', 'Sadasya', '', '2013-01-09 00:07:06', 'System');
+
+# Add new responsibility
+
+INSERT INTO `Ref_Code` (`DOM_ID`, `REF_CODE`, `short_desc`, `long_desc`, `LAST_MOD_DT`, `LAST_MOD_USER`)
+VALUES
+  (4, '270', 'Ghosh Pramukh', '', '2019-01-09 00:07:06', 'System'),
+  (4, '272', 'Sah-Ghosh Pramukh', '', '2019-01-09 00:07:06', 'System');
+
+
+// Add New Shakha Geocoded Table
+// Add New Geocode table
+
