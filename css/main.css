@@ -88,6 +88,11 @@ a:hover {
 	background-color: #FFFFFF;
 }
 
+#leftcolumn.admin {
+	width: 97%;
+	margin: unset;
+}
+
 #rightcolumn {
 	float: right;
 	color: #333;

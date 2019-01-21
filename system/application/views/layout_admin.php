@@ -35,13 +35,14 @@
              <?php endif; ?>
            </span>
             <span class="right">
+                <?php echo anchor('admin/maps','Maps'); ?>
                 <?php echo anchor('admin/faq','FAQ'); ?>
                 <?php echo anchor('tour', 'Tutorial Video'); ?>
             </span>
          </div>
 <!-- End Navigation -->
 		 <!-- Begin Left Column -->
-		 <div id="leftcolumn"> <?=$content_for_layout?> </div>
+		 <div id="leftcolumn" class="admin"> <?=$content_for_layout?> </div>
 		 <!-- End Left Column -->
 
 		 <!-- Begin Right Column -->

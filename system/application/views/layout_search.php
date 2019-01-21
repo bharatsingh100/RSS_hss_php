@@ -35,6 +35,7 @@
              <?php //echo anchor('organization', 'Organization'); ?>-->
              </span>
             <span class="right">
+                <?php echo anchor('admin/maps','Maps'); ?>
                 <?php echo anchor('admin/faq','FAQ'); ?>
                 <?php echo anchor('tour', 'Tutorial Video'); ?>
             </span>

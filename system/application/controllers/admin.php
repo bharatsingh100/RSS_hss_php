@@ -89,6 +89,17 @@ class Admin extends Controller
 	    $d['pageTitle'] = 'FAQ';
 	    $this->layout->view('admin/faq', $d);
 	}
+
+	function maps(){
+    	if (!$this->session->userdata('logged_in')) {
+            $this->session->set_userdata('message', 'Please login to access the system.');
+            $this->session->set_userdata('redirect', $this->uri->uri_string());
+            redirect('user');
+        }
+
+	    $d['pageTitle'] = 'Maps';
+	    $this->layout->view('admin/maps', $d);
+	}
 }
 
 ?>

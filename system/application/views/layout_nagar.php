@@ -33,6 +33,7 @@
              <?php echo anchor('national/view', 'National'); ?>
              </span>
             <span class="right">
+                <?php echo anchor('admin/maps','Maps'); ?>
                 <?php echo anchor('admin/faq','FAQ'); ?>
                 <?php echo anchor('tour', 'Tutorial Video'); ?>
             </span>

@@ -98,7 +98,7 @@ class Xmlrpc_client extends Controller {
         $this->output->enable_profiler(FALSE);
         $data = $this->db->get_where('shakha_geocoded', array('match_indicator' => 'Match'))->result_array();
         $this->output->set_header('Content-Type: application/json');
-        echo "var shakhas = " . json_encode($data);
+        echo "var shakhas_geocoded = " . json_encode($data);
     }
 
     // Generate JSON for Shakha Lat+Long coordinates for map
@@ -107,7 +107,7 @@ class Xmlrpc_client extends Controller {
         $this->db->select('*');
         $this->db->from('shakha_geocoded');
         $this->db->join('shakhas', 'shakhas.shakha_id = shakha_geocoded.shakha_id');
-        $this->db->where('shakha_geocoded', array('match_indicator' => 'Match');
+        $this->db->where('shakha_geocoded.match_indicator','Match');
         $query = $this->db->get();
         
         // Template for the feature point
