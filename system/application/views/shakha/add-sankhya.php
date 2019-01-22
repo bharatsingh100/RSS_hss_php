@@ -37,7 +37,7 @@
                <tr>
                  <td width="102">&nbsp;</td>
                  <td width="95">&nbsp;Swayamsevak&nbsp;</td>
-                 <td width="61">&nbsp;Sawayamsevika&nbsp;</td>
+                 <td width="61">&nbsp;Sevika&nbsp;</td>
                  <td width="151">&nbsp;</td>
                </tr>
                <tr>
