@@ -30,6 +30,28 @@ map.setView(new L.LatLng(37, -95), 4);
 // var stamenLayer = new L.StamenTileLayer("watercolor");
 // map.addLayer(stamenLayer);
 
+// Add Hindu Population Centers
+var geojsonMarkerOptions = {
+	radius: 8,
+	fillColor: "#662E9B",
+	color: "#000",
+	weight: 1,
+	opacity: 1,
+	fillOpacity: 0.5
+};
+var popup_template = '<h2>{Name}</h2>';
+new L.GeoJSON(hindu_centers, {
+	pointToLayer: function (feature, latlng) {
+		return new L.CircleMarker(latlng, geojsonMarkerOptions);
+	},
+	onEachFeature: function (feature, layer) {
+		if (feature.properties) {
+			layer.bindPopup(L.Util.template(popup_template,feature.properties));
+		}
+	}
+}).addTo(map);
+
+// Add Shakhas mapped to Counties
 var geojsonMarkerOptions = {
     radius: 4,
     fillColor: "rgba(255,100,100,0.1)",
@@ -50,25 +72,7 @@ new L.GeoJSON(counties, {
 	filter: filterFeatures
 }).addTo(map);
 
-var geojsonMarkerOptions = {
-	radius: 8,
-	fillColor: "#662E9B",
-	color: "#000",
-	weight: 1,
-	opacity: 1,
-	fillOpacity: 0.5
-};
-var popup_template = '<h2>{Name}</h2>';
-new L.GeoJSON(hindu_centers, {
-	pointToLayer: function (feature, latlng) {
-		return new L.CircleMarker(latlng, geojsonMarkerOptions);
-	},
-	onEachFeature: function (feature, layer) {
-		if (feature.properties) {
-			layer.bindPopup(L.Util.template(popup_template,feature.properties));
-		}
-	}
-}).addTo(map);
+
 
 function filterFeatures(feature, layer) {
 	return shakha_fips.filter(fips => fips === feature.properties.FIPS).length
