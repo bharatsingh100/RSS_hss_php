@@ -41,14 +41,34 @@ var geojsonMarkerOptions = {
 
 var shakha_fips = shakhas_geocoded.map(a => a.state_fips.padStart(2, '0') + a.county_fips.padStart(3,'0'));
 
-var geojsonLayer = new L.GeoJSON(counties, {
+new L.GeoJSON(counties, {
     pointToLayer: function (latlng) {
 		return new L.CircleMarker(latlng, geojsonMarkerOptions);
     },
 	style: styleLayer,
 	onEachFeature: onEachFeature,
 	filter: filterFeatures
-});
+}).addTo(map);
+
+var geojsonMarkerOptions = {
+	radius: 8,
+	fillColor: "#662E9B",
+	color: "#000",
+	weight: 1,
+	opacity: 1,
+	fillOpacity: 0.5
+};
+var popup_template = '<h2>{Name}</h2>';
+new L.GeoJSON(hindu_centers, {
+	pointToLayer: function (feature, latlng) {
+		return new L.CircleMarker(latlng, geojsonMarkerOptions);
+	},
+	onEachFeature: function (feature, layer) {
+		if (feature.properties) {
+			layer.bindPopup(L.Util.template(popup_template,feature.properties));
+		}
+	}
+}).addTo(map);
 
 function filterFeatures(feature, layer) {
 	return shakha_fips.filter(fips => fips === feature.properties.FIPS).length
