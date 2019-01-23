@@ -150,8 +150,6 @@ function getColor(d) {
                       '#FFEDA0';
 }
 
-map.addLayer(geojsonLayer);
-
 /*
 var markerLocation = new L.LatLng(-84, 38),
 	marker = new L.Marker(markerLocation);
