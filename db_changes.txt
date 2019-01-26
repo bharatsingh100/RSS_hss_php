@@ -143,3 +143,10 @@ VALUES
 // Add New Shakha Geocoded Table
 // Add New Geocode table
 
+// Sanitize data
+UPDATE swayamsevaks SET email = CONCAT('uid',contact_id,'@mailinator.com') WHERE email != '';
+UPDATE swayamsevaks s SET s.password = SHA1('password'), s.passwordmd5 = MD5('password') WHERE password != '';
+UPDATE swayamsevaks s SET ph_mobile = '123-456-6789' WHERE ph_mobile != '';
+UPDATE swayamsevaks s SET ph_home = '234-567-8901' WHERE ph_home != '';
+UPDATE swayamsevaks s SET ph_work = '994-567-8901' WHERE ph_work != '';
+UPDATE swayamsevaks s SET street_add1 = '123 Example Court' WHERE street_add1 != '';
