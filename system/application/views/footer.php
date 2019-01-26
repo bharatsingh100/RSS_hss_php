@@ -32,5 +32,12 @@
 
 //-->
 </script>
+<?php if($this->session->userdata('logged_in')) { 
+$uid = $this->session->userdata('contact_id') . '-' . $this->session->userdata('first_name') . '-' . $this->session->userdata('last_name');
+?> 
+<script>
+gtag('set', {'user_id': '<?php echo $uid; ?>'}); // Set the user ID using signed-in user_id.
+</script>
+<?php } ?>
 </body>
 </html>
