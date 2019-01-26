@@ -1,9 +1,9 @@
 <?php
 class Help extends Controller
 {
-    function Help()
-    {
-        parent::Controller();
+	function Help()
+	{
+		parent::Controller();
 		//$this->output->enable_profiler(TRUE);
 //		$this->load->model('Profile_model');
 		$this->load->library('layout');
@@ -24,7 +24,7 @@ class Help extends Controller
 			$this->session->set_userdata('bc_sambhag', $this->Profile_model->getShortDesc($rs->sambhag_id));		
 			$this->session->set_userdata('bc_sambhag_id', $rs->sambhag_id);
 		}*/
-    }
+	}
 	
 /*	function recent_updates()
 	{
@@ -37,11 +37,10 @@ class Help extends Controller
 		$d['pageTitle'] = 'Recent Updates';
 		$this->layout->view('admin/recent_updates', $d);
 	}*/
-	
+
 	function index()
 	{
-		if(!$this->session->userdata('logged_in'))
-		{
+		if (!$this->session->userdata('logged_in')) {
 			$this->session->set_userdata('message', 'Please login to access the system.');
 			$this->session->set_userdata('redirect', $this->uri->uri_string());
 			redirect('user');

@@ -1,7 +1,9 @@
 <?php
-class Vibhag extends Controller {
-  function Vibhag() {
-    parent :: Controller();
+class Vibhag extends Controller
+{
+  function Vibhag()
+  {
+    parent::Controller();
     if (!$this->session->userdata('logged_in')) {
       $this->session->set_userdata('message', 'Please login to access the system.');
       $this->session->set_userdata('redirect', $this->uri->uri_string());
@@ -35,11 +37,12 @@ class Vibhag extends Controller {
 
   }
 
-  function email_lists($id) {
+  function email_lists($id)
+  {
     $this->db->select('id,address,level_id,status,style,size,mod1,mod2,mod3');
     //$this->db->where('level_id = '.$id.' AND status = \'Active\' OR status = \'Creating'\');
     $d['lists'] = $this->db->get_where('lists', array('level_id' => $id))->result_array();
-    foreach ($d['lists'] as & $list) {
+    foreach ($d['lists'] as &$list) {
       $list['address'] .= '@lists.hssusa.org';
       if ($list['mod1']) {
         $this->db->select('contact_id,first_name,last_name');
@@ -50,16 +53,14 @@ class Vibhag extends Controller {
         $this->db->select('contact_id,first_name,last_name');
         $t = $this->db->get_where('swayamsevaks', array('contact_id' => $list['mod2']))->row();
         $list['mod2'] = anchor('profile/view/' . $t->contact_id, $t->first_name . ' ' . $t->last_name) . '<br \>';
-      }
-      else
+      } else
         $list['mod2'] = '';
 
       if ($list['mod3']) {
         $this->db->select('contact_id,first_name,last_name');
         $t = $this->db->get_where('swayamsevaks', array('contact_id' => $list['mod3']))->row();
         $list['mod3'] = anchor('profile/view/' . $t->contact_id, $t->first_name . ' ' . $t->last_name) . '<br \>';
-      }
-      else
+      } else
         $list['mod3'] = '';
 
       $list['moderators'] = $list['mod1'] . $list['mod2'] . $list['mod3'];
@@ -68,11 +69,11 @@ class Vibhag extends Controller {
       $list['details'] = ($list['status'] == 'Active') ? anchor('vibhag/edit_list/' . $list['level_id'] . '/' . $list['id'], 'Details/Edit') : '';
 
       $list['style'] = ($list['style']) ? 'Un-Moderated' : 'Moderated';
-      unset ($list['id']);
-      unset ($list['mod1']);
-      unset ($list['mod2']);
-      unset ($list['mod3']);
-      unset ($list['level_id']);
+      unset($list['id']);
+      unset($list['mod1']);
+      unset($list['mod2']);
+      unset($list['mod3']);
+      unset($list['level_id']);
     }
     $d['vibhag'] = $this->Vibhag_model->getVibhagInfo($id);
     $d['pageTitle'] = 'Email Lists';
@@ -82,15 +83,16 @@ class Vibhag extends Controller {
     $this->layout->view('vibhag/email_lists', $d);
   }
 
-  function edit_list($id, $list_id, $error = '') {
+  function edit_list($id, $list_id, $error = '')
+  {
     //if($error != '')
     //	$c['data'] = $error;
-    if (isset ($_POST['button'])) {
-      if (!isset ($_POST['members'])) {
+    if (isset($_POST['button'])) {
+      if (!isset($_POST['members'])) {
         $this->session->set_userdata('message', 'Please select at least 1 group for E-mail list members.');
         redirect('vibhag/edit_list/' . $id . '/' . $list_id);
       }
-      if (!isset ($_POST['mod_pass']) || strlen($_POST['mod_pass']) < 5) {
+      if (!isset($_POST['mod_pass']) || strlen($_POST['mod_pass']) < 5) {
         $this->session->set_userdata('message', 'Your password should be at least 5 characters long.');
         redirect('vibhag/edit_list/' . $id . '/' . $list_id);
       }
@@ -98,10 +100,10 @@ class Vibhag extends Controller {
       foreach ($_POST as $key => $val)
         $d[$key] = $val;
 
-      unset ($d['button']);
-      if (!isset ($d['mod3']) || $d['mod3'] == '')
+      unset($d['button']);
+      if (!isset($d['mod3']) || $d['mod3'] == '')
         $d['mod3'] = 0;
-      if (!isset ($d['mod2']) || $d['mod2'] == '')
+      if (!isset($d['mod2']) || $d['mod2'] == '')
         $d['mod2'] = 0;
       $d['members'] = serialize($d['members']);
       $this->db->update('lists', $d, array('id' => $list_id));
@@ -118,7 +120,8 @@ class Vibhag extends Controller {
     $this->layout->view('vibhag/edit_list', $c);
   }
 
-  function create_list($id, $error = '') {
+  function create_list($id, $error = '')
+  {
     if ($error != '')
       $c['d'] = $error;
     $c['vibhag'] = $this->Vibhag_model->getVibhagInfo($id);
@@ -126,22 +129,23 @@ class Vibhag extends Controller {
     $this->layout->view('vibhag/create_list', $c);
   }
 
-  function del_list($id, $list_id) {
-    if (isset ($_POST['button2'])) {
+  function del_list($id, $list_id)
+  {
+    if (isset($_POST['button2'])) {
       $d['status'] = 'Deleting';
       $this->db->update('lists', $d, array('id' => $list_id));
       $this->session->set_userdata('message', 'Your list was queued for deleting');
       redirect('vibhag/email_lists/' . $id);
-    }
-    else
+    } else
       redirect('vibhag/email_lists/' . $id);
   }
 
-  function add_email_list() {
+  function add_email_list()
+  {
     $ers = false;
     $error = array();
 
-    foreach ($_POST as $key => & $value) {
+    foreach ($_POST as $key => &$value) {
       if ($key == 'members') {
         foreach ($value as $v)
           $error['members'][] = $v;
@@ -149,17 +153,17 @@ class Vibhag extends Controller {
       $error[$key] = $value;
     }
 
-    if (!isset ($error['address']) || $error['address'] == '') {
+    if (!isset($error['address']) || $error['address'] == '') {
       $error['msg'][] = 'You must enter the List Name';
       $ers = true;
     }
-    if (!isset ($error['mod_pass']) || $error['mod_pass'] == '') {
+    if (!isset($error['mod_pass']) || $error['mod_pass'] == '') {
       $error['msg'][] = 'Your must enter a password.';
       $ers = true;
     }
     if (!is_array($error['members']) || !count($error['members']))
       //Count returns 0 is variable is not set or array is empty
-      {
+    {
       $error['msg'][] = 'You must select at least one member for your list';
       $ers = true;
     }
@@ -171,8 +175,7 @@ class Vibhag extends Controller {
     if ($ers) {
       $this->session->set_userdata('message', 'Please correct the errors.');
       $this->create_list($this->input->post('level_id'), $error);
-    }
-    else {
+    } else {
       $this->Vibhag_model->add_email_list();
       $this->session->set_userdata('message', 'Your list ' . $this->input->post('address') . '@hssusa.org has been requested.');
       redirect('vibhag/email_lists/' . $this->input->post('level_id'));
@@ -186,7 +189,8 @@ class Vibhag extends Controller {
     // 4 Tarun Swayamsevaks | 5 Praudh swayamsevaks | 6 All Karyakartas
   }
 
-  function statistics($id) {
+  function statistics($id)
+  {
     $data['vibhag'] = $this->Vibhag_model->getVibhagInfo($id);
     $data['pageTitle'] = $data['vibhag']->name . ' Vibhag Statistics';
     $data['shakhas'] = $this->Vibhag_model->getVibhagShakhaStats($id);
@@ -196,7 +200,8 @@ class Vibhag extends Controller {
     $this->layout->view('vibhag/statistics', $data);
   }
 
-  function del_responsibility($vibhag_id, $ss_id, $resp_id) {
+  function del_responsibility($vibhag_id, $ss_id, $resp_id)
+  {
     $this->db->where('vibhag_id', $vibhag_id);
     $this->db->where('responsibility', $resp_id);
     $this->db->where('swayamsevak_id', $ss_id);
@@ -205,7 +210,8 @@ class Vibhag extends Controller {
     redirect('vibhag/responsibilities/' . $vibhag_id);
   }
 
-  function responsibilities($id) {
+  function responsibilities($id)
+  {
     $submit = $this->input->post('button');
     if ($submit != '') {
       if ($_POST['name'] == 0 || $_POST['resp'] == 0)
@@ -224,7 +230,8 @@ class Vibhag extends Controller {
     $this->layout->view('vibhag/add_responsibility', $data);
   }
 
-  function csv_out1($id) {
+  function csv_out1($id)
+  {
     $this->load->dbutil();
     $shakha_ids = $this->Vibhag_model->get_shakhas($id);
     $shakha_ids = '(' . implode(',', $shakha_ids) . ')';
@@ -240,7 +247,8 @@ class Vibhag extends Controller {
     $this->load->view('vibhag/csv', $data);
   }
 
-  function all_vibhag_karyakarta_csv($id) {
+  function all_vibhag_karyakarta_csv($id)
+  {
     $this->load->dbutil();
 
     //Get list of Shakhas in the Vibhag
@@ -272,7 +280,8 @@ class Vibhag extends Controller {
   }
 
   //Output list of Shakhas for a Vibhag
-  function all_shakhas_csv($id) {
+  function all_shakhas_csv($id)
+  {
     $this->load->dbutil();
 
     $data['query'] = $this->db->query("SELECT s.shakha_id, s.name, s.address1,
@@ -287,7 +296,8 @@ class Vibhag extends Controller {
   }
 
   //Output Shakha Sankhya for a Vibhag
-  function all_sankhyas_csv($id, $count = null) {
+  function all_sankhyas_csv($id, $count = null)
+  {
     $this->load->dbutil();
     $this->db->select('sh.shakha_id, sh.name, sh.city,
                       sh.state, sh.frequency, sh.shakha_status, s.date, s.shishu_m,
@@ -296,14 +306,14 @@ class Vibhag extends Controller {
                       s.praudh_f, s.families, s.total, s.shakha_info as notes')->from('sankhyas s, shakhas sh')->where('sh.vibhag_id', $id)->where('sh.shakha_id', 's.shakha_id', false)->order_by('s.date', 'desc');
 
     switch ($count) {
-      case '0' :        //This Month
+      case '0':        //This Month
         $this->db->where('s.date >', date('Y-m-00'));
         break;
-      case '1' :        //Last Month
+      case '1':        //Last Month
         $this->db->where('s.date >', date('Y-m-00', strtotime('last months')));
         $this->db->where('s.date <', date('Y-m-00'));
         break;
-      case '6' :        //Last 6 Months
+      case '6':        //Last 6 Months
         $this->db->where('s.date >', date('Y-m-00', strtotime('-6 months')));
         $this->db->where('s.date <', date('Y-m-00'));
         break;
@@ -316,7 +326,8 @@ class Vibhag extends Controller {
     $this->load->view('vibhag/csv', $data);
   }
 
-  function csv_out($id) {
+  function csv_out($id)
+  {
     $this->load->dbutil();
 
     //Get list of Shakhas in the Vibhag
@@ -344,7 +355,8 @@ class Vibhag extends Controller {
     $this->load->view('vibhag/csv', $data);
   }
 
-  function browse($id = '', $order = 'household_id') {
+  function browse($id = '', $order = 'household_id')
+  {
     //if($id == '') $id = $this->session->userdata('vibhag_id');
 
     $shakha_ids = $this->Vibhag_model->get_shakhas($id);
@@ -369,13 +381,15 @@ class Vibhag extends Controller {
     $this->layout->view('vibhag/list_ss', $data);
   }
 
-  function view($id) {
+  function view($id)
+  {
     $data['row'] = $this->Vibhag_model->getVibhagInfo($id);
     $data['pageTitle'] = $data['row']->name;
     $this->layout->view('vibhag/view-vibhag', $data);
   }
 
-  function settings($id) {
+  function settings($id)
+  {
     $this->load->model('helper_model');
     if ($this->input->post('name') && trim($this->input->post('name')) != '') {
       if (strlen($id) == 4) {
@@ -391,8 +405,9 @@ class Vibhag extends Controller {
     $this->layout->view('vibhag/vibhag-details', $data);
   }
 
-  function add_shakha($id) {
-    if (isset ($_POST['save'])) {
+  function add_shakha($id)
+  {
+    if (isset($_POST['save'])) {
       $this->Vibhag_model->insert_shakha();
       $this->session->set_userdata('message', 'Shakha was successfully added.&nbsp;');
       redirect('vibhag/view/' . $id);
@@ -404,7 +419,8 @@ class Vibhag extends Controller {
     $this->layout->view('vibhag/add-shakha.php', $d);
   }
 
-  function activities($id) {
+  function activities($id)
+  {
     $data['activities'] = $this->activities->get_activities('vibhag', $id);
     $data['row'] = $this->Shakha_model->getShakhaInfo($id);
     $data['pageTitle'] = $data['row']->name . ' Activities';

@@ -1,22 +1,22 @@
 <?php
 class Ajax extends Controller
 {
-    function Ajax()
-    {
-        parent::Controller();
+	function Ajax()
+	{
+		parent::Controller();
 		$this->load->library('layout');
 		$this->layout->setLayout("layout_user");
 		$this->load->helper('security');
 		//$this->load->scaffolding('swayamsevaks');
-    }
-	
+	}
+
 	function resp_autocomplete($id)
 	{
 		//$this->db->like('first_name', $_POST['name']); 
-		$names = $this->db->select("CONCAT(first_name, ' ' , last_name) as name", FALSE)->get_where('swayamsevaks', array('shakha_id' => $id));
+		$names = $this->db->select("CONCAT(first_name, ' ' , last_name) as name", false)->get_where('swayamsevaks', array('shakha_id' => $id));
 		//$names = $names->result();
 		$result = '';
-		if($names->num_rows()){
+		if ($names->num_rows()) {
 			//$names = $names->result();
 			$result .= "<ul>";
 			foreach ($names->result() as $row)

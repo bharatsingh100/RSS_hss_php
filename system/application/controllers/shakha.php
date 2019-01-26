@@ -1,9 +1,11 @@
 <?php
-class Shakha extends Controller {
+class Shakha extends Controller
+{
 
 
-  function Shakha() {
-    parent :: Controller();
+  function Shakha()
+  {
+    parent::Controller();
 
     //If the user is not logged in, redirect them to login page
     //Set the redirect so that user comes back here after login
@@ -29,8 +31,7 @@ class Shakha extends Controller {
       if (!$this->permission->is_shakha_kkl($this->uri->segment(3))) {
         $this->session->set_userdata('message', 'Your are not allowed to access the requested URL');
         redirect('shakha/view/' . $this->session->userdata('shakha_id'));
-      }
-      elseif (in_array($this->uri->segment(2), $permh) && !$this->permission->is_shakha_kkh($this->uri->segment(3))) {
+      } elseif (in_array($this->uri->segment(2), $permh) && !$this->permission->is_shakha_kkh($this->uri->segment(3))) {
         $this->session->set_userdata('message', 'Your are not allowed to access the requested URL');
         redirect('shakha/view/' . $this->session->userdata('shakha_id'));
       }
@@ -59,14 +60,15 @@ class Shakha extends Controller {
 
   }
 
-  function email_lists($id) {
+  function email_lists($id)
+  {
     $this->db->select('id,address,level_id,status,style,size,mod1,mod2,mod3');
     //$this->db->where('level_id = '.$id.' AND status = \'Active\' OR status = \'Creating'\');
     //Hide the Deleted E-mail Lists after 2 Days
     $this->db->where("modified > " . date('o-m-d', strtotime('-2 Days')));
     $d['lists'] = $this->db->get_where('lists', array('level_id' => $id))->result_array();
 
-    foreach ($d['lists'] as & $list) {
+    foreach ($d['lists'] as &$list) {
       $list['address'] .= '@lists.hssusa.org';
       if ($list['mod1']) {
         $this->db->select('contact_id,first_name,last_name');
@@ -77,24 +79,22 @@ class Shakha extends Controller {
         $this->db->select('contact_id,first_name,last_name');
         $t = $this->db->get_where('swayamsevaks', array('contact_id' => $list['mod2']))->row();
         $list['mod2'] = anchor('profile/view/' . $t->contact_id, $t->first_name . ' ' . $t->last_name) . '<br \>';
-      }
-      else
+      } else
         $list['mod2'] = '';
       if ($list['mod3']) {
         $this->db->select('contact_id,first_name,last_name');
         $t = $this->db->get_where('swayamsevaks', array('contact_id' => $list['mod3']))->row();
         $list['mod3'] = anchor('profile/view/' . $t->contact_id, $t->first_name . ' ' . $t->last_name) . '<br \>';
-      }
-      else
+      } else
         $list['mod3'] = '';
       $list['moderators'] = $list['mod1'] . $list['mod2'] . $list['mod3'];
       $list['details'] = ($list['status'] == 'Active') ? anchor('shakha/edit_list/' . $list['level_id'] . '/' . $list['id'], 'Details/Edit') : '';
       $list['style'] = ($list['style']) ? 'Un-Moderated' : 'Moderated';
-      unset ($list['id']);
-      unset ($list['mod1']);
-      unset ($list['mod2']);
-      unset ($list['mod3']);
-      unset ($list['level_id']);
+      unset($list['id']);
+      unset($list['mod1']);
+      unset($list['mod2']);
+      unset($list['mod3']);
+      unset($list['level_id']);
     }
     $d['shakha'] = $this->Shakha_model->getShakhaInfo($id);
     $d['pageTitle'] = 'Email Lists';
@@ -103,30 +103,31 @@ class Shakha extends Controller {
     $this->layout->view('shakha/email_lists', $d);
   }
 
-  function edit_list($id, $list_id, $error = '') {
+  function edit_list($id, $list_id, $error = '')
+  {
 
-    if (isset ($_POST['button'])) {
-      if (!isset ($_POST['members'])) {
+    if (isset($_POST['button'])) {
+      if (!isset($_POST['members'])) {
         $this->session->set_userdata('message', 'Please select at least 1 group for E-mail list members.');
         redirect('shakha/edit_list/' . $id . '/' . $list_id);
       }
-      if (!isset ($_POST['mod_pass']) || strlen($_POST['mod_pass']) < 5) {
+      if (!isset($_POST['mod_pass']) || strlen($_POST['mod_pass']) < 5) {
         $this->session->set_userdata('message', 'Your password should be at least 5 characters long.');
         redirect('shakha/edit_list/' . $id . '/' . $list_id);
       }
 
-      foreach ($_POST as $key => $val){
+      foreach ($_POST as $key => $val) {
         $d[$key] = $val;
       }
 
       unset($d['button']);
 
-      if (!isset ($d['mod3']) || $d['mod3'] == '') {
+      if (!isset($d['mod3']) || $d['mod3'] == '') {
         $d['mod3'] = 0;
       }
 
-      if (!isset ($d['mod2']) || $d['mod2'] == '') {
-         $d['mod2'] = 0;
+      if (!isset($d['mod2']) || $d['mod2'] == '') {
+        $d['mod2'] = 0;
       }
 
       $d['members'] = serialize($d['members']);
@@ -144,18 +145,20 @@ class Shakha extends Controller {
     $this->layout->view('shakha/edit_list', $c);
   }
 
-  function activities($id) {
+  function activities($id)
+  {
     $data['activities'] = $this->activities->get_activities('shakha', $id);
     $data['row'] = $this->Shakha_model->getShakhaInfo($id);
     $data['pageTitle'] = $data['row']->name . ' Activities';
     $this->layout->view('shakha/view-activities', $data);
   }
 
-  function autocomplete(){
-    $this->db->select('company')->like('company',$this->input->get('q'));
+  function autocomplete()
+  {
+    $this->db->select('company')->like('company', $this->input->get('q'));
     $results = $this->db->get('swayamsevaks', 10);
     $out = '';
-    foreach ($results->result() as $rs){
+    foreach ($results->result() as $rs) {
       $out .= $rs->company . "\n";
     }
 
@@ -163,7 +166,8 @@ class Shakha extends Controller {
 
   }
 
-  function create_list($id, $error = '') {
+  function create_list($id, $error = '')
+  {
     if ($error != '')
       $c['d'] = $error;
     $c['shakha'] = $this->Shakha_model->getShakhaInfo($id);
@@ -171,22 +175,23 @@ class Shakha extends Controller {
     $this->layout->view('shakha/create_list', $c);
   }
 
-  function del_list($id, $list_id) {
-    if (isset ($_POST['button2'])) {
+  function del_list($id, $list_id)
+  {
+    if (isset($_POST['button2'])) {
       $d['status'] = 'Deleting';
       $this->db->update('lists', $d, array('id' => $list_id));
       $this->session->set_userdata('message', 'Your list was queued for deleting');
       redirect('shakha/email_lists/' . $id);
-    }
-    else
+    } else
       redirect('shakha/email_lists/' . $id);
   }
 
-  function add_email_list() {
+  function add_email_list()
+  {
     $ers = false;
     $error = array();
 
-    foreach ($_POST as $key => & $value) {
+    foreach ($_POST as $key => &$value) {
       if ($key == 'members') {
         foreach ($value as $v)
           $error['members'][] = $v;
@@ -194,17 +199,17 @@ class Shakha extends Controller {
       $error[$key] = $value;
     }
 
-    if (!isset ($error['address']) || $error['address'] == '') {
+    if (!isset($error['address']) || $error['address'] == '') {
       $error['msg'][] = 'You must enter the List Name';
       $ers = true;
     }
-    if (!isset ($error['mod_pass']) || $error['mod_pass'] == '') {
+    if (!isset($error['mod_pass']) || $error['mod_pass'] == '') {
       $error['msg'][] = 'Your must enter a password.';
       $ers = true;
     }
     if (!is_array($error['members']) || !count($error['members']))
       //Count returns 0 is variable is not set or array is empty
-      {
+    {
       $error['msg'][] = 'You must select at least one member for your list';
       $ers = true;
     }
@@ -231,7 +236,8 @@ class Shakha extends Controller {
     // 4 Tarun Swayamsevaks | 5 Praudh swayamsevaks | 6 All Karyakartas
   }
 
-  function statistics($id) {
+  function statistics($id)
+  {
     $yr = date('Y');
     $ag['shishu'] = $yr - 6;
     $ag['bala'] = $yr - 12;
@@ -259,7 +265,8 @@ class Shakha extends Controller {
     $this->layout->view('shakha/statistics', $v);
   }
 
-  function sny_stats($id, $year = NULL) {
+  function sny_stats($id, $year = null)
+  {
     $this->output->enable_profiler(false);
     $this->load->dbutil();
 
@@ -277,18 +284,20 @@ class Shakha extends Controller {
     //$this->layout->view('shakha/sny_statistics', $v);
   }
 
-  function sny_statistics($shakha_id, $year = NULL) {
+  function sny_statistics($shakha_id, $year = null)
+  {
 
     // Year maybe missing because it is not passed in via URL
     $year = empty($year) ? $this->config->item('sny_year') : $year;
 
     $data['counts'] = $this->Shakha_model->sny_statistics($shakha_id, $year);
-    $data['year']   = $year;
+    $data['year'] = $year;
     $data['pageTitle'] = 'SNY Statistics';
     $this->layout->view('shakha/sny_statistics', $data);
   }
 
-  function del_responsibility($shakha_id, $ss_id, $resp_id) {
+  function del_responsibility($shakha_id, $ss_id, $resp_id)
+  {
     $this->Shakha_model->delete_responsibility($shakha_id, $ss_id, $resp_id);
     //Remove Karyakarta from his gata members.
     //$d['gatanayak'] = '';
@@ -299,7 +308,8 @@ class Shakha extends Controller {
 
   }
 
-  function responsibilities($id) {
+  function responsibilities($id)
+  {
     $submit = $this->input->post('button');
     if ($submit != '') {
       if ($_POST['name'] == 0 || $_POST['resp'] == 0)
@@ -318,14 +328,14 @@ class Shakha extends Controller {
     $this->layout->view('shakha/add_responsibility', $data);
   }
 
-  function add_sankhya($id, $date = '') {
+  function add_sankhya($id, $date = '')
+  {
     $data['dates'] = $this->_getShakhaDate($id);
 
     if ($date == '') {
       if (sizeof($data['dates']) == 1) {
         $date = $data['dates'][0]['datemysql'];
-      }
-      else {
+      } else {
         foreach ($data['dates'] as $d) {
           $date = $d['selected'] ? $d['datemysql'] : '';
         }
@@ -350,7 +360,8 @@ class Shakha extends Controller {
    * @param $id Shakha ID
    * @param $year 4 Digits of the SNY Year
    */
-  function sny_count($id, $year = NULL) {
+  function sny_count($id, $year = null)
+  {
 
     $data['year'] = empty($year) ? $this->config->item('sny_year') : $year;
 
@@ -370,7 +381,8 @@ class Shakha extends Controller {
     $this->layout->view('shakha/add-sny-count', $data);
   }
 
-  private function _getShakhaDate($id) {
+  private function _getShakhaDate($id)
+  {
     $shakha = $this->db->get_where('shakhas', array('shakha_id' => $id))->row();
 
     $wd = array(
@@ -395,37 +407,38 @@ class Shakha extends Controller {
       $data[$i]['datemysql'] = date('Y-m-d', $time);
       $data[$i]['selected'] = (date('W', $time) == date('W')) ? true : false;
       $time -= 604800;      //Subtract a week
-    }while (++$i < 5);    //Last 5 weeks oonly
+    } while (++$i < 5);    //Last 5 weeks oonly
 
     return $data;
   }
 
   //Insert or Update Sankhya
-  function insert_sankhya($id) {
+  function insert_sankhya($id)
+  {
     if ($this->input->post('shakha_id') && $this->input->post('shakha_id') != '') {
       $this->Shakha_model->insert_sankhya();
       $this->session->set_userdata('message', 'Sankhya added for your Shakha');
       redirect('shakha/view/' . $this->input->post('shakha_id'));
-    }
-    else {
+    } else {
       redirect('shakha/add_sankhya/' . $id);
     }
   }
 
   //Insert or Update SNY Count
-  function insert_sny_count($id) {
+  function insert_sny_count($id)
+  {
     if ($this->input->post('shakha_id') && $this->input->post('shakha_id') != '') {
       $this->Shakha_model->insert_sny_count();
       $this->session->set_userdata('message', 'SNY Count added for your Shakha');
       redirect('shakha/sny_count/' . $this->input->post('shakha_id'));
-    }
-    else {
+    } else {
       redirect('shakha/sny_count/' . $id);
     }
   }
 
-  function edit_shakha($id) {
-    if (isset ($_POST['save'])) {
+  function edit_shakha($id)
+  {
+    if (isset($_POST['save'])) {
       $this->Shakha_model->update_shakha($id);
       $this->session->set_userdata('message', 'Shakha information was successfully updated.&nbsp;');
       redirect('shakha/view/' . $id);
@@ -448,7 +461,8 @@ class Shakha extends Controller {
     $this->layout->view('shakha/edit_shakha', $data);
   }
 
-  function karyakarta_csv_out($id) {
+  function karyakarta_csv_out($id)
+  {
     $this->output->enable_profiler(false);
     $this->load->dbutil();
 
@@ -461,7 +475,7 @@ class Shakha extends Controller {
     $i = $q->num_rows() - 1;
 
     $query = $q->result_array();
-    for (; $i > - 1; $i--)
+    for (; $i > -1; $i--)
       $query[$i]['responsibility'] = $this->Shakha_model->getShortDesc($query[$i]['responsibility']);
 
     //Set proper parameters for delimineting CSV file
@@ -497,7 +511,8 @@ class Shakha extends Controller {
     $this->load->view('shakha/kk_csv', $data);
   }
 
-  function csv_out($id) {
+  function csv_out($id)
+  {
     $this->output->enable_profiler(false);
     $this->load->dbutil();
     $this->db->select('contact_id, household_id, contact_type, gana, first_name, last_name, gender, birth_year, company, position, email, email_status, ph_mobile, ph_home, ph_work, street_add1, street_add2, city, state, zip, ssv_completed, notes');
@@ -507,7 +522,8 @@ class Shakha extends Controller {
     $this->load->view('shakha/csv', $data);
   }
 
-  function browse($id = '', $order = 'name') {
+  function browse($id = '', $order = 'name')
+  {
     if ($id == '')
       $id = $this->session->userdata('shakha_id');
     $this->load->library('pagination');
@@ -530,17 +546,19 @@ class Shakha extends Controller {
     $this->layout->view('shakha/list_ss', $data);
   }
 
-  function view($id = null) {
-   if($id == null){
-    redirect($this->session->userdata('redirect_url'));
-    die();
-  } 
+  function view($id = null)
+  {
+    if ($id == null) {
+      redirect($this->session->userdata('redirect_url'));
+      die();
+    }
     $data['row'] = $this->Shakha_model->getShakhaInfo($id);
     $data['pageTitle'] = $data['row']->name;
     $this->layout->view('shakha/view-shakha', $data);
   }
 
-  function gata($id) {
+  function gata($id)
+  {
     $data['row'] = $this->Shakha_model->getShakhaInfo($id);
     $data['gatas'] = '';
     foreach ($data['row']->kk as $kk) {
@@ -556,7 +574,8 @@ class Shakha extends Controller {
     $this->layout->view('shakha/gata', $data);
   }
 
-  function gata_csv($id) {
+  function gata_csv($id)
+  {
     $data['shakha'] = $this->Shakha_model->getShakhaInfo($id);
 
     //Get Gatanayak Information to find Swayamsevaks and populate CSV file
@@ -579,7 +598,7 @@ class Shakha extends Controller {
     $q = $data['ss']->result_array();
 
     if ($data['ss']->num_rows()) {
-      foreach ($q as & $y)
+      foreach ($q as &$y)
         $y['gatanayak'] = $gatanayaks[$y['gatanayak']];
     }
 
@@ -614,61 +633,64 @@ class Shakha extends Controller {
     $this->layout->view('shakha/gata', $data); */
   }
 
-  function addss($id = null, $var = '') {
-    if(empty($id)){      
+  function addss($id = null, $var = '')
+  {
+    if (empty($id)) {
       redirect($this->session->userdata('redirect_url'));
-    }else{
-    $data['shakha_name'] = $this->Shakha_model->getShakhaName($id);   
-    if ($var != '')
-      $data['family'] = $var;
-    $data['states'] = $this->Shakha_model->getStates();
-    $data['gatanayak'] = $this->Shakha_model->getGatanayaks($id);
-    $data['shakha_id'] = $id;
-    $data['shakha_st'] = $this->db->select('state')->get_where('shakhas', array('shakha_id' => $id))->row()->state;
-    $data['ctype'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 11')->result();
-    $data['ganas'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 12')->result();
-    $data['pageTitle'] = 'Add New Contact';
-    $this->layout->view('shakha/add-swayamsevak', $data);
-  }
+    } else {
+      $data['shakha_name'] = $this->Shakha_model->getShakhaName($id);
+      if ($var != '')
+        $data['family'] = $var;
+      $data['states'] = $this->Shakha_model->getStates();
+      $data['gatanayak'] = $this->Shakha_model->getGatanayaks($id);
+      $data['shakha_id'] = $id;
+      $data['shakha_st'] = $this->db->select('state')->get_where('shakhas', array('shakha_id' => $id))->row()->state;
+      $data['ctype'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 11')->result();
+      $data['ganas'] = $this->db->select('REF_CODE, short_desc')->get_where('Ref_Code', 'DOM_ID = 12')->result();
+      $data['pageTitle'] = 'Add New Contact';
+      $this->layout->view('shakha/add-swayamsevak', $data);
+    }
   }
 
-  function add_family_member($shakha_id, $id) {
+  function add_family_member($shakha_id, $id)
+  {
     $results = $this->db->get_where('swayamsevaks', array('contact_id' => $id))->row_array();
     $this->addss($shakha_id, $results);
   }
 
-  function add_family($id) {
+  function add_family($id)
+  {
  
     //Redirect back to form if the Name is not set
-    if (isset ($_POST) && trim($_POST['name']) == '') {
+    if (isset($_POST) && trim($_POST['name']) == '') {
       redirect('shakha/addss/' . $this->input->post('shakha_id'));
     }
       // validate email id already registered or no
     $emailId = $this->input->post('email');
-    if($emailId != ''){
+    if ($emailId != '') {
       $this->db->select('contact_id');
       $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
-      if($query->num_rows() > 0){
-      $this->session->set_userdata('message',' Email ID is already registered.');      
-     redirect('shakha/addss/' . $this->input->post('shakha_id'));
-     die();
-     }
- }
-     
-    $hhid = (isset ($_POST['household_id'])) ? $_POST['household_id'] : '';
+      if ($query->num_rows() > 0) {
+        $this->session->set_userdata('message', ' Email ID is already registered.');
+        redirect('shakha/addss/' . $this->input->post('shakha_id'));
+        die();
+      }
+    }
+
+    $hhid = (isset($_POST['household_id'])) ? $_POST['household_id'] : '';
     $data = $this->Shakha_model->insert_ss();
     $this->session->set_userdata('message', $this->input->post('name') . ' successfully added to the database.');
     if ($this->input->post('add_family')) {
       $data['household_id'] = (($hhid != '') ? $hhid : $data['household_id']);
       $this->addss($this->input->post('shakha_id'), $data);
-    }
-    else{
+    } else {
       redirect('shakha/addss/' . $this->input->post('shakha_id'));
     }
-  
-}
 
-  function import_contacts($id) {
+  }
+
+  function import_contacts($id)
+  {
     $data['pageTitle'] = 'Import Contacts';
     $data['shakha'] = $this->Shakha_model->getShakhaInfo($id);
     $this->layout->view('shakha/upload_contacts', $data);
@@ -677,7 +699,8 @@ class Shakha extends Controller {
 
   //E-mail me the uploaded file
 
-  private function _processUpload(& $filename) {
+  private function _processUpload(&$filename)
+  {
 
     /*		if (!is_array($_FILES['contacts']))
     {
@@ -706,8 +729,7 @@ class Shakha extends Controller {
       $filename = $target_path;
       shell_exec('chmod 0777 ' . $filename);
       return true;      //echo "The file ".  basename( $_FILES['uploadedfile']['name']). " has been uploaded";
-    }
-    else {
+    } else {
       $this->session->set_userdata('errs', true);
       $errors['msg'][] = "There was an error uploading the file, please try again!";
       $this->session->set_userdata('errors', $errors);
@@ -715,24 +737,24 @@ class Shakha extends Controller {
     }
   }
 
-  function upload_contacts($id) {
-    if (isset ($_POST['button'])) {
+  function upload_contacts($id)
+  {
+    if (isset($_POST['button'])) {
       $file = '';
       if ($this->_processUpload($file)) {
         $shakha = $this->Shakha_model->getShakhaInfo($id);
         require_once "Swift.php";
         require_once "Swift/Connection/SMTP.php";
-        $swift = & new Swift(new Swift_Connection_SMTP("localhost"));
+        $swift = &new Swift(new Swift_Connection_SMTP("localhost"));
         $subject = 'Uploaded Contacts for ' . $shakha->name;
         $msg = 'Contacts uploaded for ' . $shakha->name . ' ' . $shakha->city . ',' . $shakha->state . ' by ' . $this->session->userdata('first_name') . ' ' . $this->session->userdata('last_name');
         $msg .= "\n\n";
 
-        $message = & new Swift_Message($subject);
+        $message = &new Swift_Message($subject);
         $message->attach(new Swift_Message_Part($msg));
         $message->attach(new Swift_Message_Attachment(new Swift_File($file), $file, 'text/csv'));
         $swift->send($message, 'zzzabhi@gmail.com', "crm_admin@hssusa.org");
-      }
-      else
+      } else
         redirect('shakha/upload_contacts/' . $id);
 
       $this->session->set_userdata('message', 'Your File has been uploaded. You will be notified via e-mail when your contacts are added to database.');
@@ -744,7 +766,8 @@ class Shakha extends Controller {
     $this->layout->view('shakha/email_contacts', $data);
   }
 
-  function match_columns($id) {
+  function match_columns($id)
+  {
     //Set status to 0 if notthing set
     //if($this->session->userdata('import_st') == '') $this->session->set_userdata('import_st', 0);
     //Upload File
@@ -760,8 +783,7 @@ class Shakha extends Controller {
       $this->layout->view('shakha/upload_contacts1', $d);
       //$this->session->set_userdata('import_st',0);
 
-    }
-    else
+    } else
       redirect('shakha/import_contacts/' . $id);
     /*
     case 1:
@@ -771,16 +793,18 @@ class Shakha extends Controller {
     $this->session->set_userdata('import_st', 2);
     $this->layout->view('shakha/import_csv', $data);
     }
-    */  }
-  function upload_result($id) {
+     */
+  }
+  function upload_result($id)
+  {
     $data = '';
     foreach ($_POST as $key => $val)
       if ($val != '')
-        $data[$key] = $val;
-      if (isset ($data['button']))
-        unset ($data['button']);
+      $data[$key] = $val;
+    if (isset($data['button']))
+      unset($data['button']);
 
-      $fh = fopen($this->session->userdata('filename'), 'r+') or die("Couldn't open the file .. please try again.");
+    $fh = fopen($this->session->userdata('filename'), 'r+') or die("Couldn't open the file .. please try again.");
     $buffer = '';
     while (!feof($fh)) $buffer[] = explode(',', fgets($fh));
     fclose($fh);
@@ -790,7 +814,7 @@ class Shakha extends Controller {
       foreach ($data as $key => $val)
         $temp[$key] = trim($buff[$val]);
       $d['data'][] = $temp;
-      unset ($temp);
+      unset($temp);
     }
     $this->session->set_userdata('import_c', serialize($d['data']));
     $d['pageTitle'] = 'Confirm Imports';
@@ -798,13 +822,15 @@ class Shakha extends Controller {
     $this->layout->view('shakha/confirm_imports', $d);
   }
 
-  function finish_import($id) {
+  function finish_import($id)
+  {
     $this->Shakha_model->import_contacts($id);
     $d['pageTitle'] = 'Contacts Imported';
     $this->layout->view('shakha/finish_import', $d);
   }
 
-  private function _chart_data($values) {
+  private function _chart_data($values)
+  {
     // Port of JavaScript from http://code.google.com/apis/chart/
     // http://james.cridland.net/code
 
@@ -819,10 +845,9 @@ class Shakha extends Controller {
     for ($i = 0; $i < count($values); $i++) {
       $currentValue = $values[$i];
 
-      if ($currentValue > - 1) {
+      if ($currentValue > -1) {
         $chartData .= substr($simpleEncoding, 61 * ($currentValue / $maxValue), 1);
-      }
-      else {
+      } else {
         $chartData .= '_';
       }
     }
@@ -832,72 +857,74 @@ class Shakha extends Controller {
     return $chartData . "&chxl=1:|0|" . $maxValue;
   }
 
-  function validate_email($emailId = null){
-      $emailId = $this->input->post('email');
-      $this->db->select('contact_id');
-      $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
-          if($query->num_rows() > 0){
-              $message = array("error" => "Email ID is already registered");
-              echo json_encode($message);
-         }else{
-              $message = array("error" => "");
-              echo json_encode($message);
-         }
+  function validate_email($emailId = null)
+  {
+    $emailId = $this->input->post('email');
+    $this->db->select('contact_id');
+    $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
+    if ($query->num_rows() > 0) {
+      $message = array("error" => "Email ID is already registered");
+      echo json_encode($message);
+    } else {
+      $message = array("error" => "");
+      echo json_encode($message);
+    }
   }
 
-    function add_quick_form($id) { 
+  function add_quick_form($id)
+  {
 
-       $redirectUrlArray = explode(site_url(),$_SERVER['HTTP_REFERER']);
-       $emailId = $this->input->post('email');
-       $contactNumber = trim($_POST['ph_mobile']);
-        if (isset ($_POST) && trim($_POST['name']) == '') {
-             $this->session->set_userdata('emailError','Invalid Name');
-             redirect($redirectUrlArray[1]);
-             die();
-        }
+    $redirectUrlArray = explode(site_url(), $_SERVER['HTTP_REFERER']);
+    $emailId = $this->input->post('email');
+    $contactNumber = trim($_POST['ph_mobile']);
+    if (isset($_POST) && trim($_POST['name']) == '') {
+      $this->session->set_userdata('emailError', 'Invalid Name');
+      redirect($redirectUrlArray[1]);
+      die();
+    }
 
-        if(!preg_match ('/^([a-zA-Z ]+)$/', $_POST['name'])){
-             $this->session->set_userdata('emailError','Invalid Name');
-             redirect($redirectUrlArray[1]);
-             die();
-            }     
+    if (!preg_match('/^([a-zA-Z ]+)$/', $_POST['name'])) {
+      $this->session->set_userdata('emailError', 'Invalid Name');
+      redirect($redirectUrlArray[1]);
+      die();
+    }
 
-        
-        if($emailId != ''){
-            if (!filter_var($emailId, FILTER_VALIDATE_EMAIL)) {
-                 $this->session->set_userdata('emailError','Invalid Email ID');  
-                 redirect($redirectUrlArray[1]);
-                 die();   
-                    }
 
-            $this->db->select('contact_id');
-            $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
+    if ($emailId != '') {
+      if (!filter_var($emailId, FILTER_VALIDATE_EMAIL)) {
+        $this->session->set_userdata('emailError', 'Invalid Email ID');
+        redirect($redirectUrlArray[1]);
+        die();
+      }
 
-             if($query->num_rows() > 0){
-                 $this->session->set_userdata('emailError',' Email ID already registered');      
-                 redirect($redirectUrlArray[1]);
-                 die();
-               }
-           }
+      $this->db->select('contact_id');
+      $query = $this->db->get_where('swayamsevaks', array('email' => $emailId));
 
-        if($contactNumber != ''){
-           if(!preg_match ('/^([0-9]+)$/', $contactNumber)){
-               $this->session->set_userdata('emailError','Invalid Mobile Number');
-               redirect($redirectUrlArray[1]);
-               die();
-             }
+      if ($query->num_rows() > 0) {
+        $this->session->set_userdata('emailError', ' Email ID already registered');
+        redirect($redirectUrlArray[1]);
+        die();
+      }
+    }
 
-           if(strlen($contactNumber) >10 || strlen($contactNumber) <10){
-                $this->session->set_userdata('emailError','Invalid Mobile Number');
-                redirect($redirectUrlArray[1]);
-                die();
-            }
-        }     
-     
-      $hhid = (isset ($_POST['household_id'])) ? $_POST['household_id'] : '';
-      $data = $this->Shakha_model->insert_ss();
-      redirect('/profile/view/' . $data['newUserId']);
-      
+    if ($contactNumber != '') {
+      if (!preg_match('/^([0-9]+)$/', $contactNumber)) {
+        $this->session->set_userdata('emailError', 'Invalid Mobile Number');
+        redirect($redirectUrlArray[1]);
+        die();
+      }
+
+      if (strlen($contactNumber) > 10 || strlen($contactNumber) < 10) {
+        $this->session->set_userdata('emailError', 'Invalid Mobile Number');
+        redirect($redirectUrlArray[1]);
+        die();
+      }
+    }
+
+    $hhid = (isset($_POST['household_id'])) ? $_POST['household_id'] : '';
+    $data = $this->Shakha_model->insert_ss();
+    redirect('/profile/view/' . $data['newUserId']);
+
   }
 
 }
