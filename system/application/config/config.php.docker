@@ -11,7 +11,7 @@
 |	http://www.your-site.com/
 |
 */
-$config['base_url']	= "http://localhost/";
+$config['base_url']	= "http://sampark.lvh.me:8000/";
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ $config['index_page'] = "";
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']	= "REQUEST_URI";
+$config['uri_protocol']	= "AUTO";
 
 /*
 |--------------------------------------------------------------------------
@@ -327,5 +327,8 @@ $config['debug'] = TRUE;
 
 // SNY Year
 $config['sny_year'] = 2015;
+
+// Google Maps API Key
+$config['gmaps_key'] = 'AIzaSyBmvXXdpKesNUGgqAKdDP97UE4RV5MY1JY';
 
 ?>

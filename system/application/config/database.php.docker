@@ -34,16 +34,16 @@
 $active_group = "default";
 $active_record = TRUE;
 
-$db['default']['hostname'] = "mysql";
-$db['default']['username'] = "default";
-$db['default']['password'] = "secret";
-$db['default']['database'] = "default";
+$db['default']['hostname'] = "mariadb";
+$db['default']['username'] = "php";
+$db['default']['password'] = "php";
+$db['default']['database'] = "php";
 $db['default']['dbdriver'] = "mysqli";
 $db['default']['dbprefix'] = "";
 //Commenting out when upgrading to 1.6
 //$db['default']['active_r'] = TRUE;
-$db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = FALSE;
+$db['default']['pconnect'] = FALSE;
+$db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
