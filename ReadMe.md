@@ -13,7 +13,8 @@ The local environment is built using [Docker4PHP Container](https://github.com/w
 1. Run `make -f docker.mk up`
    - This will download Docker images
    - and Load the [initial DB Dump](mariadb-init/db-dump-sanitized-jan25.sql) into MySQL
-1. Access the site using http://sampark.lvh.me/
+1. Run the `make -f docker.mk logs` to make sure initial database has been loaded.
+1. Access the site using http://sampark.lvh.me:8000
    - The DNS entry points to 127.0.0.1 so that you don't have to modify hosts file
    - You can manually connect to the DB server on localhost port 3307 using following credentials 
    ```
