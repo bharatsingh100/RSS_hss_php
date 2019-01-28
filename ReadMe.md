@@ -23,6 +23,8 @@ The local environment is built using [Docker4PHP Container](https://github.com/w
    User: php
    Password: php
    ```
+1. Login using username: `uid1@mailinator.com` , password: `password`. All of the accounts have had their password set to `password`.
+1. Any email sent from this system will be captured internally by Mailhog and accessible from http://mailhog-sampark.lvh.me:8000/
 
 ### Using Docker Wodby Environment
 - Access Shell for Web Docker Image `make -f docker.mk shell`
