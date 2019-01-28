@@ -6,20 +6,22 @@ The local environment is built using [Docker4PHP Container](https://github.com/w
 1. Make sure Docker is installed and running
 1. Checkout Code
 1. Change Directory to the repo root folder `cd sampark`
-1. Create local config settings file `cp system/application/config/config.php.docker system/application/config/config.php` AND `cp system/application/config/database.php.docker system/application/config/database.php`
+1. Create local config settings file 
+    1. `cp system/application/config/config.php.docker system/application/config/config.php` 
+    1. `cp system/application/config/database.php.docker system/application/config/database.php`
+    1. `cp .htaccess-default .htaccess`
 1. Run `make -f docker.mk up`
    - This will download Docker images
    - and Load the [initial DB Dump](mariadb-init/db-dump-sanitized-jan25.sql) into MySQL
 1. Access the site using http://sampark.lvh.me/
    - The DNS entry points to 127.0.0.1 so that you don't have to modify hosts file
-   - You can manually connect to the DB server on localhost port 3307 using following credentials
+   - You can manually connect to the DB server on localhost port 3307 using following credentials 
    ```
    Host: localhost (mariadb insdie VM)
    DB Name: php
    User: php
    Password: php
    ```
-1. 
 
 ### Using Docker Wodby Environment
 - Access Shell for Web Docker Image `make -f docker.mk shell`
