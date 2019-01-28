@@ -22,10 +22,6 @@ The local environment is built using [Docker4PHP Container](https://github.com/w
 1. 
 
 ### Using Docker Wodby Environment
-- Download DB dumps
-  - The database dump is auto generated every 2 hours
-  - DEV Server `curl -u code:nycedc -O https://dev-nycedc.codeandtheory.net/sites/default/files/dev-db-dump-latest.sql.gz`
-  - QA Server `curl -u code:nycedc -O https://qa-nycedc.codeandtheory.net/sites/default/files/qa-db-dump-latest.sql.gz`
 - Access Shell for Web Docker Image `make -f docker.mk shell`
 - Stop Containers `make -f docker.mk down`
 - Start Containers `make -f docker.mk up`
