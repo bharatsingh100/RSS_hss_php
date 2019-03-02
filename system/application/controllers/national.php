@@ -295,10 +295,11 @@ class National extends Controller
 	{
 		$this->load->dbutil();
 
-		$data['query'] = $this->db->query("SELECT s.shakha_id, s.name, s.address1,
-                      s.address2, s.city, s.state, s.zip, s.frequency,
-                      s.frequency_day, s.time_from, s.time_to, s.shakha_status
-											FROM shakhas s");
+		$data['query'] = $this->db->query("SELECT s.shakha_id, s.name, s.address1, s.address2, s.city, s.state, s.zip, s.frequency, s.frequency_day, s.time_from, s.time_to, s.shakha_status, rc1.short_desc as nagar, rc2.short_desc as vibhag, rc3.short_desc as sambhag
+		FROM shakhas s
+		LEFT JOIN Ref_Code rc1 ON rc1.REF_CODE = s.nagar_id AND rc1.DOM_ID = 3
+		INNER JOIN Ref_Code rc2 ON rc2.REF_CODE = s.vibhag_id AND rc2.DOM_ID = 2
+		INNER JOIN Ref_Code rc3 ON rc3.REF_CODE = s.sambhag_id AND rc3.DOM_ID = 1");
 
 		$this->output->set_header("Content-type: application/vnd.ms-excel");
 		$this->output->set_header("Content-disposition: csv; filename=All-Shakhas-" . date("M-d_H-i") . ".csv");
